@@ -9,10 +9,10 @@ import { SpreadSheetSchema } from './validation/validation'
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, projectId, sendTo } = SpreadSheetSchema.parse(data)
 
-  console.log(dataUrl, userId, projectId, sendTo)
+  console.log({ dataUrl, userId, projectId, sendTo })
 
-  const fileContent = await readFile(dataUrl, 'utf8')
-  console.log(fileContent)
+  const fileCSV = await fetch(dataUrl)
+
   /* try {
     await new Promise((res, rej) => {
       Papa.parse(fileContent, {

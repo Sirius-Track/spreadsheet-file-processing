@@ -8,11 +8,9 @@ import { translateText } from '@/shared'
 import { ZodError } from 'zod'
 
 type addLogInDatabaseProps = {
-  message: string
-  statusCode: number
+  message: any
   url: string
   requestMethod: string
-  path?: string
 }
 
 const addLogInDatabase = async (log: addLogInDatabaseProps) => {
@@ -27,18 +25,16 @@ const addLogInDatabase = async (log: addLogInDatabaseProps) => {
 
 export const exceptionValidation: ErrorRequestHandler = async (err, req, res, next) => {
   if (err instanceof ZodError) {
-    await addLogInDatabase({
-      message: err.errors[0].message,
-      path: err.errors[0].path.join('.'),
-      statusCode: 400,
-      url: req.url,
-      requestMethod: req.method
-    })
-
     return res.status(400).json({
       error: `${err.errors[0].path} ${await translateText(err.errors[0].message)}`
     })
   }
+
+  await addLogInDatabase({
+    message: err?.errors[0] || err?.message || err,
+    url: req.url,
+    requestMethod: req.method
+  })
 
   return next(err)
 }
