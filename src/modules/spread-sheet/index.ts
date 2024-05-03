@@ -2,10 +2,17 @@ import { readFile, unlink } from 'node:fs/promises'
 
 import Papa from 'papaparse'
 
-export const spreadSheed = async (filePath: string) => {
-  const fileContent = await readFile(filePath, 'utf8')
+import type { SpreadSheet } from './types'
 
-  try {
+import { initialValidation } from './validation'
+
+export const spreadSheed = async (data: SpreadSheet) => {
+  const { dataUrl, userId, projectId, sendTo } = initialValidation(data)
+
+  console.log(dataUrl)
+
+  /* const fileContent = await readFile(filePath, 'utf8') */
+  /* try {
     await new Promise((res, rej) => {
       Papa.parse(fileContent, {
         header: true,
@@ -27,5 +34,5 @@ export const spreadSheed = async (filePath: string) => {
     throw error
   } finally {
     await unlink(filePath)
-  }
+  } */
 }
