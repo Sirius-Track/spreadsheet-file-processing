@@ -13,6 +13,10 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   const fileCSV = await fetch(dataUrl)
 
+  if (!fileCSV.ok) {
+    throw new Error('File not found')
+  }
+
   /* try {
     await new Promise((res, rej) => {
       Papa.parse(fileContent, {
