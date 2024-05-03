@@ -4,12 +4,12 @@ import Papa from 'papaparse'
 
 import type { SpreadSheet } from './types'
 
-import { initialValidation } from './validation'
+import { SpreadSheetSchema } from './validation/validation'
 
 export const spreadSheed = async (data: SpreadSheet) => {
-  const { dataUrl, userId, projectId, sendTo } = initialValidation(data)
+  const { dataUrl, userId, projectId, sendTo } = SpreadSheetSchema.parse(data)
 
-  console.log(dataUrl)
+  console.log(dataUrl, userId, projectId, sendTo)
 
   /* const fileContent = await readFile(filePath, 'utf8') */
   /* try {

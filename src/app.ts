@@ -4,6 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 
 import { router } from './router'
+import { exception, exceptionValidation } from './middlewares'
 
 const app = express()
 
@@ -16,5 +17,8 @@ app.use(router)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(cors())
 app.options('*', cors())
+
+app.use(exceptionValidation)
+app.use(exception)
 
 export default app
