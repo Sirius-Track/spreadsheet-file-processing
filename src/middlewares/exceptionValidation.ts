@@ -16,7 +16,7 @@ export const exceptionValidation: ErrorRequestHandler = async (err, req, res, ne
     })
 
     return res.status(400).json({
-      error: `${err.errors[0].path} ${err.errors[0].message}`
+      errors: err.errors.map(error => `${error.path} ${error.message}`)
     })
   }
 
