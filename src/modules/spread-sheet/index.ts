@@ -11,7 +11,8 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   console.log(dataUrl, userId, projectId, sendTo)
 
-  /* const fileContent = await readFile(filePath, 'utf8') */
+  const fileContent = await readFile(dataUrl, 'utf8')
+  console.log(fileContent)
   /* try {
     await new Promise((res, rej) => {
       Papa.parse(fileContent, {
