@@ -1,9 +1,9 @@
 import Papa from 'papaparse'
 
-import { SpreadSheetSchema } from './validation'
-
 import axios from 'axios'
-import dayjs from 'dayjs'
+
+import moment from 'moment'
+import { SpreadSheetSchema } from './validation'
 
 import type { SpreadSheet } from './types'
 
@@ -41,7 +41,12 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   console.log(records.data[0])
 
-  const formattedRows: Array<RowData> = records.data.map(row => {
+  const timef = '02/09/2024 01:02:20'
+  const par = moment(timef, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+
+  console.log(par)
+
+  /* const formattedRows: Array<RowData> = records.data.map(row => {
     const formattedRow: {
       [key: string]: string
       user_id: string
@@ -62,9 +67,9 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
         'confirmação do pagamento' === header.toLocaleLowerCase() && console.log('iquais')
 
-        formattedRow[header] = dayjs(value).format('YYYY-MM-DD HH:mm:ss')
+        formattedRow[header] = moment(value, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
       } else {
-        formattedRow[header] = dayjs(value).format('YYYY-MM-DD HH:mm:ss').trim()
+        formattedRow[header] = moment(value, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss').trim()
       }
     }
 
@@ -75,7 +80,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
     return formattedRow
   })
 
-  console.log(formattedRows[0])
+  console.log(formattedRows[0]) */
 
   const database = 'sales_duplicate'
 

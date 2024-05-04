@@ -5,8 +5,8 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
     "allowJs": true,
+    "outDir": "dist",
     "esModuleInterop": true,
 
     // Enable strict type-checking
