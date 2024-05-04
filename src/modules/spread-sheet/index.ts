@@ -58,18 +58,8 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
       const isFormatted = mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase())
 
-      const formattedValue = () => {
-        if (isFormatted) {
-          const dateFormated = dayjs(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
-
-          return dateFormated
-        }
-
-        return value.trim()
-      }
-
       if (mappedHeader) {
-        formattedRow[mappedHeader] = formattedValue()
+        formattedRow[mappedHeader] = getFormatedValue(isFormatted, value)
       }
     }
 
@@ -87,4 +77,13 @@ export const spreadSheed = async (data: SpreadSheet) => {
       }
     })
   }
+}
+function getFormatedValue(isFormatted: boolean, value: string) {
+  if (isFormatted) {
+    const dateFormated = dayjs(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
+
+    return dateFormated
+  }
+
+  return value.trim()
 }
