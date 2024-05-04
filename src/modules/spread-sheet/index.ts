@@ -20,6 +20,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   const BATCH_SIZE = 2000
   const SUPABASE_URL = process.env.SUPABASE_URL
+  const API_KEY = `Bearer ${process.env.API_KEY}`
 
   const fileCSV = await fetch(dataUrl)
 
@@ -37,9 +38,6 @@ export const spreadSheed = async (data: SpreadSheet) => {
     header: true,
     skipEmptyLines: true
   })
-
-  // Mantenha o cabeçalho para uso nas partes divididas
-  const header = Object.keys(records.data[0])
 
   const formattedRow: RowData = {
     plataform,
@@ -66,13 +64,19 @@ export const spreadSheed = async (data: SpreadSheet) => {
   console.log(formattedRows[0])
 
   // Divida os registros em partes de tamanho fixo de 2mil e envie-os para a rota 'postCSV' do Supabase
-  for (let i = 0; i < formattedRows.length; i += BATCH_SIZE) {
-    const slice = formattedRows.slice(i, i + BATCH_SIZE)
-    const csvChunk = JSON.stringify([header, ...slice.map(row => header.map(field => row[field]))])
+  for (let i = 0; i < 5; i += BATCH_SIZE) {
+    const csvChunk = formattedRows.slice(i, i + BATCH_SIZE)
 
     // chuck de envio
     await axios
-      .post(`${SUPABASE_URL}/rest/v1/postCSV`, csvChunk, { headers: { 'Content-Type': 'text/csv' } })
-      .catch(error => new Error(error))
+      .post(`${SUPABASE_URL}/rest/v1/postCSV`, csvChunk, {
+        headers: { 'Content-Type': 'text/csv', apikey: API_KEY }
+      })
+      .catch(error => {
+        console.log('erro')
+        console.error(error)
+
+        return new Error(error)
+      })
   }
 }
