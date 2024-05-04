@@ -26,11 +26,5 @@ export const headersFromCSV: { [key: string]: string } = {
   'Estado / Província': 'buyer_state',
   Instagram: 'buyer_instagram',
   'Tipo do order bump': 'order_bump_type',
-  'Transação do ordem bump': 'order_bump_transaction',
-  user_id: 'user_id',
-  project_id: 'project_id',
-  hotmart: 'plataform',
-  plataform: 'plataform',
-  userId: 'user_id',
-  projectId: 'project_id'
+  'Transação do ordem bump': 'order_bump_transaction'
 }
