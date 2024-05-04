@@ -3,6 +3,7 @@ import type { ErrorRequestHandler } from 'express'
 import { translateText } from '@/shared'
 
 import { ZodError } from 'zod'
+import { AxiosError } from 'axios'
 
 const error = async (err: any) => {
   if (typeof err.message === 'string') {
@@ -24,6 +25,14 @@ export const exceptionValidation: ErrorRequestHandler = async (err, req, res, ne
   if (err instanceof ZodError) {
     return res.status(400).json({
       errors: err.errors.map(async error => `${error.path} ${await translateText(error.message)}`)
+    })
+  }
+
+  if (err instanceof AxiosError) {
+    console.log('Erro AxiosError')
+
+    return res.status(err.response?.status || 500).json({
+      errors: await error(err.response?.data)
     })
   }
 
