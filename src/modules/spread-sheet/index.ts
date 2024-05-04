@@ -23,6 +23,13 @@ dotenv.config()
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
 
+  console.log({
+    dataUrl,
+    userId,
+    platform,
+    projectId
+  })
+
   dayjs.extend(customParseFormat)
 
   const BATCH_SIZE = 500
@@ -68,6 +75,8 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   for (let count = 0; count < formattedRows.length; count += BATCH_SIZE) {
     const csvChunk = formattedRows.slice(count, count + BATCH_SIZE)
+
+    console.log('Sending chunk', csvChunk.length, 'rows')
 
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
