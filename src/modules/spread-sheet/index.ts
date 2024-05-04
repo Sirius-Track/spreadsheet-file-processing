@@ -58,8 +58,6 @@ export const spreadSheed = async (data: SpreadSheet) => {
         if (isFormatted) {
           const dateFormated = dayjs(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
 
-          console.log(dateFormated)
-
           return dateFormated
         }
 
