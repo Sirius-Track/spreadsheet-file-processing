@@ -2,7 +2,8 @@
   "name": "src",
   "module": "index.ts",
   "scripts": {
-    "dev": "bun run --watch ./src/server.ts"
+    "dev": "bun run --watch ./src/server.ts",
+    "start": "bun run ./src/server.ts"
   },
   "type": "module",
   "devDependencies": {
