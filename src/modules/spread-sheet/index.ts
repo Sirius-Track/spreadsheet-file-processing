@@ -25,7 +25,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   dayjs.extend(customParseFormat)
 
-  const BATCH_SIZE = 2000
+  const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
 
