@@ -2,9 +2,9 @@
   "name": "src",
   "module": "index.ts",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.ts",
+    "dev": "bun run --watch ./src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/src/server.js"
   },
   "type": "module",
   "devDependencies": {

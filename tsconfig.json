@@ -1,31 +1,22 @@
 {
   "compilerOptions": {
-    // Enable latest features
-    "lib": ["ESNext", "DOM"],
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "allowJs": true,
-    "outDir": "dist",
-    "esModuleInterop": true,
-
-    // Enable strict type-checking
-    "paths": { "@/*": ["./src/*"] },
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    // Best practices
+    "module": "CommonJS",
+    "rootDir": ".",
+    "baseUrl": "src",
+    "outDir": "build",
     "strict": true,
-    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "allowJs": true,
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["src", "package.json", "scripts"]
 }
