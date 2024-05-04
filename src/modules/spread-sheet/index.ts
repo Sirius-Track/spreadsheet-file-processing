@@ -22,21 +22,16 @@ export const spreadSheed = async (data: SpreadSheet) => {
     throw new Error('File is empty')
   }
 
-  /* const records = parse(csvText, {
-    columns: true,
-    skip_empty_lines: true
-  }) */
-
-  const records = Papa.parse(csvText, {
-    header: true
+  const records = Papa.parse<{ [key: string]: string }>(csvText, {
+    header: true,
+    skipEmptyLines: true
   })
 
-  console.log(records.data)
-
   // Mantenha o cabeçalho para uso nas partes divididas
-  /* const header = Object.keys(records[0])
+  const header = Object.keys(records.data[0])
+  console.log(header)
 
-  for (let i = 0; i < records.length; i += BATCH_SIZE) {
+  /* for (let i = 0; i < records.length; i += BATCH_SIZE) {
     const slice = records.slice(i, i + BATCH_SIZE)
     const csvChunk = stringify([header, ...slice.map(row => header.map(field => row[field]))])
 
