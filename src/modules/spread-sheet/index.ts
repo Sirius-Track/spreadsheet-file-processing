@@ -2,7 +2,8 @@ import Papa from 'papaparse'
 
 import axios from 'axios'
 
-import moment from 'moment'
+import dayjs from 'dayjs'
+
 import { SpreadSheetSchema } from './validation'
 
 import type { SpreadSheet } from './types'
@@ -47,10 +48,10 @@ export const spreadSheed = async (data: SpreadSheet) => {
     }
 
     for (const [header, value] of Object.entries(row)) {
-      if (['data da transação', 'confirmação do pagamento'].includes(header.toLocaleLowerCase())) {
-        formattedRow[header] = moment(value, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+      if (['data da transação', 'confirmação do pagamento'].includes(header.toLowerCase())) {
+        formattedRow[header] = dayjs(value).format('YYYY-MM-DD HH:mm:ss')
       } else {
-        formattedRow[header] = moment(value, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss').trim()
+        formattedRow[header] = value.trim()
       }
     }
 
@@ -65,8 +66,6 @@ export const spreadSheed = async (data: SpreadSheet) => {
   const header = Object.keys(formattedRows[0])
 
   console.log(formattedRows[0])
-
-  const database = 'sales_duplicate'
 
   // Divida os registros em partes de tamanho fixo de 2mil e envie-os para a rota 'postCSV' do Supabase
   for (let i = 0; i < formattedRows.length; i += BATCH_SIZE) {
