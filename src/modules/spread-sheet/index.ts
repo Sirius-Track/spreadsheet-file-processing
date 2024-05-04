@@ -65,16 +65,12 @@ export const spreadSheed = async (data: SpreadSheet) => {
   for (let count = 0; count < 1; count += BATCH_SIZE) {
     const csvChunk = formattedRows.slice(count, count + BATCH_SIZE)
 
-    await axios
-      .post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${API_KEY}`,
-          'Accept-Encoding': 'gzip, deflate'
-        }
-      })
-      .catch(error => {
-        console.error(error)
-      })
+    await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${API_KEY}`,
+        'Accept-Encoding': 'gzip, deflate'
+      }
+    })
   }
 }
