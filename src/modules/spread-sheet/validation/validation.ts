@@ -8,7 +8,7 @@ type SpreadSheetZod = {
 
 export const SpreadSheetSchema = z.object<SpreadSheetZod>({
   dataUrl: z.string(),
-  plataform: z.string(),
+  platform: z.string(),
   userId: z.string(),
   projectId: z.string()
 })

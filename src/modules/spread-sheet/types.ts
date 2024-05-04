@@ -1,6 +1,6 @@
 export type SpreadSheet = {
   dataUrl: string
-  plataform: string
+  platform: string
   userId: string
   projectId: string
 }

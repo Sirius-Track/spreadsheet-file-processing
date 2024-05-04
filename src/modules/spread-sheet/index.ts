@@ -5,6 +5,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 
 import { SpreadSheetSchema } from './validation'
+
 import { headersFromCSV } from './headersFromCSV'
 
 import type { SpreadSheet } from './types'
@@ -16,11 +17,11 @@ type RowData = {
 }
 
 export const spreadSheed = async (data: SpreadSheet) => {
-  const { dataUrl, userId, plataform, projectId } = SpreadSheetSchema.parse(data)
+  const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
 
   const BATCH_SIZE = 2000
   const SUPABASE_URL = process.env.SUPABASE_URL
-  const API_KEY = `Bearer ${process.env.API_KEY}`
+  const API_KEY = process.env.API_KEY
 
   const fileCSV = await fetch(dataUrl)
 
@@ -39,13 +40,13 @@ export const spreadSheed = async (data: SpreadSheet) => {
     skipEmptyLines: true
   })
 
-  const formattedRow: RowData = {
-    plataform,
-    user_id: userId,
-    project_id: projectId
-  }
-
   const formattedRows: Array<RowData> = records.data.map(row => {
+    const formattedRow: RowData = {
+      platform,
+      user_id: userId,
+      project_id: projectId
+    }
+
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
       const mappedHeader = headersFromCSV[header]
 
@@ -61,13 +62,11 @@ export const spreadSheed = async (data: SpreadSheet) => {
     return formattedRow
   })
 
-  console.log(formattedRows[0])
-
-  // Divida os registros em partes de tamanho fixo de 2mil e envie-os para a rota 'postCSV' do Supabase
-  for (let i = 0; i < 5; i += BATCH_SIZE) {
+  for (let i = 0; i < 1; i += BATCH_SIZE) {
     const csvChunk = formattedRows.slice(i, i + BATCH_SIZE)
 
-    // chuck de envio
+    console.log(csvChunk[0])
+
     await axios
       .post(`${SUPABASE_URL}/rest/v1/postCSV`, csvChunk, {
         headers: { 'Content-Type': 'text/csv', apikey: API_KEY }
@@ -76,7 +75,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
         console.log('erro')
         console.error(error)
 
-        return new Error(error)
+        throw new Error(error)
       })
   }
 }
