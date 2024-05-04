@@ -19,7 +19,7 @@ type RowData = {
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
 
-  const BATCH_SIZE = 200
+  const BATCH_SIZE = 10
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
 
@@ -65,10 +65,16 @@ export const spreadSheed = async (data: SpreadSheet) => {
   for (let count = 0; count < 1; count += BATCH_SIZE) {
     const csvChunk = formattedRows.slice(count, count + BATCH_SIZE)
 
-    console.log(count, dayjs().format('YYYY-MM-DD HH:mm:ss'))
-
-    await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` }
-    })
+    await axios
+      .post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${API_KEY}`,
+          'Accept-Encoding': 'gzip, deflate'
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 }
