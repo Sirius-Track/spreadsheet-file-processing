@@ -68,8 +68,8 @@ export const spreadSheed = async (data: SpreadSheet) => {
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${API_KEY}`,
-        'Accept-Encoding': 'gzip, deflate'
+        'Accept-Encoding': 'gzip, deflate',
+        Authorization: `Bearer ${API_KEY}`
       }
     })
   }
