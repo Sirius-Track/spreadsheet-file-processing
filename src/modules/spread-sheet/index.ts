@@ -16,28 +16,4 @@ export const spreadSheed = async (data: SpreadSheet) => {
   if (!fileCSV.ok) {
     throw new Error('File not found')
   }
-
-  /* try {
-    await new Promise((res, rej) => {
-      Papa.parse(fileContent, {
-        header: true,
-        skipEmptyLines: true,
-        complete: async results => {
-          try {
-            const typedResults = results.data as Record<string, string>[]
-
-            console.log({ typedResults })
-
-            res(null)
-          } catch (error) {
-            rej(error)
-          }
-        }
-      })
-    })
-  } catch (error) {
-    throw error
-  } finally {
-    await unlink(filePath)
-  } */
 }
