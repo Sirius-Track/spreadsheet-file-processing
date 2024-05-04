@@ -30,6 +30,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
   // Mantenha o cabeçalho para uso nas partes divididas
   const header = Object.keys(records.data[0])
 
+  // Divida os registros em partes de tamanho fixo de 2mil e envie-os para a rota 'postCSV' do Supabase
   for (let i = 0; i < records.data.length; i += BATCH_SIZE) {
     const slice = records.data.slice(i, i + BATCH_SIZE)
     const csvChunk = JSON.stringify([header, ...slice.map(row => header.map(field => row[field]))])
