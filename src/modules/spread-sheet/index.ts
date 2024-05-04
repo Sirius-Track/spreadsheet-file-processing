@@ -1,8 +1,10 @@
 import Papa from 'papaparse'
 
-import type { SpreadSheet } from './types'
+import { SpreadSheetSchema } from './validation'
 
-import { SpreadSheetSchema } from './validation/validation'
+import axios from 'axios'
+
+import type { SpreadSheet } from './types'
 
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, projectId } = SpreadSheetSchema.parse(data)
@@ -36,10 +38,6 @@ export const spreadSheed = async (data: SpreadSheet) => {
     const csvChunk = JSON.stringify([header, ...slice.map(row => header.map(field => row[field]))])
 
     // Envie o chunk para a rota 'postCSV'
-    await fetch(`${SUPABASE_URL}/rest/v1/postCSV`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/csv' },
-      body: csvChunk
-    })
+    await axios.post(`${SUPABASE_URL}/rest/v1/postCSV`, csvChunk, { headers: { 'Content-Type': 'text/csv' } })
   }
 }

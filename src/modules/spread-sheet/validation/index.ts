@@ -1,1 +1,1 @@
-export * from './initialValidation'
+export * from './validation'
