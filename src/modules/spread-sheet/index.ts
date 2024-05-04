@@ -8,6 +8,8 @@ import { SpreadSheetSchema } from './validation'
 
 import { headersFromCSV } from './headersFromCSV'
 
+import dotenv from 'dotenv'
+
 import type { SpreadSheet } from './types'
 
 type RowData = {
@@ -15,6 +17,8 @@ type RowData = {
   user_id: string
   project_id: string
 }
+
+dotenv.config()
 
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
