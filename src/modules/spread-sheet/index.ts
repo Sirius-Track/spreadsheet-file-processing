@@ -115,12 +115,12 @@ export const spreadSheed = async (data: SpreadSheet) => {
       'Transação do ordem bump': 'order_bump_transaction'
     }
 
-    for (const [header, value] of Object.entries(row)) {
+    for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
       const mappedHeader = headersFromCSV[header]
 
-      const formattedValue = ['data da transação'].includes(mappedHeader.toLowerCase())
-        ? dayjs(value).format('YYYY-MM-DD')
-        : value.trim()
+      const isFormatted = mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase())
+
+      const formattedValue = isFormatted ? dayjs(value).format('YYYY-MM-DD') : value.trim()
 
       if (mappedHeader) {
         formattedRow[mappedHeader] = formattedValue
@@ -131,19 +131,6 @@ export const spreadSheed = async (data: SpreadSheet) => {
   })
 
   console.log(formattedRows[0])
-
-  // Remover os campos com nomes antigos
-  const cleanedRows = formattedRows.map(row => {
-    const cleanedRow: RowData = { ...row }
-
-    for (const header of Object.keys(row)) {
-      if (!headersFromCSV[header as keyof typeof headersFromCSV]) {
-        delete cleanedRow[header]
-      }
-    }
-
-    return cleanedRow
-  })
 
   // Divida os registros em partes de tamanho fixo de 2mil e envie-os para a rota 'postCSV' do Supabase
   for (let i = 0; i < formattedRows.length; i += BATCH_SIZE) {
