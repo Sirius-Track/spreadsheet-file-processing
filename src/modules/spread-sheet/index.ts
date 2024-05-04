@@ -38,21 +38,17 @@ export const spreadSheed = async (data: SpreadSheet) => {
   })
 
   const formattedRows: Array<RowData> = records.data.map(row => {
-    const formattedRow: {
-      [key: string]: string
-      user_id: string
-      project_id: string
-    } = {
+    const formattedRow: RowData = {
       user_id: '',
       project_id: ''
     }
 
     for (const [header, value] of Object.entries(row)) {
-      if (['data da transação', 'confirmação do pagamento'].includes(header.toLowerCase())) {
-        formattedRow[header] = dayjs(value).format('YYYY-MM-DD HH:mm:ss')
-      } else {
-        formattedRow[header] = value.trim()
-      }
+      const formattedValue = ['data da transação', 'confirmação do pagamento'].includes(header.toLowerCase())
+        ? dayjs(value).format('YYYY-MM-DD HH:mm:ss')
+        : value.trim()
+
+      formattedRow[header] = formattedValue
     }
 
     formattedRow['user_id'] = userId
