@@ -37,7 +37,11 @@ export const spreadSheed = async (data: SpreadSheet) => {
     const slice = records.data.slice(i, i + BATCH_SIZE)
     const csvChunk = JSON.stringify([header, ...slice.map(row => header.map(field => row[field]))])
 
-    // Envie o chunk para a rota 'postCSV'
-    await axios.post(`${SUPABASE_URL}/rest/v1/postCSV`, csvChunk, { headers: { 'Content-Type': 'text/csv' } })
+    console.log(csvChunk)
+
+    // chuck de envio
+    await axios
+      .post(`${SUPABASE_URL}/rest/v1/postCSV`, csvChunk, { headers: { 'Content-Type': 'text/csv' } })
+      .catch(error => new Error(error))
   }
 }
