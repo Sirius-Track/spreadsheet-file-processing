@@ -1,8 +1,6 @@
-import Papa from 'papaparse'
-
 import axios from 'axios'
-
 import dayjs from 'dayjs'
+import papa from 'papaparse'
 
 import { SpreadSheetSchema } from './validation'
 
@@ -35,7 +33,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
     throw new Error('File is empty')
   }
 
-  const records = Papa.parse<{ [key: string]: string }>(csvText, {
+  const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
     skipEmptyLines: true
   })
