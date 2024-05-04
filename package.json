@@ -1,10 +1,5 @@
 {
-  "name": "src",
-  "scripts": {
-    "dev": "bun run --watch ./src/server.ts",
-    "build": "tsc",
-    "start": "node build/src/server.js"
-  },
+  "name": "csv",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
@@ -19,10 +14,18 @@
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "dayjs": "^1.11.11",
+    "esbuild": "^0.20.1",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
     "papaparse": "^5.4.1",
     "translatte": "^3.0.1",
     "zod": "^3.23.6"
+  },
+  "scripts": {
+    "dev": "bun run --watch ./src/index.ts",
+    "dev:build": "esbuild ./src/index.ts --bundle --outdir=dist --packages=external --platform=node --sourcemap --watch",
+    "dev:run": "node --inspect -r ./dist/dev.js --watch dist/src",
+    "build": "esbuild index=./src --bundle --minify --outdir=dist --packages=external --platform=node",
+    "start": "node dist"
   }
 }
