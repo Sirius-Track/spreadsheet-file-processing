@@ -5,9 +5,10 @@ import type { SpreadSheet } from './types'
 import { SpreadSheetSchema } from './validation/validation'
 
 export const spreadSheed = async (data: SpreadSheet) => {
-  const { dataUrl, userId, projectId, sendTo } = SpreadSheetSchema.parse(data)
+  const { dataUrl, userId, projectId } = SpreadSheetSchema.parse(data)
 
   const BATCH_SIZE = 2000
+  const SUPABASE_URL = process.env.SUPABASE_URL
 
   const fileCSV = await fetch(dataUrl)
 
@@ -34,7 +35,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
     const csvChunk = JSON.stringify([header, ...slice.map(row => header.map(field => row[field]))])
 
     // Envie o chunk para a rota 'postCSV'
-    await fetch('https://<your-supabase-url>/rest/v1/postCSV', {
+    await fetch(`${SUPABASE_URL}/rest/v1/postCSV`, {
       method: 'POST',
       headers: { 'Content-Type': 'text/csv' },
       body: csvChunk

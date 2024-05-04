@@ -9,8 +9,7 @@ type SpreadSheetZod = {
 export const SpreadSheetSchema = z.object<SpreadSheetZod>({
   dataUrl: z.string(),
   userId: z.string(),
-  projectId: z.string(),
-  sendTo: z.string()
+  projectId: z.string()
 })
 
 export type SpreadSheetInput = z.infer<typeof SpreadSheetSchema>
