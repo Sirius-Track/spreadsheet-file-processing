@@ -21,7 +21,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
   dayjs.extend(customParseFormat)
 
-  const BATCH_SIZE = 10
+  const BATCH_SIZE = 2000
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
 
@@ -72,7 +72,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
     return formattedRow
   })
 
-  for (let count = 0; count < 1; count += BATCH_SIZE) {
+  for (let count = 0; count < formattedRows.length; count += BATCH_SIZE) {
     const csvChunk = formattedRows.slice(count, count + BATCH_SIZE)
 
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
