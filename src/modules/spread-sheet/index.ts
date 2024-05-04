@@ -1,6 +1,8 @@
 import axios from 'axios'
-import dayjs from 'dayjs'
 import papa from 'papaparse'
+
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import { SpreadSheetSchema } from './validation'
 
@@ -16,6 +18,8 @@ type RowData = {
 
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
+
+  dayjs.extend(customParseFormat)
 
   const BATCH_SIZE = 10
   const SUPABASE_URL = process.env.SUPABASE_URL
@@ -50,15 +54,27 @@ export const spreadSheed = async (data: SpreadSheet) => {
 
       const isFormatted = mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase())
 
-      const formattedValue = isFormatted ? dayjs(value).format('YYYY-MM-DD') : value.trim()
+      const formattedValue = () => {
+        if (isFormatted) {
+          const dateFormated = dayjs(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
+
+          console.log(dateFormated)
+
+          return dateFormated
+        }
+
+        return value.trim()
+      }
 
       if (mappedHeader) {
-        formattedRow[mappedHeader] = formattedValue
+        formattedRow[mappedHeader] = formattedValue()
       }
     }
 
     return formattedRow
   })
+
+  //console.log(formattedRows.slice(0, 10))
 
   for (let count = 0; count < 1; count += BATCH_SIZE) {
     const csvChunk = formattedRows.slice(count, count + BATCH_SIZE)
