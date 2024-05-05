@@ -18,6 +18,25 @@ type RowData = {
   project_id: string
 }
 
+async function removeFileAfterUpload(dataUrl: string): Promise<void> {
+  try {
+    await axios.post(
+      'https://mysales-86591.bubbleapps.io/version-test/api/1.1/wf/removefileafterupload/',
+      {
+        fileUrl: dataUrl
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    console.log(`File at ${dataUrl} successfully removed.`)
+  } catch (error) {
+    console.error(`Failed to remove file at ${dataUrl}:`, error)
+  }
+}
+
 dotenv.config()
 
 export const spreadSheed = async (data: SpreadSheet) => {
@@ -86,6 +105,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
       }
     })
   }
+  await removeFileAfterUpload(dataUrl)
 }
 function getFormatedValue(isFormatted: boolean, value: string) {
   if (isFormatted) {
