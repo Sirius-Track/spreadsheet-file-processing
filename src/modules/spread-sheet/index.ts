@@ -6,7 +6,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import { SpreadSheetSchema } from './validation'
 
-import { headersFromCSV } from './headersFromCSV'
+import { headersHotmartFromCSV } from './headersFromCSV'
 
 import dotenv from 'dotenv'
 
@@ -61,7 +61,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
     }
 
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
-      const mappedHeader = headersFromCSV[header]
+      const mappedHeader = headersHotmartFromCSV[header]
 
       const isFormatted = mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase())
 
