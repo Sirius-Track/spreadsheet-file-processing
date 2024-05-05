@@ -17,7 +17,16 @@ type RowData = {
   user_id: string
   project_id: string
 }
-
+//Possiveis valores de platform
+//kiwify
+//eduzz
+//perfectpay
+//greenn
+//tmb
+//hubla
+//guru
+//ticto
+//ticto
 dotenv.config()
 
 export const spreadSheed = async (data: SpreadSheet) => {
