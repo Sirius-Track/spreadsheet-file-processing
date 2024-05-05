@@ -21,7 +21,7 @@ type RowData = {
 async function removeFileAfterUpload(dataUrl: string): Promise<void> {
   try {
     await axios.post(
-      'https://mysales-86591.bubbleapps.io/version-test/api/1.1/wf/removefileafterupload/',
+      'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
       {
         fileUrl: dataUrl
       },
