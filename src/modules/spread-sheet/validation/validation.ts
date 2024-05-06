@@ -6,9 +6,27 @@ type SpreadSheetZod = {
   [k in keyof SpreadSheet]: z.ZodType<SpreadSheet[k]>
 }
 
+export const platforms = [
+  'hotmart',
+  'kiwify',
+  'eduzz',
+  'perfectpay',
+  'greenn',
+  'tmb',
+  'hubla',
+  'guru',
+  'ticto'
+] as const
+
 export const SpreadSheetSchema = z.object<SpreadSheetZod>({
   dataUrl: z.string(),
-  platform: z.string(),
+  platform: z.custom(value => {
+    if (!platforms.includes(value)) {
+      throw new Error(`Invalid platform: ${value}`)
+    }
+
+    return value
+  }),
   userId: z.string(),
   projectId: z.string()
 })

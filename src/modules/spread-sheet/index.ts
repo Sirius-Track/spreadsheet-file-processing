@@ -12,6 +12,7 @@ import { perfectPay } from './shared/outherPlatform'
 dotenv.config()
 
 export const spreadSheed = async (data: SpreadSheet) => {
+  console.log('kapa')
   const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
 
   console.log({

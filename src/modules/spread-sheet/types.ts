@@ -1,6 +1,8 @@
+import { platforms } from './validation'
+
 export type SpreadSheet = {
   dataUrl: string
-  platform: 'hotmart' | 'kiwify' | 'eduzz' | 'perfectpay' | 'greenn' | 'tmb' | 'hubla' | 'guru' | 'ticto'
+  platform: (typeof platforms)[number]
   userId: string
   projectId: string
 }
