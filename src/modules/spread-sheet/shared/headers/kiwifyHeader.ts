@@ -42,7 +42,7 @@ export const kiwifyHeader: HeadersValues<KiwifyHeaderValues> = {
   Parcelas: 'total_installments',
   'Coupon Code': 'coupon_code',
   Cliente: 'buyer_name',
-  'Cliente Email': 'buyer_email',
+  Email: 'buyer_email',
   Celular: 'buyer_phone',
   CPF: 'buyer_document',
   Estado: 'buyer_state',
