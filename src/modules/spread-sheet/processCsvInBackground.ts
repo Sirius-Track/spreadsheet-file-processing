@@ -4,7 +4,9 @@ import papa from 'papaparse'
 import { headerTreatment } from './shared/headerTreatment'
 
 import { SpreadSheet } from './types'
-import { perfectpayHeader, PerfectpayHeaderValues, perfectPayMissing } from './shared'
+import { perfectpayHeader, perfectPayMissing, eduzzHeader, eduzzMissing } from './shared'
+
+import type { EduzzHeaderValues, PerfectpayHeaderValues } from './shared'
 
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   csvText: string
@@ -31,7 +33,14 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       projectId
     }),
     kiwify: [],
-    eduzz: [],
+    eduzz: headerTreatment<typeof eduzzHeader, EduzzHeaderValues>({
+      headerMissing: eduzzMissing,
+      platformHeader: eduzzHeader,
+      records,
+      platform,
+      userId,
+      projectId
+    }),
     greenn: [],
     tmb: [],
     hubla: [],

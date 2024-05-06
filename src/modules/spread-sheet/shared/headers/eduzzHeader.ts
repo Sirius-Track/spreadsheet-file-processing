@@ -1,4 +1,30 @@
-export const eduzzHeader: { [key: string]: string | null } = {
+import { genHash, parseFloatValue } from '../'
+
+import type { Missing } from '../types'
+import type { HeadersValues } from './types'
+
+export type EduzzHeaderValues = {
+  transaction_code: string
+  transaction_status: string
+  transaction_date: string
+  product_id: string
+  product_name: string
+  offer_name: string
+  currency: string
+  purchase_value_with_tax: string
+  purchase_value_without_tax: string
+  my_commission_value: string
+  src_code: string
+  payment_method: string
+  total_installments: string
+  coupon_code: string
+  buyer_name: string
+  buyer_email: string
+  buyer_phone: string
+  buyer_document: string
+  buyer_state: string
+}
+export const eduzzHeader: HeadersValues<EduzzHeaderValues> = {
   Fatura: 'transaction_code',
   Status: 'transaction_status',
   'Data de Criação': 'transaction_date',
@@ -20,14 +46,17 @@ export const eduzzHeader: { [key: string]: string | null } = {
   UF: 'buyer_state'
 }
 
-export const eduzzMissing: { [key: string]: string | null } = {
-  producer: null, // "Não fornecido pela plataforma."
-  offer_id: null, // genHash(product_name + offer)
-  sck_code: null, // "Não fornecido pela plataforma."
-  total_charges: null, // "Não fornecido pela plataforma."
-  buyer_country: null, // "Não fornecido pela plataforma."
-  buyer_instagram: null, // "Não fornecido pela plataforma."
-  order_bump_type: null, // "Não fornecido pela plataforma."
-  order_bump_transaction: null, // "Não fornecido pela plataforma."
-  commission_currency: null //same as currency
+export const eduzzMissing = (row: Missing<EduzzHeaderValues>) => {
+  return {
+    ...row,
+    offer_id: genHash(`${row.product_name} - ${row.offer_name}`),
+    producer: 'undefined', // "Não fornecido pela plataforma."
+    sck_code: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    buyer_country: 'undefined', // "Não fornecido pela plataforma."
+    buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_type: 'undefined', // "Não fornecido pela plataforma.",
+    order_bump_transaction: 'undefined', // "Não fornecido pela plataforma."
+    commission_currency: 'undefined' //same as currency
+  }
 }
