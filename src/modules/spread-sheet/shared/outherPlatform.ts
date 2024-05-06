@@ -1,9 +1,6 @@
-import { perfectpayHeader, perfectPayMissing } from './headers'
-
-import { getFormatedValue } from './getFormatedValue'
+import { perfectpayHeader, perfectPayMissing, getFormatedValue } from './'
 
 import type { ParseResult } from 'papaparse'
-
 import type { Row, RowData } from '../types'
 
 type Props = Row & {

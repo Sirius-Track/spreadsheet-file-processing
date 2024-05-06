@@ -1,5 +1,6 @@
-import { genHash } from '../genHash'
-import { parseFloatValue } from '../fixvalues'
+import { genHash, parseFloatValue } from '../'
+
+import { Missing } from './types'
 
 type PerfectpayHeaderValues = {
   transaction_code: string
@@ -39,11 +40,7 @@ export const perfectpayHeader: { [key in string]: keyof PerfectpayHeaderValues }
   Estado: 'buyer_state'
 }
 
-type PerfectpayRow = {
-  [K in (typeof perfectpayHeader)[keyof typeof perfectpayHeader]]: string
-}
-
-export const perfectPayMissing = (row: PerfectpayRow) => {
+export const perfectPayMissing = (row: Missing<PerfectpayHeaderValues>) => {
   return {
     ...row,
     product_id: genHash(row.product_name),
