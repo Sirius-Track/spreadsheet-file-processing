@@ -1,3 +1,6 @@
+import { genHash } from '../genHash'
+import { parseFloatValue } from '../fixvalues'
+
 type PerfectpayHeaderValues = {
   transaction_code: string
   transaction_status: string
@@ -36,17 +39,26 @@ export const perfectpayHeader: { [key in string]: keyof PerfectpayHeaderValues }
   Estado: 'buyer_state'
 }
 
-export const perfectPayMissing: { [key: string]: string | undefined } = {
-  product_id: undefined, // genHash(product_name)
-  offer_id: undefined, // genHash(product_name + offer)
-  currency: undefined,
-  purchase_value_with_tax: undefined,
-  commission_currency: undefined,
-  sck_code: undefined, // "Não fornecido pela plataforma."
-  total_charges: undefined, // "Não fornecido pela plataforma."
-  coupon_code: undefined, // "Não fornecido pela plataforma."
-  buyer_country: undefined, // "Não fornecido pela plataforma."
-  buyer_instagram: undefined, // "Não fornecido pela plataforma."
-  order_bump_transaction: undefined, // "Não fornecido pela plataforma."
-  order_bump_type: undefined // "Não fornecido pela plataforma."
+type PerfectpayRow = {
+  [K in (typeof perfectpayHeader)[keyof typeof perfectpayHeader]]: string
+}
+
+export const perfectPayMissing = (row: PerfectpayRow) => {
+  return {
+    ...row,
+    product_id: genHash(row.product_name),
+    offer_id: genHash(`${row.product_name} - ${row.offer_name}`),
+    purchase_value_without_tax: parseFloatValue(row.purchase_value_without_tax),
+    my_commission_value: parseFloatValue(row.my_commission_value),
+    currency: 'BRL',
+    purchase_value_with_tax: 'undefined',
+    commission_currency: 'undefined',
+    sck_code: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    coupon_code: 'undefined', // "Não fornecido pela plataforma."
+    buyer_country: 'undefined', // "Não fornecido pela plataforma."
+    buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_transaction: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_type: '(none)' // "Não fornecido pela plataforma."
+  }
 }
