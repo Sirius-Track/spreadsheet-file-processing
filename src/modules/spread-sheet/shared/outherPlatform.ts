@@ -1,4 +1,4 @@
-import { hotmartHeader } from './headers'
+import { hotmartHeader, perfectpayHeader } from './headers'
 
 import { getFormatedValue } from './getFormatedValue'
 
@@ -15,13 +15,11 @@ type Props = Row & {
 }
 
 export const perfectPayMissing = (row: any | undefined) => {
-  console.log('aqui')
-  console.log(row)
-
   return {
+    ...row,
     product_id: genHash(row?.product_name), // genHash(product_name)
     offer_id: genHash(`${row?.product_name} - ${row?.offer}`), // genHash(product_name + offer)
-    currency: '',
+    currency: 'BRL',
     purchase_value_with_tax: '',
     commission_currency: '',
     sck_code: '', // "Não fornecido pela plataforma."
@@ -47,7 +45,7 @@ export const perfectPay = ({ records, platform, user_id, project_id }: Props) =>
     console.log(formattedRow)
 
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
-      const mappedHeader = hotmartHeader[header]
+      const mappedHeader = perfectpayHeader[header]
 
       const isFormatted = Boolean(mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase()))
 
@@ -59,5 +57,11 @@ export const perfectPay = ({ records, platform, user_id, project_id }: Props) =>
     return formattedRow
   })
 
-  return headersAlreadyChanged
+  const missingHeaders = headersAlreadyChanged.map(row => {
+    return perfectPayMissing(row)
+  })
+
+  console.log(missingHeaders[0])
+
+  return missingHeaders
 }
