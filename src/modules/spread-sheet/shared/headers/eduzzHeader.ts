@@ -1,4 +1,4 @@
-import { genHash, parseFloatValue } from '../'
+import { genHash } from '../'
 
 import type { Missing } from '../types'
 import type { HeadersValues } from './types'
@@ -24,6 +24,7 @@ export type EduzzHeaderValues = {
   buyer_document: string
   buyer_state: string
 }
+
 export const eduzzHeader: HeadersValues<EduzzHeaderValues> = {
   Fatura: 'transaction_code',
   Status: 'transaction_status',

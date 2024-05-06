@@ -4,9 +4,32 @@ import papa from 'papaparse'
 import { headerTreatment } from './shared/headerTreatment'
 
 import { SpreadSheet } from './types'
-import { perfectpayHeader, perfectPayMissing, eduzzHeader, eduzzMissing } from './shared'
+import {
+  perfectpayHeader,
+  perfectPayMissing,
+  eduzzHeader,
+  eduzzMissing,
+  greennHeader,
+  greennMissing,
+  guruHeader,
+  hublaHeader,
+  tmbHeader,
+  hotmartHeader,
+  kiwifyHeader,
+  tictHeader
+} from './shared/headers'
 
-import type { EduzzHeaderValues, PerfectpayHeaderValues } from './shared'
+import type {
+  EduzzHeaderValues,
+  GreennHeaderValues,
+  PerfectpayHeaderValues,
+  GuruHeaderValues,
+  HublaHeaderValues,
+  TmbHeaderValues,
+  HotmartHeaderValues,
+  KiwifyHeaderValues,
+  TictHeaderValues
+} from './shared/headers/types'
 
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   csvText: string
@@ -36,17 +59,41 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       platformHeader: perfectpayHeader,
       ...remainderHeaderValues
     }),
-    kiwify: [],
+    kiwify: headerTreatment<typeof kiwifyHeader, KiwifyHeaderValues>({
+      headerMissing: perfectPayMissing,
+      platformHeader: kiwifyHeader,
+      ...remainderHeaderValues
+    }),
     eduzz: headerTreatment<typeof eduzzHeader, EduzzHeaderValues>({
       headerMissing: eduzzMissing,
       platformHeader: eduzzHeader,
       ...remainderHeaderValues
     }),
-    greenn: [],
-    tmb: [],
-    hubla: [],
-    guru: [],
-    ticto: []
+    greenn: headerTreatment<typeof greennHeader, GreennHeaderValues>({
+      headerMissing: greennMissing,
+      platformHeader: greennHeader,
+      ...remainderHeaderValues
+    }),
+    tmb: headerTreatment<typeof tmbHeader, TmbHeaderValues>({
+      headerMissing: perfectPayMissing,
+      platformHeader: tmbHeader,
+      ...remainderHeaderValues
+    }),
+    hubla: headerTreatment<typeof hublaHeader, HublaHeaderValues>({
+      headerMissing: perfectPayMissing,
+      platformHeader: hublaHeader,
+      ...remainderHeaderValues
+    }),
+    guru: headerTreatment<typeof guruHeader, GuruHeaderValues>({
+      headerMissing: perfectPayMissing,
+      platformHeader: guruHeader,
+      ...remainderHeaderValues
+    }),
+    ticto: headerTreatment<typeof tictHeader, TictHeaderValues>({
+      headerMissing: perfectPayMissing,
+      platformHeader: tictHeader,
+      ...remainderHeaderValues
+    })
   }[platform]
 
   for (let count = 0; count < formattedHotmartRows.length; count += BATCH_SIZE) {
