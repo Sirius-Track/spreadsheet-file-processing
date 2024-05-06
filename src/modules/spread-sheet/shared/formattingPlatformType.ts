@@ -1,8 +1,6 @@
 import { headerTreatment } from './headerTreatment'
 
-import * as Header from './'
-import * as Missing from './'
-import type * as Values from './'
+import * as Headers from './'
 
 import type { SpreadSheet } from '../types'
 import type { ParseResult } from 'papaparse'
@@ -18,57 +16,59 @@ type Props = {
 export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
   switch (remainderHeaderValues.platform) {
     case 'hotmart':
-      return headerTreatment<typeof Header.hotmartHeader, any>({
-        platformHeader: Header.hotmartHeader,
+      return headerTreatment<typeof Headers.hotmartHeader, any>({
+        platformHeader: Headers.hotmartHeader,
         ...remainderHeaderValues
       })
     case 'perfectpay':
-      return headerTreatment<typeof Header.perfectpayHeader, Values.PerfectpayHeaderValues>({
-        headerMissing: Missing.perfectPayMissing,
-        platformHeader: Header.perfectpayHeader,
+      return headerTreatment<typeof Headers.perfectpayHeader, Headers.PerfectpayHeaderValues>({
+        headerMissing: Headers.perfectPayMissing,
+        platformHeader: Headers.perfectpayHeader,
         ...remainderHeaderValues
       })
     case 'kiwify':
-      return headerTreatment<typeof Header.kiwifyHeader, Values.KiwifyHeaderValues>({
-        headerMissing: Missing.kiwifyMissing,
-        platformHeader: Header.kiwifyHeader,
+      return headerTreatment<typeof Headers.kiwifyHeader, Headers.KiwifyHeaderValues>({
+        headerMissing: Headers.kiwifyMissing,
+        platformHeader: Headers.kiwifyHeader,
         ...remainderHeaderValues
       })
     case 'eduzz':
-      return headerTreatment<typeof Header.eduzzHeader, Values.EduzzHeaderValues>({
-        headerMissing: Missing.eduzzMissing,
-        platformHeader: Header.eduzzHeader,
+      return headerTreatment<typeof Headers.eduzzHeader, Headers.EduzzHeaderValues>({
+        headerMissing: Headers.eduzzMissing,
+        platformHeader: Headers.eduzzHeader,
         ...remainderHeaderValues
       })
     case 'greenn':
-      return headerTreatment<typeof Header.greennHeader, Values.GreennHeaderValues>({
-        headerMissing: Missing.greennMissing,
-        platformHeader: Header.greennHeader,
+      return headerTreatment<typeof Headers.greennHeader, Headers.GreennHeaderValues>({
+        headerMissing: Headers.greennMissing,
+        platformHeader: Headers.greennHeader,
         ...remainderHeaderValues
       })
     case 'tmb':
-      return headerTreatment<typeof Header.tmbHeader, Values.TmbHeaderValues>({
-        headerMissing: Missing.tmbMissing,
-        platformHeader: Header.tmbHeader,
+      return headerTreatment<typeof Headers.tmbHeader, Headers.TmbHeaderValues>({
+        headerMissing: Headers.tmbMissing,
+        platformHeader: Headers.tmbHeader,
         ...remainderHeaderValues
       })
     case 'hubla':
-      return headerTreatment<typeof Header.hublaHeader, Values.HublaHeaderValues>({
-        headerMissing: Missing.hublaMissing,
-        platformHeader: Header.hublaHeader,
+      return headerTreatment<typeof Headers.hublaHeader, Headers.HublaHeaderValues>({
+        headerMissing: Headers.hublaMissing,
+        platformHeader: Headers.hublaHeader,
         ...remainderHeaderValues
       })
     case 'guru':
-      return headerTreatment<typeof Header.guruHeader, Values.GuruHeaderValues>({
-        headerMissing: Missing.guruMissing,
-        platformHeader: Header.guruHeader,
+      return headerTreatment<typeof Headers.guruHeader, Headers.GuruHeaderValues>({
+        headerMissing: Headers.guruMissing,
+        platformHeader: Headers.guruHeader,
         ...remainderHeaderValues
       })
     case 'ticto':
-      return headerTreatment<typeof Header.tictHeader, Values.TictHeaderValues>({
-        headerMissing: Missing.tictMissing,
-        platformHeader: Header.tictHeader,
+      return headerTreatment<typeof Headers.tictHeader, Headers.TictHeaderValues>({
+        headerMissing: Headers.tictMissing,
+        platformHeader: Headers.tictHeader,
         ...remainderHeaderValues
       })
+    default:
+      throw new Error('Platform not found')
   }
 }
