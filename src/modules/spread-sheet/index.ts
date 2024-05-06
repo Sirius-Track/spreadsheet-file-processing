@@ -1,7 +1,7 @@
 import axios from 'axios'
 import papa from 'papaparse'
 
-import { SpreadSheetSchema } from './validation'
+import { SpreadSheetSchema } from './validation/SpreadSheetSchema'
 
 import dotenv from 'dotenv'
 

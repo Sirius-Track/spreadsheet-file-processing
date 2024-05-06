@@ -1,4 +1,4 @@
-import { platforms } from './validation'
+import { platforms } from './validation/SpreadSheetSchema'
 
 export type SpreadSheet = {
   dataUrl: string
