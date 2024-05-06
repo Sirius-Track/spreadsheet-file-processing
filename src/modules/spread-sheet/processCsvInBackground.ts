@@ -22,24 +22,25 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
     skipEmptyLines: true
   })
 
+  const remainderHeaderValues = {
+    records,
+    platform,
+    userId,
+    projectId
+  }
+
   const formattedHotmartRows = {
     hotmart: [],
     perfectpay: headerTreatment<typeof perfectpayHeader, PerfectpayHeaderValues>({
       headerMissing: perfectPayMissing,
       platformHeader: perfectpayHeader,
-      records,
-      platform,
-      userId,
-      projectId
+      ...remainderHeaderValues
     }),
     kiwify: [],
     eduzz: headerTreatment<typeof eduzzHeader, EduzzHeaderValues>({
       headerMissing: eduzzMissing,
       platformHeader: eduzzHeader,
-      records,
-      platform,
-      userId,
-      projectId
+      ...remainderHeaderValues
     }),
     greenn: [],
     tmb: [],
