@@ -1,16 +1,22 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "allowImportingTsExtensions": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "module": "CommonJS",
+    "rootDir": ".",
+    "baseUrl": "src",
     "outDir": "dist",
-    "baseUrl": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "allowJs": true,
     "paths": {
-      "@/*": ["./src/*"]
-    },
-    "target": "ESNext"
-  }
+      "@/*": ["*"]
+    }
+  },
+  "include": ["src", "package.json"]
 }
