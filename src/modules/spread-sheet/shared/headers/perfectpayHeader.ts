@@ -1,6 +1,7 @@
 import { genHash, parseFloatValue } from '../'
 
-import { Missing } from '../types'
+import type { Missing } from '../types'
+import type { HeadersValues } from './types'
 
 export type PerfectpayHeaderValues = {
   transaction_code: string

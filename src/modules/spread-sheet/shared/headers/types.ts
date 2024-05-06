@@ -1,3 +1,3 @@
-type HeadersValues<T> = {
+export type HeadersValues<T> = {
   [key in string]: keyof T
 }
