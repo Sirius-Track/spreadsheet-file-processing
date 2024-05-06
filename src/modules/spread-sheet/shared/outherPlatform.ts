@@ -14,27 +14,31 @@ type Props = Row & {
   }>
 }
 
-export const perfectPayMissing = (row: any) => {
+export const perfectPayMissing = (row: any | undefined) => {
+  console.log('aqui')
+  console.log(row)
+
   return {
-    product_id: genHash(row.product_name), // genHash(product_name)
-    offer_id: genHash(`${row.product_name} - ${row.offer}`), // genHash(product_name + offer)
-    currency: undefined,
-    purchase_value_with_tax: undefined,
-    commission_currency: undefined,
-    sck_code: undefined, // "Não fornecido pela plataforma."
-    total_charges: undefined, // "Não fornecido pela plataforma."
-    coupon_code: undefined, // "Não fornecido pela plataforma."
-    buyer_country: undefined, // "Não fornecido pela plataforma."
-    buyer_instagram: undefined, // "Não fornecido pela plataforma."
-    order_bump_transaction: undefined, // "Não fornecido pela plataforma."
-    order_bump_type: undefined // "Não fornecido pela plataforma."
+    product_id: genHash(row?.product_name), // genHash(product_name)
+    offer_id: genHash(`${row?.product_name} - ${row?.offer}`), // genHash(product_name + offer)
+    currency: '',
+    purchase_value_with_tax: '',
+    commission_currency: '',
+    sck_code: '', // "Não fornecido pela plataforma."
+    total_charges: '', // "Não fornecido pela plataforma."
+    coupon_code: '', // "Não fornecido pela plataforma."
+    buyer_country: '', // "Não fornecido pela plataforma."
+    buyer_instagram: '', // "Não fornecido pela plataforma."
+    order_bump_transaction: '', // "Não fornecido pela plataforma."
+    order_bump_type: '' // "Não fornecido pela plataforma."
   }
 }
 
 export const perfectPay = ({ records, platform, user_id, project_id }: Props) => {
-  return records.data.map(row => {
+  console.log('perfectPay')
+
+  const headersAlreadyChanged = records.data.map(row => {
     const formattedRow: RowData = {
-      ...perfectPayMissing(row),
       platform,
       user_id,
       project_id
@@ -54,4 +58,6 @@ export const perfectPay = ({ records, platform, user_id, project_id }: Props) =>
 
     return formattedRow
   })
+
+  return headersAlreadyChanged
 }
