@@ -26,7 +26,7 @@ const identifyDateFormat = (value: string): string => {
     return 'DD/MM/YYYY HH:mm:ss'
   }
 
-  return value
+  return 'YYYY-MM-DD'
 }
 
 export const getFormatedValue = ({ isFormatted, value }: Props) => {
