@@ -25,6 +25,7 @@ export type GuruHeaderValues = {
   buyer_document: string
   buyer_state: string
 }
+
 export const guruHeader: HeadersValues<GuruHeaderValues> = {
   'id transação': 'transaction_code',
   status: 'transaction_status',

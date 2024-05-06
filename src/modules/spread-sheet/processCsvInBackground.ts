@@ -18,7 +18,10 @@ import {
   kiwifyHeader,
   tictHeader,
   kiwifyMissing,
-  hublaMissing
+  hublaMissing,
+  tictMissing,
+  guruMissing,
+  tmbMissing
 } from './shared/headers'
 
 import type {
@@ -77,7 +80,7 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       ...remainderHeaderValues
     }),
     tmb: headerTreatment<typeof tmbHeader, TmbHeaderValues>({
-      headerMissing: perfectPayMissing,
+      headerMissing: tmbMissing,
       platformHeader: tmbHeader,
       ...remainderHeaderValues
     }),
@@ -87,12 +90,12 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       ...remainderHeaderValues
     }),
     guru: headerTreatment<typeof guruHeader, GuruHeaderValues>({
-      headerMissing: perfectPayMissing,
+      headerMissing: guruMissing,
       platformHeader: guruHeader,
       ...remainderHeaderValues
     }),
     ticto: headerTreatment<typeof tictHeader, TictHeaderValues>({
-      headerMissing: perfectPayMissing,
+      headerMissing: tictMissing,
       platformHeader: tictHeader,
       ...remainderHeaderValues
     })
