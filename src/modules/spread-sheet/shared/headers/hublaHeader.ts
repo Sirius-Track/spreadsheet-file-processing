@@ -1,4 +1,28 @@
-export const hublaHeader: { [key: string]: string | null } = {
+import { genHash } from '../'
+
+import type { Missing } from '../types'
+import type { HeadersValues } from './types'
+
+export type HublaHeaderValues = {
+  transaction_code: string
+  transaction_status: string
+  transaction_date: string
+  product_id: string
+  product_name: string
+  purchase_value_with_tax: string
+  purchase_value_without_tax: string
+  my_commission_value: string
+  src_code: string
+  payment_method: string
+  total_installments: string
+  coupon_code: string
+  buyer_name: string
+  buyer_email: string
+  buyer_phone: string
+  buyer_document: string
+}
+
+export const hublaHeader: HeadersValues<HublaHeaderValues> = {
   'ID da fatura': 'transaction_code',
   'Status da fatura': 'transaction_status',
   'Data de criação': 'transaction_date',
@@ -17,17 +41,20 @@ export const hublaHeader: { [key: string]: string | null } = {
   'Documento do cliente': 'buyer_document'
 }
 
-export const hublaMissing: { [key: string]: string | null } = {
-  producer: null, // "Não fornecido pela plataforma."
-  offer_id: null, // genHash(product_name)
-  offer_name: null, // genHash(product_name)
-  currency: null,
-  commission_currency: null,
-  sck_code: null, // "Não fornecido pela plataforma."
-  total_charges: null, // "Não fornecido pela plataforma."
-  buyer_country: null, // "Não fornecido pela plataforma."
-  buyer_state: null, // "Não fornecido pela plataforma."
-  buyer_instagram: null, // "Não fornecido pela plataforma."
-  order_bump_type: null, // "Não fornecido pela plataforma."
-  order_bump_transaction: null // "Não fornecido pela plataforma."
+export const hublaMissing = (row: Missing<HublaHeaderValues>) => {
+  return {
+    ...row,
+    offer_id: genHash(row.product_name), // genHash(product_name)
+    offer_name: genHash(row.product_name), // genHash(product_name)
+    producer: 'undefined', // "Não fornecido pela plataforma."
+    currency: 'undefined',
+    commission_currency: 'undefined',
+    sck_code: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    buyer_country: 'undefined', // "Não fornecido pela plataforma."
+    buyer_state: 'undefined', // "Não fornecido pela plataforma."
+    buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_type: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
+  }
 }
