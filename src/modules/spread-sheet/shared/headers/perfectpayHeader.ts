@@ -1,4 +1,4 @@
-export const perfectpayHeader: { [key: string]: string | null } = {
+export const perfectpayHeader: { [key: string]: string | undefined } = {
   CódigoTransação: 'transaction_code',
   Status: 'transaction_status',
   DataVenda: 'transaction_date',
@@ -14,20 +14,20 @@ export const perfectpayHeader: { [key: string]: string | null } = {
   EmailCliente: 'buyer_email',
   TelefoneCliente: 'buyer_phone',
   CPF: 'buyer_document',
-  Estado: 'buyer_state',
-  un: 'order_bump_type'
+  Estado: 'buyer_state'
 }
 
-export const perfectPayMissing: { [key: string]: string } = {
-  product_id: null, // genHash(product_name)
-  offer_id: null, // genHash(product_name + offer)
-  currency: null,
-  purchase_value_with_tax: null,
-  commission_currency: null,
-  sck_code: null, // "Não fornecido pela plataforma."
-  total_charges: null, // "Não fornecido pela plataforma."
-  coupon_code: null, // "Não fornecido pela plataforma."
-  buyer_country: null, // "Não fornecido pela plataforma."
-  buyer_instagram: null, // "Não fornecido pela plataforma."
-  order_bump_transaction: null // "Não fornecido pela plataforma."
+export const perfectPayMissing: { [key: string]: string | undefined } = {
+  product_id: undefined, // genHash(product_name)
+  offer_id: undefined, // genHash(product_name + offer)
+  currency: undefined,
+  purchase_value_with_tax: undefined,
+  commission_currency: undefined,
+  sck_code: undefined, // "Não fornecido pela plataforma."
+  total_charges: undefined, // "Não fornecido pela plataforma."
+  coupon_code: undefined, // "Não fornecido pela plataforma."
+  buyer_country: undefined, // "Não fornecido pela plataforma."
+  buyer_instagram: undefined, // "Não fornecido pela plataforma."
+  order_bump_transaction: undefined, // "Não fornecido pela plataforma."
+  order_bump_type: undefined // "Não fornecido pela plataforma."
 }
