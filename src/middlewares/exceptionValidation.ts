@@ -29,8 +29,6 @@ export const exceptionValidation: ErrorRequestHandler = async (err, req, res, ne
   }
 
   if (err instanceof AxiosError) {
-    console.log('Erro AxiosError')
-
     return res.status(err.response?.status || 500).json({
       errors: await error(err.response?.data)
     })

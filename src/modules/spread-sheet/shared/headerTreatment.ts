@@ -54,5 +54,7 @@ export const headerTreatment = <Headers, Values>({
     return headersAlreadyChangedMissingTreaties
   }
 
+  ;; console.log(missingHeaders()[0])
+
   return missingHeaders()
 }
