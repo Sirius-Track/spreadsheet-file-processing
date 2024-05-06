@@ -19,5 +19,5 @@ export const spreadSheed = async (data: SpreadSheet) => {
     throw new Error('File is empty')
   }
 
-  processCsvInBackground({ userId, platform, projectId, csvText })
+  processCsvInBackground({ dataUrl, userId, platform, projectId, csvText })
 }

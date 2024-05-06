@@ -5,11 +5,11 @@ import { formattingPlatformType } from './shared'
 
 import { SpreadSheet } from './types'
 
-type Props = Omit<SpreadSheet, 'dataUrl'> & {
+type Props = SpreadSheet & {
   csvText: string
 }
 
-export const processCsvInBackground = async ({ userId, platform, projectId, csvText }: Props) => {
+export const processCsvInBackground = async ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
@@ -39,4 +39,13 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       }
     })
   }
+
+  // TODO: mover url para env
+  await axios.post(
+    'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
+    { fileUrl: dataUrl },
+    {
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
 }
