@@ -47,10 +47,10 @@ export const hublaMissing = (row: Missing<HublaHeaderValues>) => {
     offer_id: genHash(row.product_name), // genHash(product_name)
     offer_name: genHash(row.product_name), // genHash(product_name)
     producer: 'undefined', // "Não fornecido pela plataforma."
-    currency: 'undefined',
-    commission_currency: 'undefined',
+    currency: 'BRL',
+    commission_currency: 'BRL',
     sck_code: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     buyer_country: 'undefined', // "Não fornecido pela plataforma."
     buyer_state: 'undefined', // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."

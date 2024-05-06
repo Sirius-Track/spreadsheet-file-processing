@@ -46,12 +46,12 @@ export const greennMissing = (row: Missing<GreennHeaderValues>) => {
     ...row,
     product_id: genHash(`${row.product_name} - ${row.offer_name}`),
     producer: 'undefined', // "Não fornecido pela plataforma."
-    currency: 'undefined',
-    commission_currency: 'undefined',
+    currency: 'BRL',
+    commission_currency: 'BRL',
     my_commission_value: 'undefined',
     src_code: 'undefined', // "Não fornecido pela plataforma."
     sck_code: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     coupon_code: 'undefined', // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: 'undefined', // "Não fornecido pela plataforma."

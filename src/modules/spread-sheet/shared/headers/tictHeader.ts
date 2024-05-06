@@ -54,9 +54,9 @@ export const tictMissing = (row: Missing<TictHeaderValues>) => {
     ...row,
     product_id: genHash(row.product_name), // genHash(product_name)
     producer: 'undefined', // "Não fornecido pela plataforma."
-    currency: 'undefined',
-    commission_currency: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    currency: 'BRL',
+    commission_currency: 'BRL', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: 'undefined', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."

@@ -43,13 +43,13 @@ export const tmbMissing = (row: Missing<TmbHeaderValues>) => {
     product_id: genHash(row.product_name), // genHash(product_name)
     offer_id: genHash(row.product_name), // genHash(product_name)
     offer_name: genHash(row.product_name), // genHash(product_name)
-    currency: 'undefined',
+    currency: 'BRL',
     purchase_value_with_tax: 'undefined',
-    commission_currency: 'undefined', // "Não fornecido pela plataforma."
+    commission_currency: 'BRL', // "Não fornecido pela plataforma."
     my_commission_value: 'undefined', // "Não fornecido pela plataforma."
     sck_code: 'undefined', // "Não fornecido pela plataforma."
     total_installments: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     coupon_code: 'undefined', // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: 'undefined', // "Não fornecido pela plataforma."

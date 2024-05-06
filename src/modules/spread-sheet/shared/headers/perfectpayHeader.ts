@@ -50,9 +50,9 @@ export const perfectPayMissing = (row: Missing<PerfectpayHeaderValues>) => {
     my_commission_value: parseFloatValue(row.my_commission_value),
     currency: 'BRL',
     purchase_value_with_tax: 'undefined',
-    commission_currency: 'undefined',
+    commission_currency: 'BRL',
     sck_code: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     coupon_code: 'undefined', // "Não fornecido pela plataforma."
     buyer_country: 'undefined', // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."

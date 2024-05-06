@@ -55,7 +55,7 @@ export const kiwifyMissing = (row: Missing<KiwifyHeaderValues>) => {
     product_id: genHash(row.product_name), // genHash(product_name)
     offer_id: genHash(`${row.product_name} - ${row.offer_name}`), // genHash(product_name + offer)
     producer: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     buyer_country: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: 'undefined', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."

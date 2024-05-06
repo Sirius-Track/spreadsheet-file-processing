@@ -54,9 +54,9 @@ export const guruMissing = (row: Missing<GuruHeaderValues>) => {
     ...row,
     offer_id: genHash(`${row.product_name} - ${row.offer_name}`), // genHash(product_name + offer)
     producer: 'undefined', // "Não fornecido pela plataforma."
-    commission_currency: 'undefined', // "Não fornecido pela plataforma."
+    commission_currency: 'BRL', // "Não fornecido pela plataforma."
     my_commission_value: 'undefined', // "Não fornecido pela plataforma."
-    total_charges: 'undefined', // "Não fornecido pela plataforma."
+    total_charges: 0, // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: 'undefined', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
