@@ -22,7 +22,7 @@ export const SpreadSheetSchema = z.object<SpreadSheetZod>({
   dataUrl: z.string(),
   platform: z.custom(value => {
     if (!platforms.includes(value)) {
-      throw new Error(`Invalid platform: ${value}`)
+      throw new Error(`Invalid platform: ${value}, must be one of ${platforms.join(', ')}`)
     }
 
     return value
