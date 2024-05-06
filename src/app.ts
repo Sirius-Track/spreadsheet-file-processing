@@ -6,6 +6,10 @@ import morgan from 'morgan'
 import { router } from './router'
 import { exception, exceptionValidation, notFound } from './middlewares'
 
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 const app = express()
 
 app.use(express.json())
