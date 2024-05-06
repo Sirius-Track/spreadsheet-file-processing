@@ -6,6 +6,10 @@ import morgan from 'morgan'
 import { router } from './router'
 import { exception, exceptionValidation, notFound } from './middlewares'
 
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
+
 import dotenv from 'dotenv'
 dotenv.config()
 
