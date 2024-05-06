@@ -1,4 +1,23 @@
-export const perfectpayHeader: { [key: string]: string | undefined } = {
+type PerfectpayHeaderValues = {
+  transaction_code: string
+  transaction_status: string
+  transaction_date: string
+  producer: string
+  product_name: string
+  offer_name: string
+  purchase_value_without_tax: string
+  my_commission_value: string
+  src_code: string
+  payment_method: string
+  total_installments: string
+  buyer_name: string
+  buyer_email: string
+  buyer_phone: string
+  buyer_document: string
+  buyer_state: string
+}
+
+export const perfectpayHeader: { [key in string]: keyof PerfectpayHeaderValues } = {
   CódigoTransação: 'transaction_code',
   Status: 'transaction_status',
   DataVenda: 'transaction_date',
