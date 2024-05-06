@@ -31,12 +31,12 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
-    /*  await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
+    await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
         'Content-Type': 'application/json',
         'Accept-Encoding': 'gzip, deflate',
         Authorization: `Bearer ${API_KEY}`
       }
-    }) */
+    })
   }
 }
