@@ -5,9 +5,10 @@ import { SpreadSheetSchema } from './validation'
 
 import dotenv from 'dotenv'
 
-import type { SpreadSheet } from './types'
 import { hotmartFormattedRows } from './shared/hotmartFormattedRows'
 import { perfectPay } from './shared/outherPlatform'
+
+import type { SpreadSheet } from './types'
 
 dotenv.config()
 
