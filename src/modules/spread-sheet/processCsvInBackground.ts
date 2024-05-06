@@ -1,40 +1,9 @@
 import axios from 'axios'
 import papa from 'papaparse'
 
-import { headerTreatment } from './shared/headerTreatment'
+import { formattingPlatformType } from './shared'
 
 import { SpreadSheet } from './types'
-import {
-  perfectpayHeader,
-  perfectPayMissing,
-  eduzzHeader,
-  eduzzMissing,
-  greennHeader,
-  greennMissing,
-  guruHeader,
-  hublaHeader,
-  tmbHeader,
-  hotmartHeader,
-  kiwifyHeader,
-  tictHeader,
-  kiwifyMissing,
-  hublaMissing,
-  tictMissing,
-  guruMissing,
-  tmbMissing
-} from './shared/headers'
-
-import type {
-  EduzzHeaderValues,
-  GreennHeaderValues,
-  PerfectpayHeaderValues,
-  GuruHeaderValues,
-  HublaHeaderValues,
-  TmbHeaderValues,
-  HotmartHeaderValues,
-  KiwifyHeaderValues,
-  TictHeaderValues
-} from './shared/headers'
 
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   csvText: string
@@ -57,52 +26,10 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
     projectId
   }
 
-  const formattedHotmartRows = {
-    hotmart: [],
-    perfectpay: headerTreatment<typeof perfectpayHeader, PerfectpayHeaderValues>({
-      headerMissing: perfectPayMissing,
-      platformHeader: perfectpayHeader,
-      ...remainderHeaderValues
-    }),
-    kiwify: headerTreatment<typeof kiwifyHeader, KiwifyHeaderValues>({
-      headerMissing: kiwifyMissing,
-      platformHeader: kiwifyHeader,
-      ...remainderHeaderValues
-    }),
-    eduzz: headerTreatment<typeof eduzzHeader, EduzzHeaderValues>({
-      headerMissing: eduzzMissing,
-      platformHeader: eduzzHeader,
-      ...remainderHeaderValues
-    }),
-    greenn: headerTreatment<typeof greennHeader, GreennHeaderValues>({
-      headerMissing: greennMissing,
-      platformHeader: greennHeader,
-      ...remainderHeaderValues
-    }),
-    tmb: headerTreatment<typeof tmbHeader, TmbHeaderValues>({
-      headerMissing: tmbMissing,
-      platformHeader: tmbHeader,
-      ...remainderHeaderValues
-    }),
-    hubla: headerTreatment<typeof hublaHeader, HublaHeaderValues>({
-      headerMissing: hublaMissing,
-      platformHeader: hublaHeader,
-      ...remainderHeaderValues
-    }),
-    guru: headerTreatment<typeof guruHeader, GuruHeaderValues>({
-      headerMissing: guruMissing,
-      platformHeader: guruHeader,
-      ...remainderHeaderValues
-    }),
-    ticto: headerTreatment<typeof tictHeader, TictHeaderValues>({
-      headerMissing: tictMissing,
-      platformHeader: tictHeader,
-      ...remainderHeaderValues
-    })
-  }[platform]
+  const platformsRows = formattingPlatformType({ remainderHeaderValues })
 
-  for (let count = 0; count < formattedHotmartRows.length; count += BATCH_SIZE) {
-    const csvChunk = formattedHotmartRows.slice(count, count + BATCH_SIZE)
+  for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
+    const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
