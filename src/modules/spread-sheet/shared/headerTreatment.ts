@@ -13,7 +13,7 @@ type Props<Headers = string, Values = {}> = Omit<Row, 'user_id' | 'project_id'> 
   records: ParseResult<{
     [key: string]: string
   }>
-  headerMissing: (row: Missing<Headers>) => Values
+  headerMissing: (row: Missing<Values>) => Values
 }
 
 export const headerTreatment = <Headers, Values>({

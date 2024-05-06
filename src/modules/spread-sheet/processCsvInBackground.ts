@@ -4,6 +4,7 @@ import papa from 'papaparse'
 import { headerTreatment } from './shared/headerTreatment'
 
 import { SpreadSheet } from './types'
+import { perfectpayHeader, PerfectpayHeaderValues, perfectPayMissing } from './shared'
 
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   csvText: string
@@ -20,8 +21,15 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
   })
 
   const formattedHotmartRows = {
-    hotmart: headerTreatment({ records, platform, userId, projectId }),
-    perfectpay: headerTreatment({ records, platform, userId, projectId }),
+    hotmart: [],
+    perfectpay: headerTreatment<typeof perfectpayHeader, PerfectpayHeaderValues>({
+      headerMissing: perfectPayMissing,
+      platformHeader: perfectpayHeader,
+      records,
+      platform,
+      userId,
+      projectId
+    }),
     kiwify: [],
     eduzz: [],
     greenn: [],
