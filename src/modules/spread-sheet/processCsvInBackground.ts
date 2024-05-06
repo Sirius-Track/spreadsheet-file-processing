@@ -1,8 +1,7 @@
 import axios from 'axios'
 import papa from 'papaparse'
 
-import { hotmartFormattedRows } from './shared/hotmartFormattedRows'
-import { perfectPay } from './shared/outherPlatform'
+import { headerTreatment } from './shared/headerTreatment'
 
 import { SpreadSheet } from './types'
 
@@ -21,8 +20,8 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
   })
 
   const formattedHotmartRows = {
-    hotmart: hotmartFormattedRows({ records, platform, user_id: userId, project_id: projectId }),
-    perfectpay: perfectPay({ records, platform, user_id: userId, project_id: projectId }),
+    hotmart: headerTreatment({ records, platform, userId, projectId }),
+    perfectpay: headerTreatment({ records, platform, userId, projectId }),
     kiwify: [],
     eduzz: [],
     greenn: [],

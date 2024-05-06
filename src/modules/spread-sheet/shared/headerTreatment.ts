@@ -1,20 +1,22 @@
-import { perfectpayHeader, perfectPayMissing, getFormatedValue } from './'
+import { perfectpayHeader, perfectPayMissing, getFormatedValue } from '.'
 
 import type { ParseResult } from 'papaparse'
 import type { Row, RowData } from '../types'
 
-type Props = Row & {
+type Props = Omit<Row, 'user_id' | 'project_id'> & {
+  userId: string
+  projectId: string
   records: ParseResult<{
     [key: string]: string
   }>
 }
 
-export const perfectPay = ({ records, platform, user_id, project_id }: Props) => {
+export const headerTreatment = ({ records, platform, userId, projectId }: Props) => {
   const headersAlreadyChanged = records.data.map(row => {
     const formattedRow: RowData = {
       platform,
-      user_id,
-      project_id
+      user_id: userId,
+      project_id: projectId
     }
 
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
