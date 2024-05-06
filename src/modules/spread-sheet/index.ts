@@ -40,7 +40,7 @@ type Props = SpreadSheet & {
   csvText: string
 }
 
-const processCsvInBackground = ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
+const processCsvInBackground = async ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
@@ -65,16 +65,12 @@ const processCsvInBackground = ({ dataUrl, userId, platform, projectId, csvText 
   for (let count = 0; count < formattedHotmartRows.length; count += BATCH_SIZE) {
     const csvChunk = formattedHotmartRows.slice(count, count + BATCH_SIZE)
 
-    // console.log('Sending chunk', csvChunk.length, 'rows')
-
-    /* 
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
         'Content-Type': 'application/json',
         'Accept-Encoding': 'gzip, deflate',
         Authorization: `Bearer ${API_KEY}`
       }
-    }) 
-    */
+    })
   }
 }

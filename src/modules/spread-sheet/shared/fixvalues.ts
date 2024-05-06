@@ -82,15 +82,14 @@ const entry = {
   order_bump_transaction: '0'
 }
 
-/* 
-formatEntry(entry)
-console.log(entry)
-*/
-
 export const parseFloatValue = (value: string | number) => {
-  if (typeof value === 'number') return value
+  const formattedValue = () => {
+    if (String(value).includes(',')) {
+      return value.toString().replace(/\./g, '').replace(',', '.')
+    }
 
-  const stringValue = value.replace(/\./g, '').replace(',', '.')
+    return String(value)
+  }
 
-  return parseFloat(stringValue)
+  return formattedValue().replace(/,/g, '.')
 }
