@@ -57,7 +57,7 @@ export const kiwifyMissing = (row: Missing<KiwifyHeaderValues>) => {
     producer: 'undefined', // "Não fornecido pela plataforma."
     total_charges: 0, // "Não fornecido pela plataforma."
     buyer_country: 'undefined', // "Não fornecido pela plataforma."
-    order_bump_type: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_type: '(none)', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
   }
 }

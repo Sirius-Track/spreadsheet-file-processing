@@ -54,7 +54,7 @@ export const hublaMissing = (row: Missing<HublaHeaderValues>) => {
     buyer_country: 'undefined', // "Não fornecido pela plataforma."
     buyer_state: 'undefined', // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
-    order_bump_type: 'undefined', // "Não fornecido pela plataforma."
+    order_bump_type: '(none)', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
   }
 }
