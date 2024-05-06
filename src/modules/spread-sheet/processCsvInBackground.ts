@@ -16,7 +16,9 @@ import {
   tmbHeader,
   hotmartHeader,
   kiwifyHeader,
-  tictHeader
+  tictHeader,
+  kiwifyMissing,
+  hublaMissing
 } from './shared/headers'
 
 import type {
@@ -60,7 +62,7 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       ...remainderHeaderValues
     }),
     kiwify: headerTreatment<typeof kiwifyHeader, KiwifyHeaderValues>({
-      headerMissing: perfectPayMissing,
+      headerMissing: kiwifyMissing,
       platformHeader: kiwifyHeader,
       ...remainderHeaderValues
     }),
@@ -80,7 +82,7 @@ export const processCsvInBackground = async ({ userId, platform, projectId, csvT
       ...remainderHeaderValues
     }),
     hubla: headerTreatment<typeof hublaHeader, HublaHeaderValues>({
-      headerMissing: perfectPayMissing,
+      headerMissing: hublaMissing,
       platformHeader: hublaHeader,
       ...remainderHeaderValues
     }),
