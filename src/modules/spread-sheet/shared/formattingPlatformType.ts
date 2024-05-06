@@ -2,8 +2,8 @@ import { headerTreatment } from './headerTreatment'
 
 import * as Headers from './'
 
-import type { SpreadSheet } from '../types'
 import type { ParseResult } from 'papaparse'
+import type { SpreadSheet } from '../types'
 
 type Props = {
   remainderHeaderValues: Omit<SpreadSheet, 'dataUrl'> & {
