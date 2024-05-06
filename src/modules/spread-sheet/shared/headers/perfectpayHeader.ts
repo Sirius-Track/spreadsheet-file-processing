@@ -21,7 +21,7 @@ export type PerfectpayHeaderValues = {
   buyer_state: string
 }
 
-export const perfectpayHeader: { [key in string]: keyof PerfectpayHeaderValues } = {
+export const perfectpayHeader: HeadersValues<PerfectpayHeaderValues> = {
   CódigoTransação: 'transaction_code',
   Status: 'transaction_status',
   DataVenda: 'transaction_date',
