@@ -7,7 +7,7 @@ type Props = {
 
 export const getFormatedValue = ({ isFormatted, value }: Props) => {
   if (isFormatted) {
-    const dateFormated = dayjs(value, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD')
+    const dateFormated = dayjs(value).format('YYYY-MM-DD')
 
     return dateFormated
   }
