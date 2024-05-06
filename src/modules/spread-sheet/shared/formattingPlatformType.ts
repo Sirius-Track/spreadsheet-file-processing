@@ -16,7 +16,7 @@ type Props = {
 export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
   switch (remainderHeaderValues.platform) {
     case 'hotmart':
-      return headerTreatment<typeof Headers.hotmartHeader, any>({
+      return headerTreatment<typeof Headers.hotmartHeader>({
         platformHeader: Headers.hotmartHeader,
         ...remainderHeaderValues
       })
