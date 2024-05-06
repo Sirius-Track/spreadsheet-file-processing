@@ -29,7 +29,7 @@ import type {
   HotmartHeaderValues,
   KiwifyHeaderValues,
   TictHeaderValues
-} from './shared/headers/types'
+} from './shared/headers'
 
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   csvText: string
