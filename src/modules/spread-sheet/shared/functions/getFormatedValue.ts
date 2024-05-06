@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 type Props = {
   isFormatted: boolean
   value: string
@@ -7,9 +5,7 @@ type Props = {
 
 export const getFormatedValue = ({ isFormatted, value }: Props) => {
   if (isFormatted) {
-    const dateFormated = dayjs(value).format('YYYY-MM-DD')
-
-    return dateFormated
+    return value.trim().replace(/\//g, '-').split(' ')[0]
   }
 
   return value.trim()
