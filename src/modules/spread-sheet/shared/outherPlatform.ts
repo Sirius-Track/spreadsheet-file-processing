@@ -10,8 +10,6 @@ type Props = Row & {
 }
 
 export const perfectPay = ({ records, platform, user_id, project_id }: Props) => {
-  console.log('perfectPay')
-
   const headersAlreadyChanged = records.data.map(row => {
     const formattedRow: RowData = {
       platform,
@@ -32,11 +30,15 @@ export const perfectPay = ({ records, platform, user_id, project_id }: Props) =>
     return formattedRow
   })
 
-  const missingHeaders = headersAlreadyChanged.map(row => {
-    return perfectPayMissing(row as any)
-  })
+  const missingHeaders = () => {
+    if (platform === 'hotmart') {
+      return headersAlreadyChanged
+    }
 
-  console.log(missingHeaders[0])
+    const headersAlreadyChangedMissingTreaties = headersAlreadyChanged.map(row => perfectPayMissing(row as any))
 
-  return missingHeaders
+    return headersAlreadyChangedMissingTreaties
+  }
+
+  return missingHeaders()
 }
