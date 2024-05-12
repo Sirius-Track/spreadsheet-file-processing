@@ -23,7 +23,7 @@ export type TmbHeaderValues = {
 export const tmbHeader: HeadersValues<TmbHeaderValues> = {
   Pedido: 'transaction_code',
   Status: 'transaction_status',
-  'Criado Em': 'transaction_date',
+  'Data Efetivado': 'transaction_date',
   Produtor: 'producer',
   Produto: 'product_name',
   'Ticket (R$)': 'purchase_value_without_tax',
