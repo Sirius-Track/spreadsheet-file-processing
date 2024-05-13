@@ -18,10 +18,6 @@ const identifyDateFormat = (value: string): string => {
     return 'DD-MM-YYYY HH:mm:ss'
   }
 
-  if (/^\d{2}-\d{2}-\d{4}/.test(value)) {
-    return 'DD-MM-YYYY HH:mm:ss'
-  }
-
   if (/^\d{2}\/\d{2}\/\d{4}/.test(value)) {
     return 'DD/MM/YYYY HH:mm:ss'
   }
