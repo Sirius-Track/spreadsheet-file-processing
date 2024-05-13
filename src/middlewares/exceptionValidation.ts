@@ -11,20 +11,24 @@ const error = async (err: any) => {
   }
 
   if (err.message instanceof Array) {
-    return err.message.map(async (error: string) => await translateText(error))
+    const translatedErrors = await Promise.all(err.message.map((error: string) => translateText(error)))
+
+    return translatedErrors
   }
 
   if (err.message instanceof Object) {
-    return Object.values(err.message).map(async (error: any) => await translateText(error))
+    const translatedErrors = await Promise.all(Object.values(err.message).map((error: any) => translateText(error)))
+
+    return translatedErrors
   }
 
-  return [translateText('An error occurred')]
+  return err
 }
 
 export const exceptionValidation: ErrorRequestHandler = async (err, req, res, next) => {
   if (err instanceof ZodError) {
     return res.status(400).json({
-      errors: err.errors.map(async error => `${error.path} ${await translateText(error.message)}`)
+      errors: await error({ message: err.errors.map(error => `${error.path} ${error.message}`) })
     })
   }
 
