@@ -46,6 +46,8 @@ export const voompMissing = (row: Missing<VoompHeaderValues>) => {
     offer_name: genHash(row.product_name), // genHash(product_name)
     producer: 'undefined', // "Não fornecido pela plataforma."
     currency: 'BRL',
+    purchase_value_with_tax: row.purchase_value_with_tax.replace(',', '.'),
+    purchase_value_without_tax: row.purchase_value_without_tax.replace(',', '.'),
     commission_currency: 'BRL',
     src_code: 'undefined', // "Não fornecido pela plataforma."
     sck_code: 'undefined', // "Não fornecido pela plataforma."

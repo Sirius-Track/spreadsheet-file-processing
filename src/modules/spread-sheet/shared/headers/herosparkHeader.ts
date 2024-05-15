@@ -49,11 +49,14 @@ export const herosparkHeader: HeadersValues<HerosparkHeaderValues> = {
 export const herosparkMissing = (row: Missing<HerosparkHeaderValues>) => {
   return {
     ...row,
+    offer_id: genHash(row.product_name), // genHash(product_name)
+    offer_name: row.offer_name ? genHash(row.offer_name) : genHash(row.product_name), // genHash(product_name) or genHash(offer_name)
+    purchase_value_with_tax: formatValue(row.purchase_value_with_tax),
+    purchase_value_without_tax: formatValue(row.purchase_value_without_tax),
+    buyer_phone: `${row.buyer_phone} ${row.buyer_document}`, // buyer_phone + buyer_document
     transaction_status: 'undefined', // "Não fornecido pela plataforma."
     producer: 'undefined', // "Não fornecido pela plataforma."
     product_id: 'undefined', // "Não fornecido pela plataforma."
-    offer_id: genHash(row.product_name), // genHash(product_name)
-    offer_name: row.offer_name ? genHash(row.offer_name) : genHash(row.product_name), // genHash(product_name) or genHash(offer_name)
     currency: 'BRL',
     commission_currency: 'BRL',
     sck_code: 'undefined', // "Não fornecido pela plataforma."
@@ -63,4 +66,11 @@ export const herosparkMissing = (row: Missing<HerosparkHeaderValues>) => {
     order_bump_type: '(none)', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
   }
+}
+
+const formatValue = (value: string): string => {
+  const cleanedValue = value.replace(/R\$/g, '')
+  const formattedValue = cleanedValue.replace(/,/g, '.')
+
+  return formattedValue
 }
