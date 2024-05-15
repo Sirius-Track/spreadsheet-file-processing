@@ -1,6 +1,6 @@
 import { HeadersValues } from './types'
 
-export type PerfectpayHeaderValues = {
+export type HotmartHeaderValues = {
   transaction_code: string
   transaction_status: string
   transaction_date: string
@@ -31,7 +31,7 @@ export type PerfectpayHeaderValues = {
   order_bump_transaction: string
 }
 
-export const hotmartHeader: HeadersValues<PerfectpayHeaderValues> = {
+export const hotmartHeader: HeadersValues<HotmartHeaderValues> = {
   'Código da transação': 'transaction_code',
   'Status da transação': 'transaction_status',
   'Data da transação': 'transaction_date',

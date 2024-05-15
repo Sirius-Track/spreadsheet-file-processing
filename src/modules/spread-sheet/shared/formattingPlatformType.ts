@@ -1,9 +1,18 @@
 import { headerTreatment } from './headerTreatment'
 
-import * as Headers from './'
-
 import type { ParseResult } from 'papaparse'
 import type { SpreadSheet } from '../types'
+
+import { hotmartHeader } from './headers/hotmartHeader'
+import { herosparkHeader, HerosparkHeaderValues, herosparkMissing } from './headers/herosparkHeader'
+import { perfectpayHeader, PerfectpayHeaderValues, perfectPayMissing } from './headers/perfectpayHeader'
+import { kiwifyHeader, KiwifyHeaderValues, kiwifyMissing } from './headers/kiwifyHeader'
+import { eduzzHeader, EduzzHeaderValues, eduzzMissing } from './headers/eduzzHeader'
+import { greennHeader, GreennHeaderValues, greennMissing } from './headers/greennHeader'
+import { tmbHeader, TmbHeaderValues, tmbMissing } from './headers/tmbHeader'
+import { hublaHeader, HublaHeaderValues, hublaMissing } from './headers/hublaHeader'
+import { guruHeader, GuruHeaderValues, guruMissing } from './headers/guruHeader'
+import { tictHeader, TictHeaderValues, tictMissing } from './headers/tictHeader'
 
 type Props = {
   remainderHeaderValues: Omit<SpreadSheet, 'dataUrl'> & {
@@ -16,56 +25,62 @@ type Props = {
 export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
   switch (remainderHeaderValues.platform) {
     case 'hotmart':
-      return headerTreatment<typeof Headers.hotmartHeader>({
-        platformHeader: Headers.hotmartHeader,
+      return headerTreatment<typeof hotmartHeader>({
+        platformHeader: hotmartHeader,
         ...remainderHeaderValues
       })
     case 'perfectpay':
-      return headerTreatment<typeof Headers.perfectpayHeader, Headers.PerfectpayHeaderValues>({
-        headerMissing: Headers.perfectPayMissing,
-        platformHeader: Headers.perfectpayHeader,
+      return headerTreatment<typeof perfectpayHeader, PerfectpayHeaderValues>({
+        headerMissing: perfectPayMissing,
+        platformHeader: perfectpayHeader,
         ...remainderHeaderValues
       })
     case 'kiwify':
-      return headerTreatment<typeof Headers.kiwifyHeader, Headers.KiwifyHeaderValues>({
-        headerMissing: Headers.kiwifyMissing,
-        platformHeader: Headers.kiwifyHeader,
+      return headerTreatment<typeof kiwifyHeader, KiwifyHeaderValues>({
+        headerMissing: kiwifyMissing,
+        platformHeader: kiwifyHeader,
         ...remainderHeaderValues
       })
     case 'eduzz':
-      return headerTreatment<typeof Headers.eduzzHeader, Headers.EduzzHeaderValues>({
-        headerMissing: Headers.eduzzMissing,
-        platformHeader: Headers.eduzzHeader,
+      return headerTreatment<typeof eduzzHeader, EduzzHeaderValues>({
+        headerMissing: eduzzMissing,
+        platformHeader: eduzzHeader,
         ...remainderHeaderValues
       })
     case 'greenn':
-      return headerTreatment<typeof Headers.greennHeader, Headers.GreennHeaderValues>({
-        headerMissing: Headers.greennMissing,
-        platformHeader: Headers.greennHeader,
+      return headerTreatment<typeof greennHeader, GreennHeaderValues>({
+        headerMissing: greennMissing,
+        platformHeader: greennHeader,
         ...remainderHeaderValues
       })
     case 'tmb':
-      return headerTreatment<typeof Headers.tmbHeader, Headers.TmbHeaderValues>({
-        headerMissing: Headers.tmbMissing,
-        platformHeader: Headers.tmbHeader,
+      return headerTreatment<typeof tmbHeader, TmbHeaderValues>({
+        headerMissing: tmbMissing,
+        platformHeader: tmbHeader,
         ...remainderHeaderValues
       })
     case 'hubla':
-      return headerTreatment<typeof Headers.hublaHeader, Headers.HublaHeaderValues>({
-        headerMissing: Headers.hublaMissing,
-        platformHeader: Headers.hublaHeader,
+      return headerTreatment<typeof hublaHeader, HublaHeaderValues>({
+        headerMissing: hublaMissing,
+        platformHeader: hublaHeader,
         ...remainderHeaderValues
       })
     case 'guru':
-      return headerTreatment<typeof Headers.guruHeader, Headers.GuruHeaderValues>({
-        headerMissing: Headers.guruMissing,
-        platformHeader: Headers.guruHeader,
+      return headerTreatment<typeof guruHeader, GuruHeaderValues>({
+        headerMissing: guruMissing,
+        platformHeader: guruHeader,
+        ...remainderHeaderValues
+      })
+    case 'herospark':
+      return headerTreatment<typeof herosparkHeader, HerosparkHeaderValues>({
+        headerMissing: herosparkMissing,
+        platformHeader: herosparkHeader,
         ...remainderHeaderValues
       })
     case 'ticto':
-      return headerTreatment<typeof Headers.tictHeader, Headers.TictHeaderValues>({
-        headerMissing: Headers.tictMissing,
-        platformHeader: Headers.tictHeader,
+      return headerTreatment<typeof tictHeader, TictHeaderValues>({
+        headerMissing: tictMissing,
+        platformHeader: tictHeader,
         ...remainderHeaderValues
       })
     default:

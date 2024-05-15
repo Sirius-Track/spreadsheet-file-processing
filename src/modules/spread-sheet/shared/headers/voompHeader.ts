@@ -12,6 +12,7 @@ export type VoompHeaderValues = {
   purchase_value_without_tax: string
   payment_method: string
   buyer_name: string
+  buyer_country: string
   buyer_email: string
   buyer_phone: string
   buyer_document: string

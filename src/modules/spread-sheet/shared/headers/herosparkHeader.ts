@@ -5,6 +5,7 @@ import type { HeadersValues } from './types'
 
 export type HerosparkHeaderValues = {
   id: string
+  offer_name: string
   transaction_code: string
   transaction_date: string
   product_name: string

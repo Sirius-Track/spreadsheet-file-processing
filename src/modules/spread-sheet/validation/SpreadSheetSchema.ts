@@ -10,6 +10,7 @@ export const platforms = [
   'hotmart',
   'kiwify',
   'eduzz',
+  'herospark',
   'perfectpay',
   'greenn',
   'tmb',
