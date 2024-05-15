@@ -3,7 +3,7 @@ import { headerTreatment } from './headerTreatment'
 import type { ParseResult } from 'papaparse'
 import type { SpreadSheet } from '../types'
 
-import { hotmartHeader } from './headers/hotmartHeader'
+import { hotmartHeader, HotmartHeaderValues } from './headers/hotmartHeader'
 import { herosparkHeader, HerosparkHeaderValues, herosparkMissing } from './headers/herosparkHeader'
 import { perfectpayHeader, PerfectpayHeaderValues, perfectPayMissing } from './headers/perfectpayHeader'
 import { kiwifyHeader, KiwifyHeaderValues, kiwifyMissing } from './headers/kiwifyHeader'
@@ -13,6 +13,7 @@ import { tmbHeader, TmbHeaderValues, tmbMissing } from './headers/tmbHeader'
 import { hublaHeader, HublaHeaderValues, hublaMissing } from './headers/hublaHeader'
 import { guruHeader, GuruHeaderValues, guruMissing } from './headers/guruHeader'
 import { tictHeader, TictHeaderValues, tictMissing } from './headers/tictHeader'
+import { voompHeader, VoompHeaderValues, voompMissing } from './headers/voompHeader'
 
 type Props = {
   remainderHeaderValues: Omit<SpreadSheet, 'dataUrl'> & {
@@ -25,7 +26,7 @@ type Props = {
 export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
   switch (remainderHeaderValues.platform) {
     case 'hotmart':
-      return headerTreatment<typeof hotmartHeader>({
+      return headerTreatment<typeof hotmartHeader, HotmartHeaderValues>({
         platformHeader: hotmartHeader,
         ...remainderHeaderValues
       })
@@ -75,6 +76,12 @@ export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
       return headerTreatment<typeof herosparkHeader, HerosparkHeaderValues>({
         headerMissing: herosparkMissing,
         platformHeader: herosparkHeader,
+        ...remainderHeaderValues
+      })
+    case 'voompheader':
+      return headerTreatment<typeof voompHeader, VoompHeaderValues>({
+        headerMissing: voompMissing,
+        platformHeader: voompHeader,
         ...remainderHeaderValues
       })
     case 'ticto':

@@ -16,6 +16,7 @@ export const platforms = [
   'tmb',
   'hubla',
   'guru',
+  'voompheader',
   'ticto'
 ] as const
 

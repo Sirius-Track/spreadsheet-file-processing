@@ -16,7 +16,7 @@ type Props<Headers = string, Values = {}> = Omit<Row, 'user_id' | 'project_id'> 
   headerMissing?: (row: Missing<Values>) => Values
 }
 
-export const headerTreatment = <Headers, Values = unknown>({
+export const headerTreatment = <Headers, Values>({
   platformHeader,
   records,
   platform,
