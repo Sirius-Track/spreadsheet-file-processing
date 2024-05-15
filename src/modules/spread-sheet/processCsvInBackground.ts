@@ -28,6 +28,8 @@ export const processCsvInBackground = async ({ dataUrl, userId, platform, projec
 
   const platformsRows = formattingPlatformType({ remainderHeaderValues })
 
+  console.log(platformsRows[0])
+
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
