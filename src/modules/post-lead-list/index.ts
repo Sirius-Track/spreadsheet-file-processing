@@ -1,11 +1,9 @@
-import { SpreadSheetSchema } from './validation/SpreadSheetSchema'
+import { LeadsTypes, SpreadSheetSchema } from './validation/SpreadSheetSchema'
 
 import { processPostLeadListBackground } from './processPostLeadListBackground'
 
-import type { SpreadSheet } from './types'
-
-export const spreadSheed = async (data: SpreadSheet) => {
-  const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
+export const spreadSheed = async (data: LeadsTypes) => {
+  const { dataUrl, userId, projectId, launchId } = SpreadSheetSchema.parse(data)
 
   const fileCSV = await fetch(dataUrl)
 
@@ -19,5 +17,5 @@ export const spreadSheed = async (data: SpreadSheet) => {
     throw new Error('File is empty')
   }
 
-  processPostLeadListBackground({ dataUrl, userId, platform, projectId, csvText })
+  processPostLeadListBackground({ launchId, dataUrl, userId, projectId, csvText })
 }

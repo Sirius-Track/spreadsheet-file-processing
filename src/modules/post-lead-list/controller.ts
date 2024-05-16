@@ -6,6 +6,6 @@ export const createsPostLeadList: RequestHandler = async (req, res) => {
   await spreadSheed(req.body)
 
   res.status(201).send({
-    message: 'Your file is being processed successfully'
+    message: 'Seu arquivo está sendo processado com sucesso'
   })
 }

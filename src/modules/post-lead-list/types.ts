@@ -1,14 +1,12 @@
-import { platforms } from './validation/SpreadSheetSchema'
-
 export type SpreadSheet = {
   dataUrl: string
-  platform: (typeof platforms)[number]
   userId: string
   projectId: string
 }
 
-export type Row = Pick<SpreadSheet, 'platform'> & {
+export type Row = {
   user_id: string
+  launch_id: string
   project_id: string
 }
 
