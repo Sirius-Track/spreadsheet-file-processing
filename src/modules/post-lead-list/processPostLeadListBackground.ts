@@ -3,7 +3,6 @@ import papa from 'papaparse'
 
 import { LeadsTypes } from './validation/SpreadSheetSchema'
 import { RowData } from './types'
-import { getFormatedValue } from './shared'
 
 type Props = LeadsTypes & {
   csvText: string
