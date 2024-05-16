@@ -26,7 +26,7 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
       project_id: projectId
     }
 
-    return formattedRow
+    return { ...formattedRow, ...row }
   })
 
   console.log(platformsRows[0])
