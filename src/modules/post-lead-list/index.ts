@@ -1,6 +1,6 @@
 import { SpreadSheetSchema } from './validation/SpreadSheetSchema'
 
-import { processPostCSVBackground } from './processCsvInBackground'
+import { processPostLeadListBackground } from './processPostLeadListBackground'
 
 import type { SpreadSheet } from './types'
 
@@ -19,5 +19,5 @@ export const spreadSheed = async (data: SpreadSheet) => {
     throw new Error('File is empty')
   }
 
-  processPostCSVBackground({ dataUrl, userId, platform, projectId, csvText })
+  processPostLeadListBackground({ dataUrl, userId, platform, projectId, csvText })
 }

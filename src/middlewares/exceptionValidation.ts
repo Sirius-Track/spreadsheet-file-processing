@@ -1,9 +1,9 @@
-import type { ErrorRequestHandler } from 'express'
+import { ZodError } from 'zod'
+import { AxiosError } from 'axios'
 
 import { translateText } from '@/shared'
 
-import { ZodError } from 'zod'
-import { AxiosError } from 'axios'
+import type { ErrorRequestHandler } from 'express'
 
 const error = async (err: any) => {
   if (typeof err.message === 'string') {
@@ -11,15 +11,15 @@ const error = async (err: any) => {
   }
 
   if (err.message instanceof Array) {
-    const translatedErrors = await Promise.all(err.message.map((error: string) => translateText(error)))
+    const erros = Object.values(err.message.map((error: string) => translateText(error)))
 
-    return translatedErrors
+    return await Promise.all(erros)
   }
 
   if (err.message instanceof Object) {
-    const translatedErrors = await Promise.all(Object.values(err.message).map((error: any) => translateText(error)))
+    const erros = Object.values(err.message).map((error: any) => translateText(error))
 
-    return translatedErrors
+    return await Promise.all(erros)
   }
 
   return err
@@ -27,8 +27,10 @@ const error = async (err: any) => {
 
 export const exceptionValidation: ErrorRequestHandler = async (err, req, res, next) => {
   if (err instanceof ZodError) {
+    const message = err.errors.map(error => `${error.path} ${error.message}`)
+
     return res.status(400).json({
-      errors: await error({ message: err.errors.map(error => `${error.path} ${error.message}`) })
+      errors: await error({ message })
     })
   }
 

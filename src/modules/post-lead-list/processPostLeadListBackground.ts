@@ -1,15 +1,13 @@
 import axios from 'axios'
 import papa from 'papaparse'
 
-import { formattingPlatformType } from './shared'
-
 import { SpreadSheet } from './types'
 
 type Props = SpreadSheet & {
   csvText: string
 }
 
-export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
+export const processPostLeadListBackground = async ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
@@ -19,16 +17,36 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     skipEmptyLines: true
   })
 
-  const remainderHeaderValues = {
+  console.log(records)
+
+  /* const headersAlreadyChanged = records.data.map(row => {
+    const formattedRow: RowData = {
+      platform,
+      user_id: userId,
+      project_id: projectId
+    }
+
+    for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
+      const mappedHeader = platformHeader[header] as string
+
+      const isFormatted = Boolean(mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase()))
+
+      if (mappedHeader) {
+        formattedRow[mappedHeader] = getFormatedValue({ isFormatted, value })
+      }
+    }
+
+    return formattedRow
+  }) */
+
+  /* const platformsRows = {
     records,
     platform,
     userId,
     projectId
-  }
+  } */
 
-  const platformsRows = formattingPlatformType({ remainderHeaderValues })
-
-  console.log(platformsRows[0])
+  /* console.log(platformsRows[0])
 
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
@@ -49,5 +67,5 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     {
       headers: { 'Content-Type': 'application/json' }
     }
-  )
+  ) */
 }
