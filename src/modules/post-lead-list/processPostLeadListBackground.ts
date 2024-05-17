@@ -49,13 +49,11 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
   }
 
   // TODO: mover url para env
-  /* 
   await axios.post(
     'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
     { fileUrl: dataUrl },
     {
       headers: { 'Content-Type': 'application/json' }
     }
-  ) 
-  */
+  )
 }
