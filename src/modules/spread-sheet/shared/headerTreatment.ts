@@ -1,4 +1,4 @@
-import { getFormatedValue } from '.'
+import { getFormatedValue } from '@/shared/getFormatedValue'
 
 import type { ParseResult } from 'papaparse'
 import type { Row, RowData } from '../types'
@@ -34,10 +34,10 @@ export const headerTreatment = <Headers, Values>({
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
       const mappedHeader = platformHeader[header] as string
 
-      const isFormatted = Boolean(mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase()))
+      const isFormattedDate = Boolean(mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase()))
 
       if (mappedHeader) {
-        formattedRow[mappedHeader] = getFormatedValue({ isFormatted, value })
+        formattedRow[mappedHeader] = getFormatedValue({ isFormattedDate, value })
       }
     }
 

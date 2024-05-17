@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 
 type Props = {
-  isFormatted: boolean
+  isFormattedDate: boolean
   value: string
 }
 
@@ -29,12 +29,11 @@ const identifyDateFormat = (value: string): string => {
   return 'YYYY-MM-DD'
 }
 
-export const getFormatedValue = ({ isFormatted, value }: Props) => {
-  if (isFormatted) {
+export const getFormatedValue = ({ isFormattedDate, value }: Props) => {
+  if (isFormattedDate) {
     const format = identifyDateFormat(value)
 
     const dateFormatted = dayjs(value, format).format('YYYY-MM-DD')
-    console.log(value, format, dateFormatted)
 
     return dateFormatted
   }

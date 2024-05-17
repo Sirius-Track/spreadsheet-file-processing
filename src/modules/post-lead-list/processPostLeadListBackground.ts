@@ -3,6 +3,7 @@ import papa from 'papaparse'
 
 import { LeadsTypes } from './validation/SpreadSheetSchema'
 import { RowData } from './types'
+import { getFormatedValue } from '../../shared/getFormatedValue'
 
 type Props = LeadsTypes & {
   csvText: string
@@ -17,7 +18,6 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
     header: true,
     skipEmptyLines: true
   })
-
   const platformsRows = records.data.map(row => {
     const formattedRow: RowData = {
       user_id: userId,
@@ -25,7 +25,13 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
       project_id: projectId
     }
 
-    return { ...formattedRow, ...row }
+    for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
+      const isFormattedDate = Boolean(['creation_date', 'subscribe_date'].includes(header.toLowerCase()))
+
+      formattedRow[header] = getFormatedValue({ isFormattedDate, value })
+    }
+
+    return formattedRow
   })
 
   console.log(platformsRows[0])
@@ -33,7 +39,7 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
-    await axios.post(`${SUPABASE_URL}/functions/v1/PostLeadList`, csvChunk, {
+    await axios.post(`${SUPABASE_URL}/functions/v1/postLeadList`, csvChunk, {
       headers: {
         'Content-Type': 'application/json',
         'Accept-Encoding': 'gzip, deflate',
@@ -43,11 +49,13 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
   }
 
   // TODO: mover url para env
+  /* 
   await axios.post(
     'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
     { fileUrl: dataUrl },
     {
       headers: { 'Content-Type': 'application/json' }
     }
-  )
+  ) 
+  */
 }
