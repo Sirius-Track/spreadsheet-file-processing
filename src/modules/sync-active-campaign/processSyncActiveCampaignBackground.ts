@@ -23,6 +23,8 @@ export const processSyncActiveCampaignBackground = async ({
       batchSize: BATCH_SIZE
     })
 
+    console.log(contactValues[0])
+
     await postLeadList<Array<ContactFieldValue>>({ supabaseURL: SUPABASE_URL, data: contactValues })
 
     // TODO: Mover a URL para o ambiente
