@@ -1,3 +1,34 @@
+interface Contact {
+  id: string
+}
+
+export interface ContactFieldValue {
+  contact: string
+  field: string
+  value: string
+  cdate: string
+  udate: string
+  created_by: string
+  updated_by: string
+  links: {
+    owner: string
+    field: string
+  }
+  id: string
+  owner: string
+}
+
+export interface ActiveCampaignContactValues {
+  fieldValues: ContactFieldValue[]
+}
+
+export interface ActiveCampaignResponse {
+  contacts: Contact[]
+  meta: {
+    total: number
+  }
+}
+
 export type SpreadSheet = {
   name: string
   surname: string

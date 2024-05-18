@@ -1,25 +1,8 @@
 import axios from 'axios'
 
-import { SpreadSheet } from './types'
-interface ActiveCampaignContactValues {
-  fieldValues: [
-    {
-      contact: string
-      field: string
-      value: string
-      cdate: string
-      udate: string
-      created_by: string
-      updated_by: string
-      links: {
-        owner: string
-        field: string
-      }
-      id: string
-      owner: string
-    }
-  ]
-}
+import { fetchContacts } from './shared/fetchContacts'
+
+import { ContactFieldValue } from './types'
 
 export const processSyncActiveCampaignBackground = async ({
   userId,
@@ -29,42 +12,44 @@ export const processSyncActiveCampaignBackground = async ({
   listId,
   urlActive,
   ...rows
-}: SpreadSheet) => {
+}: any) => {
   const BATCH_SIZE = 100
-  const SUPABASE_URL = process.env.SUPABASE_URL
-  const API_KEY = process.env.API_KEY
+  const SUPABASE_URL = process.env.SUPABASE_URL || ''
+  const API_KEY = process.env.API_KEY || ''
 
-  /* const sheetRows = records.data.map(row => ({
-    ...row,
-    user_id: userId,
-    launch_id: launchId,
-    project_id: projectId
-  })) */
+  try {
+    const activeCampaignURL = 'https://sua_url_active_campaign'
+    const activeCampaignToken = 'seu_token_da_api'
+    const acListID = 'sua_id_da_lista'
 
-  const { data } = await axios.get<ActiveCampaignContactValues>(`${urlActive}/api/3/contacts/${listId}/fieldValues`, {
-    headers: {
-      'Api-Token': tokenActive
-    }
-  })
+    const contactValues = await fetchContacts(activeCampaignURL, activeCampaignToken, acListID, BATCH_SIZE)
+    await postLeadList(contactValues, API_KEY, SUPABASE_URL)
 
-  for (let count = 0; count < sheetRows.length; count += BATCH_SIZE) {
-    const csvChunk = sheetRows.slice(count, count + BATCH_SIZE)
+    // TODO: Mover a URL para o ambiente
+    /* await axios.post(
+      'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
+      { fileUrl: urlActive },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    ); */
+  } catch (error) {
+    console.error('Erro durante o processo:', error)
+    throw error
+  }
+}
 
-    await axios.post(`${SUPABASE_URL}/functions/v1/postLeadList`, csvChunk, {
+async function postLeadList(leadList: ContactFieldValue[], apiKey: string, supabaseURL: string) {
+  try {
+    await axios.post(`${supabaseURL}/functions/v1/postLeadList`, leadList, {
       headers: {
         'Content-Type': 'application/json',
         'Accept-Encoding': 'gzip, deflate',
-        Authorization: `Bearer ${API_KEY}`
+        Authorization: `Bearer ${apiKey}`
       }
     })
+  } catch (error) {
+    console.error('Erro ao enviar lista de leads:', error)
+    throw error
   }
-
-  // TODO: mover url para env
-  await axios.post(
-    'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
-    { fileUrl: urlActive },
-    {
-      headers: { 'Content-Type': 'application/json' }
-    }
-  )
 }
