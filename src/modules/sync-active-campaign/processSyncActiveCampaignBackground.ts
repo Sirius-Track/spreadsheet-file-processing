@@ -14,8 +14,8 @@ export const processSyncActiveCampaignBackground = async ({
   ...rows
 }: any) => {
   const BATCH_SIZE = 100
-  const SUPABASE_URL = process.env.SUPABASE_URL || ''
-  const API_KEY = process.env.API_KEY || ''
+  const SUPABASE_URL = process.env.SUPABASE_URL as string
+  const API_KEY = process.env.API_KEY as string
 
   try {
     const contactValues = await fetchContacts({
