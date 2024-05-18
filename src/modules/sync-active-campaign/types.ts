@@ -31,8 +31,6 @@ export interface ActiveCampaignResponse {
 
 export type SpreadSheet = {
   phone?: string // se não vier no input pegar do active campaign
-  creation_date: string
-  subscribe_date: string
   conversion_page_url: string
   fingerprint: string
   utm_id: string

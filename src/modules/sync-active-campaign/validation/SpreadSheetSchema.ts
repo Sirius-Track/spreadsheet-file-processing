@@ -2,8 +2,6 @@ import * as z from 'zod'
 
 export const SpreadSheetSchema = z.object({
   phone: z.string().optional(),
-  creation_date: z.string(),
-  subscribe_date: z.string(),
   conversion_page_url: z.string(),
   fingerprint: z.string(),
   utm_id: z.string(),
