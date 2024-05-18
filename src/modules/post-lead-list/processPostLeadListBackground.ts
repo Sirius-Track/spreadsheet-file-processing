@@ -1,9 +1,10 @@
 import axios from 'axios'
 import papa from 'papaparse'
 
-import { LeadsTypes } from './validation/SpreadSheetSchema'
-import { RowData } from './types'
-import { getFormatedValue } from '../../shared/getFormatedValue'
+import { getFormatedValue, postLeadList } from '@/shared'
+
+import type { LeadsTypes } from './validation/SpreadSheetSchema'
+import type { RowData } from './types'
 
 type Props = LeadsTypes & {
   csvText: string
@@ -19,8 +20,7 @@ export const processPostLeadListBackground = async ({
   closeDate
 }: Props) => {
   const BATCH_SIZE = 500
-  const SUPABASE_URL = process.env.SUPABASE_URL
-  const API_KEY = process.env.API_KEY
+  const SUPABASE_URL = process.env.SUPABASE_URL as string
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
@@ -49,13 +49,7 @@ export const processPostLeadListBackground = async ({
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
-    await axios.post(`${SUPABASE_URL}/functions/v1/postLeadList`, csvChunk, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept-Encoding': 'gzip, deflate',
-        Authorization: `Bearer ${API_KEY}`
-      }
-    })
+    await postLeadList<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: csvChunk })
   }
 
   // TODO: mover url para env

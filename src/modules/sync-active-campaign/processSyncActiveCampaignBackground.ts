@@ -1,7 +1,7 @@
 import { fetchContacts } from './shared/fetchContacts'
-import { postLeadList } from './shared/postLeadList'
+import { postLeadList } from '@/shared/postLeadList'
 
-import { SpreadSheet } from './types'
+import { ContactFieldValue, SpreadSheet } from './types'
 
 export const processSyncActiveCampaignBackground = async ({
   userId,
@@ -14,7 +14,6 @@ export const processSyncActiveCampaignBackground = async ({
 }: SpreadSheet) => {
   const BATCH_SIZE = 100
   const SUPABASE_URL = process.env.SUPABASE_URL as string
-  const API_KEY = process.env.API_KEY as string
 
   try {
     const contactValues = await fetchContacts({
@@ -24,7 +23,7 @@ export const processSyncActiveCampaignBackground = async ({
       batchSize: BATCH_SIZE
     })
 
-    await postLeadList(contactValues, API_KEY, SUPABASE_URL)
+    await postLeadList<Array<ContactFieldValue>>({ supabaseURL: SUPABASE_URL, data: contactValues })
 
     // TODO: Mover a URL para o ambiente
     /* await axios.post(

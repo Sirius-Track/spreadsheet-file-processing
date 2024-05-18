@@ -12,7 +12,6 @@ type Props = SpreadSheet & {
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
-  const API_KEY = process.env.API_KEY
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
@@ -36,8 +35,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
         'Content-Type': 'application/json',
-        'Accept-Encoding': 'gzip, deflate',
-        Authorization: `Bearer ${API_KEY}`
+        'Accept-Encoding': 'gzip, deflate'
       }
     })
   }
