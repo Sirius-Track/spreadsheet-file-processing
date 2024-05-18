@@ -7,8 +7,6 @@ import { getFormatedValue } from '../../shared/getFormatedValue'
 
 type Props = LeadsTypes & {
   csvText: string
-  openDate: string
-  closeDate: string
 }
 
 export const processPostLeadListBackground = async ({
