@@ -27,7 +27,6 @@ const getContactValues = async ({ contactIds, activeCampaignURL, activeCampaignT
 
       contacts.push(...data.fieldValues)
 
-      // Aguarde 5 segundos antes de fazer a próxima requisição
       await new Promise(resolve => setTimeout(resolve, 5000))
     }
   } catch (error) {
