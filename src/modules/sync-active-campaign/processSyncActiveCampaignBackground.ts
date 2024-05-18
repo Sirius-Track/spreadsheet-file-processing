@@ -18,11 +18,13 @@ export const processSyncActiveCampaignBackground = async ({
   const API_KEY = process.env.API_KEY || ''
 
   try {
-    const activeCampaignURL = 'https://sua_url_active_campaign'
-    const activeCampaignToken = 'seu_token_da_api'
-    const acListID = 'sua_id_da_lista'
+    const contactValues = await fetchContacts({
+      activeCampaignURL: urlActive,
+      activeCampaignToken: tokenActive,
+      acListID: listId,
+      batchSize: BATCH_SIZE
+    })
 
-    const contactValues = await fetchContacts(activeCampaignURL, activeCampaignToken, acListID, BATCH_SIZE)
     await postLeadList(contactValues, API_KEY, SUPABASE_URL)
 
     // TODO: Mover a URL para o ambiente

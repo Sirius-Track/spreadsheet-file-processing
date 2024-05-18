@@ -2,11 +2,13 @@ import axios from 'axios'
 
 import { ActiveCampaignContactValues, ActiveCampaignResponse, ContactFieldValue } from '../types'
 
-async function getContactValues(
-  contactIds: string[],
-  activeCampaignURL: string,
+type GetContactValuesProps = {
+  contactIds: string[]
+  activeCampaignURL: string
   activeCampaignToken: string
-): Promise<ContactFieldValue[]> {
+}
+
+const getContactValues = async ({ contactIds, activeCampaignURL, activeCampaignToken }: GetContactValuesProps) => {
   const contacts: ContactFieldValue[] = []
   try {
     for (const id of contactIds) {
@@ -32,12 +34,19 @@ async function getContactValues(
   return contacts
 }
 
-export const fetchContacts = async (
-  activeCampaignURL: string,
-  activeCampaignToken: string,
-  acListID: string,
+type FetchContactsProps = {
+  activeCampaignURL: string
+  activeCampaignToken: string
+  acListID: string
   batchSize: number
-): Promise<ContactFieldValue[]> => {
+}
+
+export const fetchContacts = async ({
+  activeCampaignURL,
+  activeCampaignToken,
+  acListID,
+  batchSize
+}: FetchContactsProps) => {
   const contacts: ContactFieldValue[] = []
   try {
     const { data, status } = await axios.get<ActiveCampaignResponse>(`${activeCampaignURL}/api/3/contacts`, {
@@ -57,7 +66,7 @@ export const fetchContacts = async (
     let offset = 0
     while (offset < data.meta.total) {
       const contactIds = data.contacts.map(contact => contact.id)
-      const contactValues = await getContactValues(contactIds, activeCampaignURL, activeCampaignToken)
+      const contactValues = await getContactValues({ contactIds, activeCampaignURL, activeCampaignToken })
       contacts.push(...contactValues.slice(offset, offset + batchSize))
       offset += batchSize
     }
