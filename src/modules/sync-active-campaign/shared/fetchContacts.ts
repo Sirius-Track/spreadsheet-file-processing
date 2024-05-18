@@ -48,6 +48,7 @@ export const fetchContacts = async ({
   batchSize
 }: FetchContactsProps) => {
   const contacts: ContactFieldValue[] = []
+
   try {
     const { data, status } = await axios.get<ActiveCampaignResponse>(`${activeCampaignURL}/api/3/contacts`, {
       headers: {

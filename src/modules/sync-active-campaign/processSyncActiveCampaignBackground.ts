@@ -1,8 +1,7 @@
-import axios from 'axios'
-
 import { fetchContacts } from './shared/fetchContacts'
+import { postLeadList } from './shared/postLeadList'
 
-import { ContactFieldValue } from './types'
+import { SpreadSheet } from './types'
 
 export const processSyncActiveCampaignBackground = async ({
   userId,
@@ -12,7 +11,7 @@ export const processSyncActiveCampaignBackground = async ({
   listId,
   urlActive,
   ...rows
-}: any) => {
+}: SpreadSheet) => {
   const BATCH_SIZE = 100
   const SUPABASE_URL = process.env.SUPABASE_URL as string
   const API_KEY = process.env.API_KEY as string
@@ -37,21 +36,6 @@ export const processSyncActiveCampaignBackground = async ({
     ); */
   } catch (error) {
     console.error('Erro durante o processo:', error)
-    throw error
-  }
-}
-
-async function postLeadList(leadList: ContactFieldValue[], apiKey: string, supabaseURL: string) {
-  try {
-    await axios.post(`${supabaseURL}/functions/v1/postLeadList`, leadList, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept-Encoding': 'gzip, deflate',
-        Authorization: `Bearer ${apiKey}`
-      }
-    })
-  } catch (error) {
-    console.error('Erro ao enviar lista de leads:', error)
     throw error
   }
 }
