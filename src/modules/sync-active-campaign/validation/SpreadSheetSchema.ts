@@ -1,12 +1,7 @@
 import * as z from 'zod'
 
-import type { SpreadSheet } from '../types'
-
-export const SpreadSheetSchema = z.object<SchemaRequiredZod<SpreadSheet>>({
-  name: z.string(),
-  surname: z.string(),
-  email: z.string(),
-  phone: z.string(),
+export const SpreadSheetSchema = z.object({
+  phone: z.string().optional(),
   creation_date: z.string(),
   subscribe_date: z.string(),
   conversion_page_url: z.string(),

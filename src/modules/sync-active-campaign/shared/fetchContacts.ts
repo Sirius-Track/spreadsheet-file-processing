@@ -26,6 +26,9 @@ const getContactValues = async ({ contactIds, activeCampaignURL, activeCampaignT
       }
 
       contacts.push(...data.fieldValues)
+
+      // Aguarde 5 segundos antes de fazer a próxima requisição
+      await new Promise(resolve => setTimeout(resolve, 5000))
     }
   } catch (error) {
     console.error('Erro ao obter contatos da lista:', error)
@@ -68,8 +71,11 @@ export const fetchContacts = async ({
     while (offset < data.meta.total) {
       const contactIds = data.contacts.map(contact => contact.id)
       const contactValues = await getContactValues({ contactIds, activeCampaignURL, activeCampaignToken })
+
       contacts.push(...contactValues.slice(offset, offset + batchSize))
       offset += batchSize
+
+      await new Promise(resolve => setTimeout(resolve, 5000))
     }
   } catch (error) {
     console.error('Erro durante o processo de busca de contatos:', error)

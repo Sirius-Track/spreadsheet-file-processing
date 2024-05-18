@@ -30,10 +30,7 @@ export interface ActiveCampaignResponse {
 }
 
 export type SpreadSheet = {
-  name: string
-  surname: string
-  email: string
-  phone: string
+  phone?: string // se não vier no input pegar do active campaign
   creation_date: string
   subscribe_date: string
   conversion_page_url: string
@@ -56,4 +53,10 @@ export type SpreadSheet = {
   projectId: string
   urlActive: string
   tokenActive: string
+}
+
+type ReturnActiveCampaign = {
+  name: string
+  surname: string
+  email: string
 }
