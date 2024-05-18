@@ -9,7 +9,15 @@ type Props = LeadsTypes & {
   csvText: string
 }
 
-export const processPostLeadListBackground = async ({ dataUrl, userId, projectId, launchId, csvText }: Props) => {
+export const processPostLeadListBackground = async ({
+  dataUrl,
+  userId,
+  projectId,
+  launchId,
+  csvText,
+  openDate,
+  closeDate
+}: Props) => {
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
@@ -22,7 +30,9 @@ export const processPostLeadListBackground = async ({ dataUrl, userId, projectId
     const formattedRow: RowData = {
       user_id: userId,
       launch_id: launchId,
-      project_id: projectId
+      project_id: projectId,
+      openDate,
+      closeDate
     }
 
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
