@@ -1,37 +1,51 @@
 import axios from 'axios'
-import papa from 'papaparse'
 
 import { SpreadSheet } from './types'
-
-type Props = SpreadSheet & {
-  csvText: string
+interface ActiveCampaignContactValues {
+  fieldValues: [
+    {
+      contact: string
+      field: string
+      value: string
+      cdate: string
+      udate: string
+      created_by: string
+      updated_by: string
+      links: {
+        owner: string
+        field: string
+      }
+      id: string
+      owner: string
+    }
+  ]
 }
 
 export const processSyncActiveCampaignBackground = async ({
   userId,
   projectId,
   launchId,
-  csvText,
+  tokenActive,
+  listId,
   urlActive,
-  ...data
-}: Props) => {
+  ...rows
+}: SpreadSheet) => {
   const BATCH_SIZE = 100
   const SUPABASE_URL = process.env.SUPABASE_URL
   const API_KEY = process.env.API_KEY
 
-  const records = papa.parse<SpreadSheet>(csvText, {
-    header: true,
-    skipEmptyLines: true
-  })
-
-  const sheetRows = records.data.map(row => ({
+  /* const sheetRows = records.data.map(row => ({
     ...row,
     user_id: userId,
     launch_id: launchId,
     project_id: projectId
-  }))
+  })) */
 
-  console.log(sheetRows[0])
+  const { data } = await axios.get<ActiveCampaignContactValues>(`${urlActive}/api/3/contacts/${listId}/fieldValues`, {
+    headers: {
+      'Api-Token': tokenActive
+    }
+  })
 
   for (let count = 0; count < sheetRows.length; count += BATCH_SIZE) {
     const csvChunk = sheetRows.slice(count, count + BATCH_SIZE)
