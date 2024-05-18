@@ -2,10 +2,6 @@ import * as z from 'zod'
 
 import type { SpreadSheet } from '../types'
 
-type SpreadSheetZod = {
-  [k in keyof SpreadSheet]: z.ZodType<SpreadSheet[k]>
-}
-
 export const platforms = [
   'hotmart',
   'kiwify',
@@ -20,7 +16,7 @@ export const platforms = [
   'ticto'
 ] as const
 
-export const SpreadSheetSchema = z.object<SpreadSheetZod>({
+export const SpreadSheetSchema = z.object<SchemaRequiredZod<SpreadSheet>>({
   dataUrl: z.string(),
   platform: z.custom(value => {
     if (!platforms.includes(value)) {

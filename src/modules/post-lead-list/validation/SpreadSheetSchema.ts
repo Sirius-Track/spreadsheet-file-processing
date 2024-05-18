@@ -4,11 +4,7 @@ import type { SpreadSheet } from '../types'
 
 export type LeadsTypes = Omit<SpreadSheet, 'platform'> & { launchId: string }
 
-type SpreadSheetZod = {
-  [k in keyof LeadsTypes]: z.ZodType<LeadsTypes[k]>
-}
-
-export const SpreadSheetSchema = z.object<SpreadSheetZod>({
+export const SpreadSheetSchema = z.object<SchemaRequiredZod<LeadsTypes>>({
   dataUrl: z.string(),
   launchId: z.string(),
   userId: z.string(),
