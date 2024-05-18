@@ -7,5 +7,7 @@ import { SpreadSheet } from './types'
 export const spreadSheed = async (data: SpreadSheet) => {
   const spreadSheet = SpreadSheetSchema.parse(data)
 
-  processSyncActiveCampaignBackground(spreadSheet)
+  const dataActiveCampaign = await processSyncActiveCampaignBackground(spreadSheet)
+
+  return dataActiveCampaign
 }

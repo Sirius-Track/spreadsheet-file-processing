@@ -38,4 +38,6 @@ export const processSyncActiveCampaignBackground = async ({
     console.error('Erro durante o processo:', error)
     throw error
   }
+
+  return rows
 }
