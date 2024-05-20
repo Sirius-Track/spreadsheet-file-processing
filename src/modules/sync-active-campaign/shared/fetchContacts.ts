@@ -62,8 +62,6 @@ export const fetchContacts = async ({
       }
     })
 
-    console.log(data)
-
     if (status !== 200) {
       throw new Error('Erro ao obter contatos da lista')
     }
