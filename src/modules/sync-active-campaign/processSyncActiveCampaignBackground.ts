@@ -15,16 +15,6 @@ export const processSyncActiveCampaignBackground = async ({
   const BATCH_SIZE = 100
   const SUPABASE_URL = process.env.SUPABASE_URL as string
 
-  console.log({
-    userId,
-    projectId,
-    launchId,
-    tokenActive,
-    listId,
-    urlActive,
-    ...rows
-  })
-
   try {
     const contactValues = await fetchContacts({
       activeCampaignURL: urlActive,

@@ -10,6 +10,8 @@ type GetContactValuesProps = {
 
 const getContactValues = async ({ contactIds, activeCampaignURL, activeCampaignToken }: GetContactValuesProps) => {
   const contacts: ContactFieldValue[] = []
+
+  console.log(contactIds)
   try {
     for (const id of contactIds) {
       const { data, status } = await axios.get<ActiveCampaignContactValues>(
@@ -20,6 +22,8 @@ const getContactValues = async ({ contactIds, activeCampaignURL, activeCampaignT
           }
         }
       )
+
+      console.log(id)
 
       if (status !== 200) {
         throw new Error('Erro ao obter contatos da lista')
@@ -66,10 +70,16 @@ export const fetchContacts = async ({
       throw new Error('Erro ao obter contatos da lista')
     }
 
+    console.log(String(status))
+
     let offset = 0
+
+    console.log(offset < data.meta.total)
     while (offset < data.meta.total) {
       const contactIds = data.contacts.map(contact => contact.id)
       const contactValues = await getContactValues({ contactIds, activeCampaignURL, activeCampaignToken })
+
+      console.log(contactValues[0])
 
       contacts.push(...contactValues.slice(offset, offset + batchSize))
       offset += batchSize
