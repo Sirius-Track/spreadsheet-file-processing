@@ -45,7 +45,7 @@ const createOrGetSurveyId = async ({
   surveyName: string
   type: string
 }) => {
-  const response = await fetch('https://sssv.com/postSurvey', {
+  const response = await fetch('https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postSurvey', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId, projectId, surveyName, type })
