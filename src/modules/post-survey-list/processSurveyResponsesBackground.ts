@@ -21,7 +21,7 @@ export const processSurveyResponsesBackground = async ({
   nameMask,
   type
 }: Props) => {
-  const BATCH_SIZE = 50
+  const BATCH_SIZE = 5
   const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses' as string
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
