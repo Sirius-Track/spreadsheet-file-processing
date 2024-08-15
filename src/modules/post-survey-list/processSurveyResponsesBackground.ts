@@ -20,7 +20,7 @@ export const processSurveyResponsesBackground = async ({
   nameMask,
   type
 }: Props) => {
-  const BATCH_SIZE = 500
+  const BATCH_SIZE = 50
   const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses' as string
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
@@ -64,7 +64,8 @@ export const processSurveyResponsesBackground = async ({
 async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: T }): Promise<void> {
   try {
     console.log(`Enviando ${data.length} registros para ${supabaseURL}...`)
-
+    console.log('Enviando:')
+    console.log(data)
     const response = await axios.post(supabaseURL, data, {
       headers: {
         'Content-Type': 'application/json'
