@@ -58,18 +58,24 @@ export const processSurveyResponsesBackground = async ({
 
   console.log('Data prepared for submission:', surveyResponsesRows)
 
-  for (let count = 0; count < surveyResponsesRows.length; count += BATCH_SIZE) {
-    const csvChunk = surveyResponsesRows.slice(count, count + BATCH_SIZE)
-    console.log(`Sending chunk ${count / BATCH_SIZE + 1}:`, csvChunk)
-    await postSurveyResponses<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: csvChunk })
+  // Processamento dos chunks
+  let currentBatch = []
+  for (const [index, response] of surveyResponsesRows.entries()) {
+    currentBatch.push(response)
+
+    // Verifica se o batch está completo ou se é o último item
+    if (currentBatch.length === BATCH_SIZE || index === surveyResponsesRows.length - 1) {
+      console.log(`Sending chunk ${index / BATCH_SIZE + 1}:`, currentBatch)
+      await postSurveyResponses<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: currentBatch })
+      currentBatch = [] // Reseta o batch
+    }
   }
 }
 
 async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: T }): Promise<void> {
   try {
     console.log(`Enviando ${data.length} registros para ${supabaseURL}...`)
-    console.log('Enviando:')
-    console.log(data)
+    console.log('Enviando:', data)
 
     const response = await axios.post(supabaseURL, data, {
       headers: {
