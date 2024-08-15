@@ -33,8 +33,7 @@ export const processSurveyResponsesBackground = async ({
   console.log('Mapping and formatting survey response rows...')
   const surveyResponsesRows = records.data
     .map(row => {
-      const formattedRow: Omit<RowData, 'question' | 'answer' | 'is_multiplechoice'> = {
-        id: randomUUID(),
+      const formattedRow: Omit<RowData, 'question' | 'answer' | 'is_multiplechoice' | 'id'> = {
         survey_id: surveyId,
         user_id: userId,
         project_id: projectId,
@@ -49,6 +48,7 @@ export const processSurveyResponsesBackground = async ({
         .filter(([header]) => ![dateMask, emailMask, phoneMask, nameMask].includes(header))
         .map(([question, answer]) => ({
           ...formattedRow,
+          id: randomUUID(),
           question,
           answer: answer?.trim() || '', // Trim whitespace and handle undefined
           is_multiplechoice: false
