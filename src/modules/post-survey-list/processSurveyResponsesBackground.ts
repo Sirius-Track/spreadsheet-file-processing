@@ -1,9 +1,9 @@
 import axios from 'axios'
 import papa from 'papaparse'
 import { getFormatedValue } from '@/shared'
+import { randomUUID } from 'crypto'
 import type { SurveyTypes } from './validation/surveySheetSchema'
 import type { RowData } from './types'
-import { randomUUID } from 'node:crypto'
 
 type Props = SurveyTypes & {
   surveyId: string
@@ -22,7 +22,7 @@ export const processSurveyResponsesBackground = async ({
   type
 }: Props) => {
   const BATCH_SIZE = 5
-  const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses' as string
+  const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses'
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
@@ -32,14 +32,14 @@ export const processSurveyResponsesBackground = async ({
   const surveyResponsesRows = records.data
     .map(row => {
       const formattedRow: Omit<RowData, 'question' | 'answer' | 'is_multiplechoice'> = {
-        id: randomUUID(),
+        id: randomUUID(), // Gera um UUID único para cada registro
         survey_id: surveyId,
         user_id: userId,
         project_id: projectId,
         response_date: getFormatedValue({ isFormattedDate: true, value: row[dateMask] }),
-        email: row[emailMask],
-        phone: row[phoneMask],
-        name: row[nameMask],
+        email: row[emailMask]?.trim(), // Remove espaços extras
+        phone: row[phoneMask] || null, // Substitui undefined por null
+        name: row[nameMask] || null, // Substitui undefined por null
         type
       }
 
@@ -59,15 +59,18 @@ export const processSurveyResponsesBackground = async ({
   for (let count = 0; count < surveyResponsesRows.length; count += BATCH_SIZE) {
     const csvChunk = surveyResponsesRows.slice(count, count + BATCH_SIZE)
 
-    await postSurveyResponses<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: csvChunk })
+    await postSurveyResponses<Array<RowData>>({
+      supabaseURL: SUPABASE_URL,
+      data: csvChunk
+    })
   }
 }
 
 async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: T }): Promise<void> {
   try {
     console.log(`Enviando ${data.length} registros para ${supabaseURL}...`)
-    console.log('Enviando:')
-    console.log(data)
+    console.log('Enviando:', data)
+
     const response = await axios.post(supabaseURL, data, {
       headers: {
         'Content-Type': 'application/json'

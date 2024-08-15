@@ -12,8 +12,8 @@ export type Row = Pick<SurveySheet, 'type'> & {
   project_id: string
   response_date: string
   email: string
-  phone?: string
-  name?: string
+  phone?: string | null
+  name?: string | null
 }
 
 export type RowData = Row & {
