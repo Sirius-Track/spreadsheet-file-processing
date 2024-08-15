@@ -22,7 +22,7 @@ export const processSurveyResponsesBackground = async ({
   type
 }: Props) => {
   const BATCH_SIZE = 5
-  const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses'
+  const SUPABASE_URL = 'https://webhook.site/57bd534a-8577-4ede-9557-115d4828a029'
 
   console.log('Parsing CSV data...')
   const records = papa.parse<{ [key: string]: string }>(csvText, {
