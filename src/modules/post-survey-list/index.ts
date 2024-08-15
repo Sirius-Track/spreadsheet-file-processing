@@ -2,7 +2,9 @@ import { SurveyTypes, SurveySheetSchema } from './validation/surveySheetSchema'
 import { processSurveyResponsesBackground } from './processSurveyResponsesBackground'
 import papa from 'papaparse'
 
-export const surveySheet = async (data: SurveyTypes) => {
+type HeadersCsv = string[] | undefined
+
+export const surveySheet = async (data: SurveyTypes, res: any) => {
   const { dataUrl, userId, projectId, surveyName, type, dateMask, emailMask, phoneMask, nameMask } =
     SurveySheetSchema.parse(data)
 
@@ -26,28 +28,24 @@ export const surveySheet = async (data: SurveyTypes) => {
     throw new Error('CSV inválido.')
   }
 
-  const headers = records.meta.fields
-  if (!headers.includes(emailMask) || !headers.includes(dateMask)) {
+  const headers: HeadersCsv = records.meta.fields
+  if (!headers?.includes(emailMask) || !headers?.includes(dateMask)) {
     throw new Error(`O CSV deve conter as colunas "${emailMask}" e "${dateMask}".`)
   }
 
   // Criação ou recuperação do ID da pesquisa
-  const surveyId = await createOrGetSurveyId({ userId, projectId, surveyName, type })
-
-  // Processamento em segundo plano
-  await processSurveyResponsesBackground({
-    surveyName,
-    surveyId,
-    dataUrl,
+  startBackgroundProcess(
     userId,
     projectId,
+    surveyName,
+    type,
+    dataUrl,
     csvText,
     dateMask,
     emailMask,
     phoneMask,
-    nameMask,
-    type
-  })
+    nameMask
+  )
 }
 
 const createOrGetSurveyId = async ({
@@ -74,4 +72,34 @@ const createOrGetSurveyId = async ({
   }
 
   return data.surveyId
+}
+
+async function startBackgroundProcess(
+  userId: string,
+  projectId: string,
+  surveyName: string,
+  type: string,
+  dataUrl: string,
+  csvText: string,
+  dateMask: string,
+  emailMask: string,
+  phoneMask: string,
+  nameMask: string
+) {
+  const surveyId = await createOrGetSurveyId({ userId, projectId, surveyName, type })
+
+  // Processamento em segundo plano
+  await processSurveyResponsesBackground({
+    surveyName,
+    surveyId,
+    dataUrl,
+    userId,
+    projectId,
+    csvText,
+    dateMask,
+    emailMask,
+    phoneMask,
+    nameMask,
+    type
+  })
 }
