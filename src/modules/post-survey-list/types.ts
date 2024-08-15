@@ -6,6 +6,7 @@ export type SurveySheet = {
 }
 
 export type Row = Pick<SurveySheet, 'type'> & {
+  id: string
   survey_id: string
   user_id: string
   project_id: string

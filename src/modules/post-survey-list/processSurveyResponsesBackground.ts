@@ -31,6 +31,7 @@ export const processSurveyResponsesBackground = async ({
   const surveyResponsesRows = records.data
     .map(row => {
       const formattedRow: Omit<RowData, 'question' | 'answer' | 'is_multiplechoice'> = {
+        id: crypto.randomUUID(),
         survey_id: surveyId,
         user_id: userId,
         project_id: projectId,
