@@ -3,6 +3,7 @@ import papa from 'papaparse'
 import { getFormatedValue } from '@/shared'
 import type { SurveyTypes } from './validation/surveySheetSchema'
 import type { RowData } from './types'
+import { randomUUID } from 'node:crypto'
 
 type Props = SurveyTypes & {
   surveyId: string
@@ -31,7 +32,7 @@ export const processSurveyResponsesBackground = async ({
   const surveyResponsesRows = records.data
     .map(row => {
       const formattedRow: Omit<RowData, 'question' | 'answer' | 'is_multiplechoice'> = {
-        id: crypto.randomUUID(),
+        id: randomUUID(),
         survey_id: surveyId,
         user_id: userId,
         project_id: projectId,
