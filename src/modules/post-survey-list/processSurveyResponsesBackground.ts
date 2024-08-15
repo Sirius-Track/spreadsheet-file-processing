@@ -70,9 +70,10 @@ export const processSurveyResponsesBackground = async ({
       currentBatch = [] // Reseta o batch
     }
   }
+  await setMultipleChoiceQuestions(surveyId)
 }
 
-async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: T }): Promise<void> {
+async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: any }): Promise<void> {
   try {
     console.log(`Enviando ${data.length} registros para ${supabaseURL}...`)
     console.log('Enviando:', data)
@@ -92,5 +93,34 @@ async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: stri
   } catch (error) {
     console.error('Erro ao enviar dados para o Supabase:', error.message)
     throw new Error(`Falha ao enviar dados para ${supabaseURL}: ${error.message}`)
+  }
+}
+
+// Função para enviar survey_id para identificar perguntas de múltipla escolha
+async function setMultipleChoiceQuestions(surveyId: string): Promise<void> {
+  const urlMultipleChoices = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/setMultipleChoiceQuestions'
+
+  const data = {
+    survey_id: surveyId
+  }
+
+  try {
+    console.log(`Enviando survey_id ${surveyId} para identificação de múltipla escolha...`)
+
+    const response = await axios.post(urlMultipleChoices, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip, deflate'
+      }
+    })
+
+    if (response.status !== 200) {
+      throw new Error(`Erro ao enviar survey_id: ${response.statusText}`)
+    }
+
+    console.log(`survey_id ${surveyId} enviado com sucesso para ${urlMultipleChoices}.`)
+  } catch (error) {
+    console.error('Erro ao enviar survey_id para o Supabase:', error.message)
+    throw new Error(`Falha ao enviar survey_id para ${urlMultipleChoices}: ${error.message}`)
   }
 }
