@@ -10,32 +10,6 @@ type Props = SurveyTypes & {
   csvText: string
 }
 
-export const validateAndRespond = async ({
-  csvText,
-  emailMask,
-  dateMask
-}: {
-  csvText: string
-  emailMask: string
-  dateMask: string
-}) => {
-  // Valida o CSV e verifica se as colunas necessárias estão presentes
-  const records = papa.parse(csvText, { header: true, skipEmptyLines: true })
-
-  if (records.errors.length > 0) {
-    throw new Error('CSV inválido.')
-  }
-
-  const headers = records.meta.fields
-  if (!headers.includes(emailMask) || !headers.includes(dateMask)) {
-    throw new Error(`O CSV deve conter as colunas "${emailMask}" e "${dateMask}".`)
-  }
-
-  // Se o CSV for válido, retorna a resposta imediatamente
-  return { message: 'CSV recebido é válido e será processado.' }
-}
-
-// Função original que será chamada em segundo plano
 export const processSurveyResponsesBackground = async ({
   surveyId,
   csvText,

@@ -1,10 +1,12 @@
 import { SurveyTypes, SurveySheetSchema } from './validation/surveySheetSchema'
 import { processSurveyResponsesBackground } from './processSurveyResponsesBackground'
+import papa from 'papaparse'
 
 export const surveySheet = async (data: SurveyTypes) => {
   const { dataUrl, userId, projectId, surveyName, type, dateMask, emailMask, phoneMask, nameMask } =
     SurveySheetSchema.parse(data)
 
+  // Fetch do CSV
   const fileCSV = await fetch(dataUrl)
 
   if (!fileCSV.ok) {
@@ -17,8 +19,22 @@ export const surveySheet = async (data: SurveyTypes) => {
     throw new Error('File is empty')
   }
 
+  // Validação do CSV
+  const records = papa.parse(csvText, { header: true, skipEmptyLines: true })
+
+  if (records.errors.length > 0) {
+    throw new Error('CSV inválido.')
+  }
+
+  const headers = records.meta.fields
+  if (!headers.includes(emailMask) || !headers.includes(dateMask)) {
+    throw new Error(`O CSV deve conter as colunas "${emailMask}" e "${dateMask}".`)
+  }
+
+  // Criação ou recuperação do ID da pesquisa
   const surveyId = await createOrGetSurveyId({ userId, projectId, surveyName, type })
 
+  // Processamento em segundo plano
   await processSurveyResponsesBackground({
     surveyName,
     surveyId,
