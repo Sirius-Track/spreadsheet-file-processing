@@ -59,30 +59,25 @@ export const processSurveyResponsesBackground = async ({
 
     await postSurveyResponses<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: csvChunk })
   }
-
-  // await axios.post(
-  //   'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
-  //   { fileUrl: dataUrl },
-  //   {
-  //     headers: { 'Content-Type': 'application/json' }
-  //   }
-  // )
 }
-function postSurveyResponses<T>(arg0: {
-  supabaseURL: string
-  data: {
-    question: string
-    answer: string
-    is_multiplechoice: boolean
-    survey_id: string
-    user_id: string
-    project_id: string
-    response_date: string
-    email: string
-    phone?: string
-    name?: string
-    type: string
-  }[]
-}) {
-  throw new Error('Function not implemented.')
+
+async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: T }): Promise<void> {
+  try {
+    console.log(`Enviando ${data.length} registros para ${supabaseURL}...`)
+
+    const response = await axios.post(supabaseURL, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.status !== 200) {
+      throw new Error(`Erro ao enviar dados: ${response.statusText}`)
+    }
+
+    console.log(`Dados enviados com sucesso para ${supabaseURL}.`)
+  } catch (error) {
+    console.error('Erro ao enviar dados para o Supabase:', error.message)
+    throw new Error(`Falha ao enviar dados para ${supabaseURL}: ${error.message}`)
+  }
 }
