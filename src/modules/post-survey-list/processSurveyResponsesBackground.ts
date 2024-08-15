@@ -73,7 +73,8 @@ async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: stri
 
     const response = await axios.post(supabaseURL, data, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip, deflate'
       }
     })
 
