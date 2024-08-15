@@ -1,9 +1,9 @@
 import axios from 'axios'
 import papa from 'papaparse'
 import { getFormatedValue } from '@/shared'
-import { randomUUID } from 'crypto'
 import type { SurveyTypes } from './validation/surveySheetSchema'
 import type { RowData } from './types'
+import { randomUUID } from 'node:crypto'
 
 type Props = SurveyTypes & {
   surveyId: string
@@ -24,52 +24,52 @@ export const processSurveyResponsesBackground = async ({
   const BATCH_SIZE = 5
   const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses'
 
+  console.log('Parsing CSV data...')
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
     skipEmptyLines: true
   })
 
+  console.log('Mapping and formatting survey response rows...')
   const surveyResponsesRows = records.data
     .map(row => {
       const formattedRow: Omit<RowData, 'question' | 'answer' | 'is_multiplechoice'> = {
-        id: randomUUID(), // Gera um UUID único para cada registro
+        id: randomUUID(),
         survey_id: surveyId,
         user_id: userId,
         project_id: projectId,
         response_date: getFormatedValue({ isFormattedDate: true, value: row[dateMask] }),
-        email: row[emailMask]?.trim(), // Remove espaços extras
-        phone: row[phoneMask] || null, // Substitui undefined por null
-        name: row[nameMask] || null, // Substitui undefined por null
+        email: row[emailMask]?.trim(), // Trim whitespace and handle undefined
+        phone: row[phoneMask]?.trim() || null, // Trim whitespace and handle undefined
+        name: row[nameMask]?.trim() || null, // Trim whitespace and handle undefined
         type
       }
 
-      const responses = Object.entries(row)
+      return Object.entries(row)
         .filter(([header]) => ![dateMask, emailMask, phoneMask, nameMask].includes(header))
         .map(([question, answer]) => ({
           ...formattedRow,
           question,
-          answer,
+          answer: answer?.trim() || '', // Trim whitespace and handle undefined
           is_multiplechoice: false
         }))
-
-      return responses
     })
     .flat()
 
+  console.log('Data prepared for submission:', surveyResponsesRows)
+
   for (let count = 0; count < surveyResponsesRows.length; count += BATCH_SIZE) {
     const csvChunk = surveyResponsesRows.slice(count, count + BATCH_SIZE)
-
-    await postSurveyResponses<Array<RowData>>({
-      supabaseURL: SUPABASE_URL,
-      data: csvChunk
-    })
+    console.log(`Sending chunk ${count / BATCH_SIZE + 1}:`, csvChunk)
+    await postSurveyResponses<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: csvChunk })
   }
 }
 
 async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: string; data: T }): Promise<void> {
   try {
     console.log(`Enviando ${data.length} registros para ${supabaseURL}...`)
-    console.log('Enviando:', data)
+    console.log('Enviando:')
+    console.log(data)
 
     const response = await axios.post(supabaseURL, data, {
       headers: {
