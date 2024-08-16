@@ -2,6 +2,7 @@ import { SurveyTypes, SurveySheetSchema } from './validation/surveySheetSchema'
 import { processSurveyResponsesBackground } from './processSurveyResponsesBackground'
 import papa from 'papaparse'
 import { clickhouseClient } from './configClickhouse'
+import { randomUUID } from 'node:crypto'
 
 type HeadersCsv = string[] | undefined
 
@@ -100,7 +101,7 @@ const createOrGetSurveyId = async ({
 
   // Se a pesquisa não existe, cria uma nova
   console.log('Criando nova pesquisa...')
-  const surveyId = crypto.randomUUID()
+  const surveyId = randomUUID()
   const createdAt = new Date().toISOString()
 
   await clickhouseClient.insert({
