@@ -145,7 +145,7 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
           const leadPercentage = leadAnswer.response_percentage
           const buyerPercentage = buyerAnswer.response_percentage
 
-          if (Math.abs(leadPercentage - buyerPercentage) < 10) {
+          if (Math.abs(leadPercentage - buyerPercentage) < 9) {
             analysis.convergences.push({
               question_id: leadQuestion.question_id,
               answer_text: leadAnswer.answer_text,
@@ -163,14 +163,25 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
             })
           }
 
-          // Calcule o total de respostas para a pergunta
-          const totalResponses = leadAnswer.response_count + buyerAnswer.response_count
+          // Calcule o total de respostas para leads e buyers
+          const totalLeadResponses = leadQuestion.answers.reduce(
+            (sum: number, answer: any) => sum + answer.response_count,
+            0
+          )
+          const totalBuyerResponses = buyerQuestion.answers.reduce(
+            (sum: number, answer: any) => sum + answer.response_count,
+            0
+          )
 
-          // Defina o limite como 10% do total de respostas
-          const outlierThreshold = totalResponses * 0.1
+          // Calcule a porcentagem de respostas para a resposta atual em cada grupo
+          const leadPercentageOutlier = (leadAnswer.response_count / totalLeadResponses) * 100
+          const buyerPercentageOutlier = (buyerAnswer.response_count / totalBuyerResponses) * 100
 
-          // Exemplo de detecção de outliers com limite dinâmico
-          if (Math.abs(leadAnswer.response_count - buyerAnswer.response_count) > outlierThreshold) {
+          // Defina um limite para detectar outliers (exemplo: 10% de diferença)
+          const percentageThreshold = 10 // Você pode ajustar esse valor conforme necessário
+
+          // Exemplo de detecção de outliers com base em percentuais
+          if (Math.abs(leadPercentageOutlier - buyerPercentageOutlier) > percentageThreshold) {
             analysis.outliers.push({
               question_id: leadQuestion.question_id,
               answer_text: leadAnswer.answer_text,
