@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { SpreadSheet } from '../types'
 
 export const platforms = [
+  'custom',
   'hotmart',
   'kiwify',
   'eduzz',
