@@ -1,7 +1,7 @@
 import { headerTreatment } from './headerTreatment'
 
 import type { ParseResult } from 'papaparse'
-import type { SpreadSheet } from '../types'
+import type { PlatformCustom, SpreadSheet } from '../types'
 
 import { hotmartHeader, type HotmartHeaderValues } from './headers/hotmartHeader'
 import { herosparkHeader, type HerosparkHeaderValues, herosparkMissing } from './headers/herosparkHeader'
@@ -14,8 +14,12 @@ import { hublaHeader, type HublaHeaderValues, hublaMissing } from './headers/hub
 import { guruHeader, type GuruHeaderValues, guruMissing } from './headers/guruHeader'
 import { tictHeader, type TictHeaderValues, tictMissing } from './headers/tictHeader'
 import { voompHeader, type VoompHeaderValues, voompMissing } from './headers/voompHeader'
+import { customMissing } from './headers/customHeader'
+
+import { HeadersValues } from './headers/types'
 
 type Props = {
+  custom: Partial<PlatformCustom>
   remainderHeaderValues: Omit<SpreadSheet, 'dataUrl'> & {
     records: ParseResult<{
       [key: string]: string
@@ -23,7 +27,7 @@ type Props = {
   }
 }
 
-export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
+export const formattingPlatformType = ({ remainderHeaderValues, custom }: Props) => {
   switch (remainderHeaderValues.platform) {
     case 'hotmart':
       return headerTreatment<typeof hotmartHeader, HotmartHeaderValues>({
@@ -88,6 +92,18 @@ export const formattingPlatformType = ({ remainderHeaderValues }: Props) => {
       return headerTreatment<typeof tictHeader, TictHeaderValues>({
         headerMissing: tictMissing,
         platformHeader: tictHeader,
+        ...remainderHeaderValues
+      })
+    case 'custom':
+      const customHeader = Object.keys(custom).reduce<HeadersValues<PlatformCustom>>((acc, key) => {
+        acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
+
+        return acc
+      }, {})
+
+      return headerTreatment<typeof customHeader, PlatformCustom>({
+        headerMissing: customMissing,
+        platformHeader: customHeader,
         ...remainderHeaderValues
       })
     default:

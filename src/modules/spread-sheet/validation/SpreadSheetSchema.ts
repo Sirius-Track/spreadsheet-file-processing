@@ -17,7 +17,7 @@ export const platforms = [
   'ticto'
 ] as const
 
-export const SpreadSheetSchema = z.object<SchemaRequiredZod<SpreadSheet>>({
+export const SpreadSheetSchema = z.object({
   dataUrl: z.string(),
   platform: z.custom(value => {
     if (!platforms.includes(value)) {

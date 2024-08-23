@@ -57,7 +57,7 @@ const createOrGetSurveyId = async ({
   userId: string
   projectId: string
   surveyName: string
-  type: string
+  type: 'lead' | 'buyer'
 }) => {
   const response = await fetch('https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postSurvey', {
     method: 'POST',
