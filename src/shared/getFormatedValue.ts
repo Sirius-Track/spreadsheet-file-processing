@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
 
 type Props = {
+  /**
+   * @description If the date is already formatted
+   */
   isFormattedDate: boolean
   value: string
 }
