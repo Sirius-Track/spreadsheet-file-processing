@@ -9,7 +9,7 @@ type Props = SpreadSheet & {
   csvText: string
 }
 
-export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText }: Props) => {
+export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
 
@@ -18,14 +18,9 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     skipEmptyLines: true
   })
 
-  const remainderHeaderValues = {
-    records,
-    platform,
-    userId,
-    projectId
-  }
+  const remainderHeaderValues = { records, platform, userId, projectId }
 
-  const platformsRows = formattingPlatformType({ remainderHeaderValues })
+  const platformsRows = formattingPlatformType({ remainderHeaderValues, custom })
 
   console.log(platformsRows[0])
 

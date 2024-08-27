@@ -5,7 +5,7 @@ import { processPostCSVBackground } from './processCsvInBackground'
 import type { SpreadSheet } from './types'
 
 export const spreadSheed = async (data: SpreadSheet) => {
-  const { dataUrl, userId, platform, projectId } = SpreadSheetSchema.parse(data)
+  const { dataUrl, userId, platform, projectId, ...rest } = SpreadSheetSchema.parse(data)
 
   const fileCSV = await fetch(dataUrl)
 
@@ -19,5 +19,5 @@ export const spreadSheed = async (data: SpreadSheet) => {
     throw new Error('File is empty')
   }
 
-  processPostCSVBackground({ dataUrl, userId, platform, projectId, csvText })
+  processPostCSVBackground({ dataUrl, userId, platform, projectId, csvText, ...rest })
 }
