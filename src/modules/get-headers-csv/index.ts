@@ -1,6 +1,11 @@
 import papa from 'papaparse'
 
-type HeadersCsv = string[] | undefined
+type HeadersCsv =
+  | {
+      headers: string[]
+      sample: string[]
+    }
+  | undefined
 
 export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
   // Fetch do CSV
@@ -16,18 +21,25 @@ export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
     throw new Error('File is empty')
   }
 
-  // Extrai os headers do CSV
+  // Extrai os headers e a primeira linha do CSV
   const records = papa.parse(csvText, { header: true, skipEmptyLines: true })
 
   if (records.errors.length > 0) {
     throw new Error('CSV inválido.')
   }
 
-  const headers: HeadersCsv = records.meta.fields
+  const headers: string[] | undefined = records.meta.fields
 
   if (!headers || headers.length === 0) {
     throw new Error('Nenhum header encontrado no CSV.')
   }
 
-  return headers
+  // Obtém a primeira linha de dados
+  const firstRow = records.data[0]
+  const sample: string[] = headers.map(header => (firstRow ? firstRow[header] || '' : ''))
+
+  return {
+    headers,
+    sample
+  }
 }
