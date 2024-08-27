@@ -13,7 +13,8 @@ export const platforms = [
   'hubla',
   'guru',
   'voompheader',
-  'ticto'
+  'ticto',
+  'custom'
 ] as const
 
 export const SpreadSheetSchema = z.object<SchemaRequiredZod<SpreadSheet>>({
