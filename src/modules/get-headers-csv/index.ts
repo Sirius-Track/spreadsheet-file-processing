@@ -2,11 +2,8 @@ import papa from 'papaparse'
 
 type HeadersCsv =
   | {
-      data: {
-        [header: string]: {
-          sample: string
-        }
-      }
+      headers: string[]
+      sample: string[]
     }
   | undefined
 
@@ -39,12 +36,10 @@ export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
 
   // Obtém a primeira linha de dados
   const firstRow = records.data[0]
-  const data = headers.reduce((acc, header) => {
-    acc[header] = { sample: firstRow ? firstRow[header] || '' : '' }
-    return acc
-  }, {} as HeadersCsv['data'])
+  const sample: string[] = headers.map(header => (firstRow ? firstRow[header] || '' : ''))
 
   return {
-    data
+    headers,
+    sample
   }
 }
