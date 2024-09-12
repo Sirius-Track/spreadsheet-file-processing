@@ -30,7 +30,7 @@ export const createspreadSheed: RequestHandler = async (req, res) => {
     const { isValid, missingHeaders } = validateCsvHeaders(platform, headers)
 
     if (!isValid) {
-      return res.status(400).send({
+      return res.status(201).send({
         message: 'Cabeçalhos do arquivo CSV estão inválidos para a plataforma selecionada, cabeçalhos esperados são:',
         missingHeaders
       })
