@@ -59,5 +59,5 @@ export const hotmartHeader: HeadersValues<HotmartHeaderValues> = {
   'Estado / Província': 'buyer_state',
   Instagram: 'buyer_instagram',
   'Tipo do order bump': 'order_bump_type',
-  'Transação do ordem bump': 'order_bump_transaction'
+  'Transação do order bump': 'order_bump_transaction'
 }

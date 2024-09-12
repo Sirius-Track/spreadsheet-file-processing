@@ -12,7 +12,7 @@ import { greennHeader, type GreennHeaderValues, greennMissing } from './headers/
 import { tmbHeader, type TmbHeaderValues, tmbMissing } from './headers/tmbHeader'
 import { hublaHeader, type HublaHeaderValues, hublaMissing } from './headers/hublaHeader'
 import { guruHeader, type GuruHeaderValues, guruMissing } from './headers/guruHeader'
-import { tictHeader, type TictHeaderValues, tictMissing } from './headers/tictHeader'
+import { tictoHeader, type TictoHeaderValues, tictoMissing } from './headers/tictoHeader'
 import { voompHeader, type VoompHeaderValues, voompMissing } from './headers/voompHeader'
 import { customMissing } from './headers/customHeader'
 
@@ -88,10 +88,10 @@ export const formattingPlatformType = ({ remainderHeaderValues, custom }: Props)
         platformHeader: voompHeader,
         ...remainderHeaderValues
       })
-    case 'ticto':
-      return headerTreatment<typeof tictHeader, TictHeaderValues>({
-        headerMissing: tictMissing,
-        platformHeader: tictHeader,
+    case 'tictoo':
+      return headerTreatment<typeof tictoHeader, TictoHeaderValues>({
+        headerMissing: tictoMissing,
+        platformHeader: tictoHeader,
         ...remainderHeaderValues
       })
     case 'custom':

@@ -1,9 +1,9 @@
-import { genHash } from '../'
+import { genHash } from '..'
 
 import type { Missing } from '../types'
 import type { HeadersValues } from './types'
 
-export type TictHeaderValues = {
+export type TictoHeaderValues = {
   transaction_code: string
   transaction_status: string
   transaction_date: string
@@ -26,7 +26,7 @@ export type TictHeaderValues = {
   buyer_state: string
 }
 
-export const tictHeader: HeadersValues<TictHeaderValues> = {
+export const tictoHeader: HeadersValues<TictoHeaderValues> = {
   'Código da Transação': 'transaction_code',
   Status: 'transaction_status',
   'Data do Pedido': 'transaction_date',
@@ -49,7 +49,7 @@ export const tictHeader: HeadersValues<TictHeaderValues> = {
   Estado: 'buyer_state'
 }
 
-export const tictMissing = (row: Missing<TictHeaderValues>) => {
+export const tictoMissing = (row: Missing<TictoHeaderValues>) => {
   return {
     ...row,
     product_id: genHash(row.product_name), // genHash(product_name)
