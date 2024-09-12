@@ -1,7 +1,7 @@
 import app from './app'
 
 try {
-  const port = 8000
+  const port = process.env.PORT
 
   app.listen(port, () => console.log(`Application running on port ${port}`))
 } catch (error) {
