@@ -9,29 +9,20 @@ import { herosparkHeader } from '../shared/headers/herosparkHeader'
 import { voompHeader } from '../shared/headers/voompHeader'
 import { tictoHeader } from '../shared/headers/tictoHeader'
 import { hotmartHeader } from '../shared/headers/hotmartHeader'
-import { SpreadSheet } from '../types'
+import { PlatformCustom, SpreadSheet } from '../types'
+import { HeadersValues } from '../shared/headers/types'
 
-const platformHeaders: Record<SpreadSheet['platform'], Record<string, string>> = {
-  hotmart: hotmartHeader,
-  perfectpay: perfectpayHeader,
-  kiwify: kiwifyHeader,
-  eduzz: eduzzHeader,
-  greenn: greennHeader,
-  tmb: tmbHeader,
-  hubla: hublaHeader,
-  guru: guruHeader,
-  herospark: herosparkHeader,
-  voompheader: voompHeader,
-  tictoo: tictoHeader,
-  custom: customHeader
+type ValidationResult = {
+  isValid: boolean
+  missingHeaders: string[] | undefined
 }
 
 type Props = Pick<SpreadSheet, 'platform'> & {
   headers: string[]
 }
 
-export const validateCsvHeaders = ({ platform, headers }: Props) => {
-  const expectedHeadersMap = platformHeaders[platform]
+export const validateCsvHeaders = ({ platform, headers }: Props): ValidationResult => {
+  const expectedHeadersMap = platformHeaders(platform, headers)
 
   if (!expectedHeadersMap) {
     throw new Error('Plataforma desconhecida.')
@@ -57,4 +48,27 @@ export const validateCsvHeaders = ({ platform, headers }: Props) => {
   } else {
     return { isValid, missingHeaders }
   }
+}
+
+const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) => {
+  const headersMap: Record<SpreadSheet['platform'], Record<string, string>> = {
+    perfectpay: perfectpayHeader,
+    kiwify: kiwifyHeader,
+    eduzz: eduzzHeader,
+    greenn: greennHeader,
+    tmb: tmbHeader,
+    hubla: hublaHeader,
+    guru: guruHeader,
+    herospark: herosparkHeader,
+    voompheader: voompHeader,
+    tictoo: tictoHeader,
+    hotmart: hotmartHeader,
+    custom: headers.reduce<HeadersValues<PlatformCustom>>((acc, key) => {
+      acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
+
+      return acc
+    }, {})
+  }
+
+  return headersMap[platform]
 }
