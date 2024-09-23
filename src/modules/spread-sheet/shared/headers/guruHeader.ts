@@ -22,6 +22,8 @@ export type GuruHeaderValues = {
   buyer_email: string
   buyer_country: string
   buyer_phone: string
+  buyer_phone_number: string
+  buyer_dddi: string
   buyer_document: string
   buyer_state: string
 }
@@ -44,7 +46,8 @@ export const guruHeader: HeadersValues<GuruHeaderValues> = {
   'nome contato': 'buyer_name',
   'email contato': 'buyer_email',
   'país contato': 'buyer_country',
-  'codigo telefone contato + telefone contato': 'buyer_phone',
+  'codigo telefone contato': 'buyer_dddi',
+  'telefone contato': 'buyer_phone_number',
   'doc contato': 'buyer_document',
   'estado contato': 'buyer_state'
 }
@@ -59,6 +62,7 @@ export const guruMissing = (row: Missing<GuruHeaderValues>) => {
     total_charges: 0, // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: '(none)', // "Não fornecido pela plataforma."
+    buyer_phone: `${row.buyer_dddi} + ${row.buyer_phone_number}`,
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
   }
 }
