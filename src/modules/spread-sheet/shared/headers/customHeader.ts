@@ -1,7 +1,16 @@
-import { Missing } from '../types'
-import { PlatformCustom } from '../../types'
-import { getFormatedValue } from '../../../../shared'
+import { getFormatedValue } from '@/shared'
 import { genHash } from '../functions/genHash'
+
+import { PlatformCustom } from '../../types'
+import { Missing } from '../types'
+import { HeadersValues } from './types'
+
+export const customHeader = (custom: Partial<PlatformCustom>) =>
+  Object.keys(custom).reduce<HeadersValues<PlatformCustom>>((acc, key) => {
+    acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
+
+    return acc
+  }, {})
 
 export const customMissing = (row: Missing<PlatformCustom>) => {
   return {

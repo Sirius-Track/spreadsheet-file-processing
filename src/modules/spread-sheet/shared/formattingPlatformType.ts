@@ -14,20 +14,18 @@ import { hublaHeader, type HublaHeaderValues, hublaMissing } from './headers/hub
 import { guruHeader, type GuruHeaderValues, guruMissing } from './headers/guruHeader'
 import { tictoHeader, type TictoHeaderValues, tictoMissing } from './headers/tictoHeader'
 import { voompHeader, type VoompHeaderValues, voompMissing } from './headers/voompHeader'
-import { customMissing } from './headers/customHeader'
+import { customHeader, customMissing } from './headers/customHeader'
 
 import { HeadersValues } from './headers/types'
 
-type Props = {
+type Props = Omit<SpreadSheet, 'dataUrl'> & {
   custom: Partial<PlatformCustom>
-  remainderHeaderValues: Omit<SpreadSheet, 'dataUrl'> & {
-    records: ParseResult<{
-      [key: string]: string
-    }>
-  }
+  records: ParseResult<{
+    [key: string]: string
+  }>
 }
 
-export const formattingPlatformType = ({ remainderHeaderValues, custom }: Props) => {
+export const formattingPlatformType = (remainderHeaderValues: Props) => {
   switch (remainderHeaderValues.platform) {
     case 'hotmart':
       return headerTreatment<typeof hotmartHeader, HotmartHeaderValues>({
@@ -95,15 +93,11 @@ export const formattingPlatformType = ({ remainderHeaderValues, custom }: Props)
         ...remainderHeaderValues
       })
     case 'custom':
-      const customHeader = Object.keys(custom).reduce<HeadersValues<PlatformCustom>>((acc, key) => {
-        acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
+      const transformedCustomHeader = customHeader(remainderHeaderValues.custom)
 
-        return acc
-      }, {})
-
-      return headerTreatment<typeof customHeader, PlatformCustom>({
+      return headerTreatment<typeof transformedCustomHeader, PlatformCustom>({
         headerMissing: customMissing,
-        platformHeader: customHeader,
+        platformHeader: transformedCustomHeader,
         ...remainderHeaderValues
       })
     default:

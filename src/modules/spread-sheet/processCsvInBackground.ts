@@ -20,7 +20,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
 
   const remainderHeaderValues = { records, platform, userId, projectId }
 
-  const platformsRows = formattingPlatformType({ remainderHeaderValues, custom })
+  const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
 
   console.log(platformsRows[0])
 

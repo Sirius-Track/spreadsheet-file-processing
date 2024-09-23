@@ -23,7 +23,7 @@ const platformHeaders: Record<SpreadSheet['platform'], Record<string, string>> =
   herospark: herosparkHeader,
   voompheader: voompHeader,
   tictoo: tictoHeader,
-  custom: {}
+  custom: customHeader
 }
 
 type Props = Pick<SpreadSheet, 'platform'> & {
