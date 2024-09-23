@@ -26,9 +26,10 @@ export const surveySummary: RequestHandler = async (req, res) => {
       prodName
     })
 
-    res.status(200).json(jsonResponse)
+    return res.status(200).json(jsonResponse)
   } catch (error: any) {
     console.error('Erro ao processar a solicitação:', error.message)
-    res.status(500).json({ error: error.message })
+
+    return res.status(500).json({ error: error.message })
   }
 }

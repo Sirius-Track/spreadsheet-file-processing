@@ -78,7 +78,7 @@ async function startBackgroundProcess(
   userId: string,
   projectId: string,
   surveyName: string,
-  type: string,
+  type: 'lead' | 'buyer',
   dataUrl: string,
   csvText: string,
   dateMask: string,

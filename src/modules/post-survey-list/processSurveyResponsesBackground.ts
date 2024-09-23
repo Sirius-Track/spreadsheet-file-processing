@@ -91,8 +91,8 @@ async function postSurveyResponses<T>({ supabaseURL, data }: { supabaseURL: stri
 
     console.log(`Dados enviados com sucesso para ${supabaseURL}.`)
   } catch (error) {
-    console.error('Erro ao enviar dados para o Supabase:', error.message)
-    throw new Error(`Falha ao enviar dados para ${supabaseURL}: ${error.message}`)
+    console.error('Erro ao enviar dados para o Supabase:', (error as Error).message)
+    throw new Error(`Falha ao enviar dados para ${supabaseURL}: ${(error as Error).message}`)
   }
 }
 
@@ -120,7 +120,7 @@ async function setMultipleChoiceQuestions(surveyId: string): Promise<void> {
 
     console.log(`survey_id ${surveyId} enviado com sucesso para ${urlMultipleChoices}.`)
   } catch (error) {
-    console.error('Erro ao enviar survey_id para o Supabase:', error.message)
-    throw new Error(`Falha ao enviar survey_id para ${urlMultipleChoices}: ${error.message}`)
+    console.error('Erro ao enviar survey_id para o Supabase:', (error as Error).message)
+    throw new Error(`Falha ao enviar survey_id para ${urlMultipleChoices}: ${(error as Error).message}`)
   }
 }

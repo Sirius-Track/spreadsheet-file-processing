@@ -14,7 +14,7 @@ export const postSurvey: RequestHandler = async (req, res) => {
     })
   } catch (error) {
     res.status(400).send({
-      message: error.message || 'Erro ao processar o arquivo de pesquisa'
+      message: (error as Error).message || 'Erro ao processar o arquivo de pesquisa'
     })
   }
 }

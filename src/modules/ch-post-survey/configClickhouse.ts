@@ -16,6 +16,6 @@ void (async () => {
     })
     console.log('Result: ', await rows.json())
   } catch (error) {
-    console.error('Erro ao conectar com o ClickHouse:', error.message)
+    console.error('Erro ao conectar com o ClickHouse:', (error as Error).message)
   }
 })()
