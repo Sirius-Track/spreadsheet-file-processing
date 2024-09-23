@@ -1,5 +1,10 @@
 import { clickhouseClient } from './configClickhouse'
 
+type Response = Array<{
+  question: string
+  normalized_answer: string
+}>
+
 export async function setMultipleChoiceQuestions(surveyId: string): Promise<{ message: string; questions: string[] }> {
   try {
     console.log(`Buscando respostas para survey_id: ${surveyId}...`)
@@ -16,7 +21,7 @@ export async function setMultipleChoiceQuestions(surveyId: string): Promise<{ me
       format: 'JSONEachRow'
     })
 
-    const data = await responses.json()
+    const data: Response = await responses.json()
 
     if (data.length === 0) {
       console.log('Nenhuma resposta encontrada para o survey_id fornecido.')
@@ -30,6 +35,7 @@ export async function setMultipleChoiceQuestions(surveyId: string): Promise<{ me
     const groupedResponses: { [question: string]: string[] } = {}
     for (const response of data) {
       const { question, normalized_answer } = response
+
       if (!groupedResponses[question]) {
         groupedResponses[question] = []
       }
