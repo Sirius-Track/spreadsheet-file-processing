@@ -22,7 +22,7 @@ export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
   }
 
   // Extrai os headers e a primeira linha do CSV
-  const records = papa.parse(csvText, { header: true, skipEmptyLines: true })
+  const records = papa.parse<Record<string, string>>(csvText, { header: true, skipEmptyLines: true })
 
   if (records.errors.length > 0) {
     throw new Error('CSV inválido.')
