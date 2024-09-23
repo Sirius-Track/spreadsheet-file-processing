@@ -9,6 +9,8 @@ export const createspreadSheed: RequestHandler = async (req, res) => {
   try {
     const { dataUrl, platform } = req.body
 
+    console.log(req.body)
+
     const fileCSV = await fetch(dataUrl)
     if (!fileCSV.ok) {
       return res.status(400).send({
@@ -39,13 +41,13 @@ export const createspreadSheed: RequestHandler = async (req, res) => {
     // Processar o CSV se os cabeçalhos forem válidos
     await spreadSheed(req.body)
 
-    res.status(201).send({
+    return res.status(201).send({
       message: 'Seu arquivo está sendo processado com sucesso.'
     })
   } catch (error) {
-    res.status(500).send({
+    return res.status(500).send({
       message: 'Erro ao processar o arquivo CSV.',
-      error: error.message
+      error: (error as Error).message
     })
   }
 }
