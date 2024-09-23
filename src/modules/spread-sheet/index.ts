@@ -7,7 +7,7 @@ import type { SpreadSheet } from './types'
 export const spreadSheed = async (data: SpreadSheet) => {
   const { dataUrl, userId, platform, projectId, ...rest } = SpreadSheetSchema.parse(data)
 
-  console.log(data)
+  console.log('KAPA:', data)
 
   const fileCSV = await fetch(dataUrl)
 
