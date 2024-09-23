@@ -9,12 +9,9 @@ import { herosparkHeader } from '../shared/headers/herosparkHeader'
 import { voompHeader } from '../shared/headers/voompHeader'
 import { tictoHeader } from '../shared/headers/tictoHeader'
 import { hotmartHeader } from '../shared/headers/hotmartHeader'
+import { SpreadSheet } from '../types'
 
-type PlatformHeaders = {
-  [key: string]: { [headerName: string]: string }
-}
-
-const platformHeaders: PlatformHeaders = {
+const platformHeaders: Record<SpreadSheet['platform'], Record<string, string>> = {
   hotmart: hotmartHeader,
   perfectpay: perfectpayHeader,
   kiwify: kiwifyHeader,
@@ -24,16 +21,16 @@ const platformHeaders: PlatformHeaders = {
   hubla: hublaHeader,
   guru: guruHeader,
   herospark: herosparkHeader,
-  voomp: voompHeader,
-  ticto: tictoHeader
+  voompheader: voompHeader,
+  tictoo: tictoHeader,
+  custom: {}
 }
 
-type ValidationResult = {
-  isValid: boolean
-  missingHeaders: string[] | undefined
+type Props = Pick<SpreadSheet, 'platform'> & {
+  headers: string[]
 }
 
-export const validateCsvHeaders = (platform: string, headers: string[]): ValidationResult => {
+export const validateCsvHeaders = ({ platform, headers }: Props) => {
   const expectedHeadersMap = platformHeaders[platform]
 
   if (!expectedHeadersMap) {

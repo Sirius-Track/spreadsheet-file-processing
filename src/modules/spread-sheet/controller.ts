@@ -44,7 +44,7 @@ export const createspreadSheed: RequestHandler = async (req, res) => {
     const parsedCsv = papa.parse(csvText, { header: true })
     const headers = parsedCsv.meta.fields || []
 
-    const { isValid, missingHeaders } = validateCsvHeaders(platform, headers)
+    const { isValid, missingHeaders } = validateCsvHeaders({ platform, headers })
 
     if (!isValid) {
       return res.status(201).send({
