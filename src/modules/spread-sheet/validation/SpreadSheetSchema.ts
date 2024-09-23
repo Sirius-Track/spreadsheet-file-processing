@@ -1,7 +1,6 @@
 import * as z from 'zod'
 
 export const platforms = [
-  'custom',
   'hotmart',
   'kiwify',
   'eduzz',

@@ -2,15 +2,30 @@
 
 import { spreadSheed } from '.'
 import { validateCsvHeaders } from './validation/validateCsvHeader'
-import type { RequestHandler } from 'express'
+
+import * as z from 'zod'
 import papa from 'papaparse'
 
+import { platforms } from './validation/SpreadSheetSchema'
+
+import type { RequestHandler } from 'express'
+import type { SpreadSheet } from './types'
+
+export const SheetSchema = z.object<SchemaRequiredZod<Pick<SpreadSheet, 'dataUrl' | 'platform'>>>({
+  dataUrl: z.string(),
+  platform: z.custom(value => {
+    if (!platforms.includes(value)) {
+      throw new Error(`Invalid platform: ${value}, must be one of ${platforms.join(', ')}`)
+    }
+
+    return value
+  })
+})
+
 export const createspreadSheed: RequestHandler = async (req, res) => {
+  const { dataUrl, platform } = SheetSchema.parse(req.body)
+
   try {
-    const { dataUrl, platform } = req.body
-
-    console.log({ body: req.body })
-
     const fileCSV = await fetch(dataUrl)
     if (!fileCSV.ok) {
       return res.status(400).send({
