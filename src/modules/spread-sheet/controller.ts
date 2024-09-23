@@ -9,7 +9,7 @@ export const createspreadSheed: RequestHandler = async (req, res) => {
   try {
     const { dataUrl, platform } = req.body
 
-    console.log(req.body)
+    console.log({ body: req.body })
 
     const fileCSV = await fetch(dataUrl)
     if (!fileCSV.ok) {
