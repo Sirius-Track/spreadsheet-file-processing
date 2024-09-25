@@ -10,6 +10,7 @@ type Props = SpreadSheet & {
 }
 
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
+  console.log(`Processando Background os dados para plataforma: ${platform}`)
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
 
@@ -21,7 +22,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
   const remainderHeaderValues = { records, platform, userId, projectId }
 
   const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
-
+  console.log('Rows indice zero:')
   console.log(platformsRows[0])
 
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
