@@ -20,6 +20,8 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
   })
 
   const remainderHeaderValues = { records, platform, userId, projectId }
+  // Adicionando logs para verificar o estado dos dados
+  console.log('Dados para formattingPlatformType:', remainderHeaderValues, custom)
 
   const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
   console.log('Rows indice zero:')

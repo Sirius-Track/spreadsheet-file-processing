@@ -93,8 +93,9 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
         ...remainderHeaderValues
       })
     case 'custom':
+      console.log('Dados custom recebidos:', remainderHeaderValues.custom)
       const transformedCustomHeader = customHeader(remainderHeaderValues.custom)
-
+      console.log('Header custom transformado:', transformedCustomHeader)
       return headerTreatment<typeof transformedCustomHeader, PlatformCustom>({
         headerMissing: customMissing,
         platformHeader: transformedCustomHeader,

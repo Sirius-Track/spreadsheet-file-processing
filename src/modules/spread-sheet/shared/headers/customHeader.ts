@@ -13,6 +13,8 @@ export const customHeader = (custom: Partial<PlatformCustom>) =>
   }, {})
 
 export const customMissing = (row: Missing<PlatformCustom>) => {
+  console.log('Row recebido:', row)
+  console.log('maskProductName:', row.maskProductName)
   return {
     ...row,
     maskTransactionCode: row.maskTransactionCode || '',
