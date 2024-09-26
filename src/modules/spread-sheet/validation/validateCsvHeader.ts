@@ -9,6 +9,7 @@ import { herosparkHeader } from '../shared/headers/herosparkHeader'
 import { voompHeader } from '../shared/headers/voompHeader'
 import { tictoHeader } from '../shared/headers/tictoHeader'
 import { hotmartHeader } from '../shared/headers/hotmartHeader'
+import { standardHeader } from '../shared/headers/standardHeader'
 import { PlatformCustom, SpreadSheet } from '../types'
 import { HeadersValues } from '../shared/headers/types'
 
@@ -63,6 +64,7 @@ const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) =
     voompheader: voompHeader,
     tictoo: tictoHeader,
     hotmart: hotmartHeader,
+    standard: standardHeader,
     custom: headers.reduce<HeadersValues<PlatformCustom>>((acc, key) => {
       acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
 

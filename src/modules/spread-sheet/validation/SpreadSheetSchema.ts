@@ -2,6 +2,7 @@ import * as z from 'zod'
 
 export const platforms = [
   'hotmart',
+  'standard',
   'kiwify',
   'eduzz',
   'herospark',
