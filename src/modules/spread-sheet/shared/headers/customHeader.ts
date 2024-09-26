@@ -7,8 +7,7 @@ import { HeadersValues } from './types'
 
 export const customHeader = (custom: Partial<PlatformCustom>) =>
   Object.keys(custom).reduce<HeadersValues<PlatformCustom>>((acc, key) => {
-    acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
-
+    acc[key as keyof PlatformCustom] = custom[key as keyof PlatformCustom] || '' // Atribui o valor real ou uma string vazia se indefinido
     return acc
   }, {})
 
