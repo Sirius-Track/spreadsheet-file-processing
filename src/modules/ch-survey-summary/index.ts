@@ -3,6 +3,7 @@ import type { RowData } from './types'
 
 type analyzeBody = {
   question_id: string
+  question_text: string
   answer_text: string
   lead_percentage?: string
   buyer_percentage?: string
@@ -131,6 +132,13 @@ function categorizeQuestion(questionText: string) {
 
 function analyzeData(leadSurvey: any, buyerSurvey: any) {
   console.log('Entramos em analyzeData')
+
+  const totalLeadResponses = leadSurvey.total_responses
+  const totalBuyerResponses = buyerSurvey.total_responses
+
+  // Calcula a proporção de leads para buyers
+  const leadToBuyerRatio = totalLeadResponses / totalBuyerResponses
+
   const analysis: {
     convergences: analyzeBody[]
     divergences: analyzeBody[]
@@ -143,60 +151,61 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
     if (buyerQuestion) {
       leadQuestion.answers.forEach((leadAnswer: any) => {
         const buyerAnswer = buyerQuestion.answers.find((a: any) => a.answer_text === leadAnswer.answer_text)
-        if (buyerAnswer) {
-          const leadPercentage = leadAnswer.response_percentage
-          const buyerPercentage = buyerAnswer.response_percentage
 
-          if (Math.abs(leadPercentage - buyerPercentage) < 9) {
+        if (buyerAnswer) {
+          // Calcula o percentual normalizado para buyers com base na proporção de leads para buyers
+          const leadPercentage = leadAnswer.response_percentage
+          const buyerPercentage = buyerAnswer.response_percentage * leadToBuyerRatio
+
+          // Calcula a diferença percentual ajustada
+          const percentageDifference = Math.abs(leadPercentage - buyerPercentage)
+
+          // Calcule o desvio padrão para detectar outliers
+          const meanPercentage = (leadPercentage + buyerPercentage) / 2
+          const stdDev = Math.sqrt(
+            (Math.pow(leadPercentage - meanPercentage, 2) + Math.pow(buyerPercentage - meanPercentage, 2)) / 2
+          )
+
+          // Detectando convergência (menor variação após normalização)
+          if (percentageDifference < 9) {
             analysis.convergences.push({
               question_id: leadQuestion.question_id,
+              question_text: leadQuestion.question_text,
               answer_text: leadAnswer.answer_text,
               lead_percentage: leadPercentage,
-              buyer_percentage: buyerPercentage,
-              note: 'Resposta comum, mas com variação significativa de porcentagem.'
-            })
-          } else {
-            analysis.divergences.push({
-              question_id: leadQuestion.question_id,
-              answer_text: leadAnswer.answer_text,
-              lead_percentage: leadPercentage,
-              buyer_percentage: buyerPercentage,
-              note: 'Grande divergência entre leads e buyers, deve ser considerada na desqualificação de leads.'
+              buyer_percentage: buyerPercentage / leadToBuyerRatio, // Ajustado para exibir o valor real
+              note: 'Resposta comum com pequena variação.'
             })
           }
 
-          // Calcule o total de respostas para leads e buyers
-          const totalLeadResponses = leadQuestion.answers.reduce(
-            (sum: number, answer: any) => sum + answer.response_count,
-            0
-          )
-          const totalBuyerResponses = buyerQuestion.answers.reduce(
-            (sum: number, answer: any) => sum + answer.response_count,
-            0
-          )
+          // Detectando divergência
+          else if (percentageDifference >= 9 && percentageDifference < stdDev * 2) {
+            analysis.divergences.push({
+              question_id: leadQuestion.question_id,
+              question_text: leadQuestion.question_text,
+              answer_text: leadAnswer.answer_text,
+              lead_percentage: leadPercentage,
+              buyer_percentage: buyerPercentage / leadToBuyerRatio, // Ajustado para exibir o valor real
+              note: 'Grande divergência entre leads e buyers.'
+            })
+          }
 
-          // Calcule a porcentagem de respostas para a resposta atual em cada grupo
-          const leadPercentageOutlier = (leadAnswer.response_count / totalLeadResponses) * 100
-          const buyerPercentageOutlier = (buyerAnswer.response_count / totalBuyerResponses) * 100
-
-          // Defina um limite para detectar outliers (exemplo: 10% de diferença)
-          const percentageThreshold = 10 // Você pode ajustar esse valor conforme necessário
-
-          // Exemplo de detecção de outliers com base em percentuais
-          if (Math.abs(leadPercentageOutlier - buyerPercentageOutlier) > percentageThreshold) {
+          // Detectando outliers (respostas muito distantes da média)
+          else if (percentageDifference >= stdDev * 2) {
             analysis.outliers.push({
               question_id: leadQuestion.question_id,
+              question_text: leadQuestion.question_text,
               answer_text: leadAnswer.answer_text,
               lead_response_count: leadAnswer.response_count,
               buyer_response_count: buyerAnswer.response_count,
-              note: 'Alta discrepância em relação a outras respostas, possivelmente muito influenciada por fatores externos.'
+              note: 'Alta discrepância, resposta fora do padrão.'
             })
           }
         }
       })
     }
   })
-  // Adicionando log para imprimir o resultado da análise
+
   console.log('Análise gerada:', analysis)
   return analysis
 }
