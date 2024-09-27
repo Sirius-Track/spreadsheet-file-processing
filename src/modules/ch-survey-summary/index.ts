@@ -139,11 +139,15 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
   // Calcula a proporção de leads para buyers
   const leadToBuyerRatio = totalLeadResponses / totalBuyerResponses
 
+  // Função auxiliar para normalizar percentuais com base na ponderação de amostras
+  const normalizePercentage = (buyerPercentage: number) => {
+    return buyerPercentage * leadToBuyerRatio
+  }
+
   const analysis: {
     convergences: analyzeBody[]
     divergences: analyzeBody[]
-    outliers: analyzeBody[]
-  } = { convergences: [], divergences: [], outliers: [] }
+  } = { convergences: [], divergences: [] }
 
   leadSurvey.questions.forEach((leadQuestion: any) => {
     const buyerQuestion = buyerSurvey.questions.find((q: any) => q.question_text === leadQuestion.question_text)
@@ -153,21 +157,27 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
         const buyerAnswer = buyerQuestion.answers.find((a: any) => a.answer_text === leadAnswer.answer_text)
 
         if (buyerAnswer) {
-          // Calcula o percentual normalizado para buyers com base na proporção de leads para buyers
+          // Normalizar o percentual de buyers com base na proporção de leads para buyers
           const leadPercentage = leadAnswer.response_percentage
-          const buyerPercentage = buyerAnswer.response_percentage * leadToBuyerRatio
+          const buyerPercentage = normalizePercentage(buyerAnswer.response_percentage)
 
           // Calcula a diferença percentual ajustada
           const percentageDifference = Math.abs(leadPercentage - buyerPercentage)
 
-          // Calcule o desvio padrão para detectar outliers
-          const meanPercentage = (leadPercentage + buyerPercentage) / 2
-          const stdDev = Math.sqrt(
-            (Math.pow(leadPercentage - meanPercentage, 2) + Math.pow(buyerPercentage - meanPercentage, 2)) / 2
-          )
+          // Função para calcular o desvio absoluto médio (MAD)
+          const calculateMAD = (values: number[], median: number) => {
+            const deviations = values.map(value => Math.abs(value - median))
+            const mad = deviations.reduce((sum, deviation) => sum + deviation, 0) / values.length
+            return mad
+          }
+
+          // Calcule a mediana e o MAD para o lead e buyer percentages
+          const medianPercentage = (leadPercentage + buyerPercentage) / 2
+          const mad = calculateMAD([leadPercentage, buyerPercentage], medianPercentage)
 
           // Detectando convergência (menor variação após normalização)
-          if (percentageDifference < 9) {
+          if (percentageDifference < mad * 1.5) {
+            // Usando MAD como referência para convergência
             analysis.convergences.push({
               question_id: leadQuestion.question_id,
               question_text: leadQuestion.question_text,
@@ -179,7 +189,8 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
           }
 
           // Detectando divergência
-          else if (percentageDifference >= 9 && percentageDifference < stdDev * 2) {
+          else if (percentageDifference >= mad * 1.5) {
+            // Maior variação em relação ao MAD
             analysis.divergences.push({
               question_id: leadQuestion.question_id,
               question_text: leadQuestion.question_text,
@@ -187,18 +198,6 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
               lead_percentage: leadPercentage,
               buyer_percentage: buyerPercentage / leadToBuyerRatio, // Ajustado para exibir o valor real
               note: 'Grande divergência entre leads e buyers.'
-            })
-          }
-
-          // Detectando outliers (respostas muito distantes da média)
-          else if (percentageDifference >= stdDev * 2) {
-            analysis.outliers.push({
-              question_id: leadQuestion.question_id,
-              question_text: leadQuestion.question_text,
-              answer_text: leadAnswer.answer_text,
-              lead_response_count: leadAnswer.response_count,
-              buyer_response_count: buyerAnswer.response_count,
-              note: 'Alta discrepância, resposta fora do padrão.'
             })
           }
         }
