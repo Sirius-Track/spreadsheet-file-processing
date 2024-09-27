@@ -10,7 +10,7 @@ export const surveySummary: RequestHandler = async (req, res) => {
     }
 
     const { projectId, userId, prodDescription, prodPriceRange, prodTargetAudience, prodName } = req.body
-
+    console.log(req.body)
     if (!projectId || !userId) {
       return res.status(400).json({
         error: "Parâmetros 'projectId' e 'userId' são obrigatórios."
