@@ -3,14 +3,14 @@ import papa from 'papaparse'
 
 import { formattingPlatformType } from './shared'
 
-import { SpreadSheet } from './types'
+import { PlatformCustom, SpreadSheet } from './types'
 
-type Props = SpreadSheet & {
-  csvText: string
-}
+type Props = SpreadSheet &
+  Partial<PlatformCustom> & {
+    csvText: string
+  }
 
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
-  console.log(`Processando Background os dados para plataforma: ${platform}`)
   const BATCH_SIZE = 500
   const SUPABASE_URL = process.env.SUPABASE_URL
 
@@ -18,17 +18,10 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     header: true,
     skipEmptyLines: true
   })
-  // console.log('Dados CSV processados:', records.data)
-  // console.log('Headers CSV:', records.meta.fields)
+
   const remainderHeaderValues = { records, platform, userId, projectId }
-  // Adicionando logs para verificar o estado dos dados
-  // console.log('Dados para formattingPlatformType:', remainderHeaderValues, custom)
 
   const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
-  // console.log('Rows indice zero:')
-  // console.log(platformsRows[0])
-  // console.log('Rows pós processamento:', platformsRows)
-  // console.log('Primeira linha:', platformsRows[0])
 
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
