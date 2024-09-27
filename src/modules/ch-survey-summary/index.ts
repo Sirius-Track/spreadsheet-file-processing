@@ -79,11 +79,12 @@ export const generateSurveyReport = async ({
     surveys,
     analysis
   }
-
+  console.log('JSON Final gerado:', jsonResponse)
   return jsonResponse
 }
 
 function processSurveyResponses(responses: RowData[], survey: any) {
+  console.log('Entramos em processSurveyResponses')
   const questionsMap = new Map()
 
   responses.forEach(response => {
@@ -129,6 +130,7 @@ function categorizeQuestion(questionText: string) {
 }
 
 function analyzeData(leadSurvey: any, buyerSurvey: any) {
+  console.log('Entramos em analyzeData')
   const analysis: {
     convergences: analyzeBody[]
     divergences: analyzeBody[]
@@ -194,7 +196,8 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
       })
     }
   })
-
+  // Adicionando log para imprimir o resultado da análise
+  console.log('Análise gerada:', analysis)
   return analysis
 }
 
