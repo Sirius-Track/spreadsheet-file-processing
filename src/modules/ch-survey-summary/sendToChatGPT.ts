@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import axios from 'axios'
 
 export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Promise<string> {
   console.log('Entrando em chatGPT')
@@ -33,13 +33,9 @@ export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Prom
 `
 
   try {
-    const response = await fetch(openAIEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer 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` // Coloque aqui sua chave da API da OpenAI
-      },
-      body: JSON.stringify({
+    const response = await axios.post(
+      openAIEndpoint,
+      {
         model: 'gpt-4', // Use o modelo que você deseja utilizar, pode ser GPT-3.5-turbo ou GPT-4
         messages: [
           {
@@ -49,14 +45,20 @@ export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Prom
           { role: 'user', content: prompt }
         ],
         temperature: 0.4 // Ajuste a temperatura conforme necessário
-      })
-    })
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer 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` // Coloque aqui sua chave da API da OpenAI
+        }
+      }
+    )
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error(`Erro ao se comunicar com a API do OpenAI: ${response.statusText}`)
     }
 
-    const result = (await response.json()) as { choices: { message: { content: string } }[] }
+    const result = response.data as { choices: { message: { content: string } }[] }
     const chatGPTResponse = result.choices[0].message.content
 
     console.log('Resposta da API do ChatGPT:', chatGPTResponse)

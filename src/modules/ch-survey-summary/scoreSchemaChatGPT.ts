@@ -1,4 +1,4 @@
-import fetch from 'node-fetch' // Se você estiver usando Node.js
+import axios from 'axios'
 
 export async function scoreSchemaChatGPT(scoreSchema: any, projectId: any, userId: any): Promise<string> {
   console.log('Preparando Schema...')
@@ -16,13 +16,9 @@ A cada pergunta e resposta, deve ser gerado um novo objeto no JSON."
 `
 
   try {
-    const response = await fetch(openAIEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer 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` // Coloque aqui sua chave da API da OpenAI
-      },
-      body: JSON.stringify({
+    const response = await axios.post(
+      openAIEndpoint,
+      {
         model: 'gpt-4', // Use o modelo que você deseja utilizar, pode ser GPT-3.5-turbo ou GPT-4
         messages: [
           {
@@ -33,15 +29,21 @@ A cada pergunta e resposta, deve ser gerado um novo objeto no JSON."
           { role: 'user', content: prompt }
         ],
         temperature: 0.5 // Ajuste a temperatura conforme necessário
-      })
-    })
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer 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` // Coloque aqui sua chave da API da OpenAI
+        }
+      }
+    )
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error(`Erro ao se comunicar com a API do OpenAI: ${response.statusText}`)
     }
 
-    const result = (await response.json()) as any
-    const chatGPTSchema = result?.choices[0].message.content as { choices: { message: { content: string } }[] }
+    const result = response.data as any
+    const chatGPTSchema = result?.choices[0].message.content as any
 
     console.log('Resposta da API do ChatGPT:', chatGPTSchema)
 
