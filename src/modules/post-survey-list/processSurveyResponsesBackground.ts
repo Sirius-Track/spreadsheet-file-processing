@@ -67,7 +67,10 @@ export const processSurveyResponsesBackground = async ({
     // Verifica se o batch está completo ou se é o último item
     if (currentBatch.length === BATCH_SIZE || index === surveyResponsesRows.length - 1) {
       console.log(`Sending chunk ${index / BATCH_SIZE + 1}:`, currentBatch)
-      await postSurveyResponses<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: currentBatch })
+      await postSurveyResponses<Array<RowData>>({
+        supabaseURL: `${SUPABASE_URL}/functions/v1/postResponses`,
+        data: currentBatch
+      })
       currentBatch = [] // Reseta o batch
     }
   }

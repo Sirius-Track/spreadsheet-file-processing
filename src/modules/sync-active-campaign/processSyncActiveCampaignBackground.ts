@@ -25,7 +25,10 @@ export const processSyncActiveCampaignBackground = async ({
 
     console.log(contactValues[0])
 
-    await postLeadList<Array<ContactFieldValue>>({ supabaseURL: SUPABASE_URL, data: contactValues })
+    await postLeadList<Array<ContactFieldValue>>({
+      supabaseURL: `${SUPABASE_URL}/functions/v1/postResponses`,
+      data: contactValues
+    })
 
     // TODO: Mover a URL para o ambiente
     /* await axios.post(

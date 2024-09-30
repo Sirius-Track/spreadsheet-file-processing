@@ -49,7 +49,7 @@ export const processPostLeadListBackground = async ({
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
-    await postLeadList<Array<RowData>>({ supabaseURL: SUPABASE_URL, data: csvChunk })
+    await postLeadList<Array<RowData>>({ supabaseURL: `${SUPABASE_URL}/functions/v1/postResponses`, data: csvChunk })
   }
 
   // TODO: mover url para env
