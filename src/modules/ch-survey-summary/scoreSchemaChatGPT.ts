@@ -41,7 +41,7 @@ A cada pergunta e resposta, deve ser gerado um novo objeto no JSON."
     }
 
     const result = await response.json()
-    const chatGPTSchema = result.choices[0].message.content
+    const chatGPTSchema = result?.choices[0].message.content as { choices: { message: { content: string } }[] }
 
     console.log('Resposta da API do ChatGPT:', chatGPTSchema)
 

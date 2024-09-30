@@ -1,4 +1,4 @@
-import fetch from 'node-fetch' // Se você estiver usando Node.js
+import fetch from 'node-fetch'
 
 export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Promise<string> {
   console.log('Entrando em chatGPT')
@@ -56,7 +56,7 @@ export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Prom
       throw new Error(`Erro ao se comunicar com a API do OpenAI: ${response.statusText}`)
     }
 
-    const result = await response.json()
+    const result = (await response.json()) as { choices: { message: { content: string } }[] }
     const chatGPTResponse = result.choices[0].message.content
 
     console.log('Resposta da API do ChatGPT:', chatGPTResponse)

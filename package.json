@@ -25,6 +25,7 @@
     "esbuild": "^0.20.1",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
     "node-xlsx": "^0.24.0",
     "papaparse": "^5.4.1",
     "short-hash": "^1.0.0",
