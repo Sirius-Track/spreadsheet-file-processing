@@ -2,6 +2,7 @@ import axios from 'axios'
 import papa from 'papaparse'
 
 import { formattingPlatformType } from './shared'
+import { SUPABASE_URL } from '@/contants'
 
 import { PlatformCustom, SpreadSheet } from './types'
 
@@ -12,7 +13,6 @@ type Props = SpreadSheet &
 
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
   const BATCH_SIZE = 500
-  const SUPABASE_URL = process.env.SUPABASE_URL
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
