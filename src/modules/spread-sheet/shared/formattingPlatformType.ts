@@ -16,8 +16,6 @@ import { tictoHeader, type TictoHeaderValues, tictoMissing } from './headers/tic
 import { voompHeader, type VoompHeaderValues, voompMissing } from './headers/voompHeader'
 import { customHeader, customMissing } from './headers/customHeader'
 
-import { HeadersValues } from './headers/types'
-
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   custom: Partial<PlatformCustom>
   records: ParseResult<{
