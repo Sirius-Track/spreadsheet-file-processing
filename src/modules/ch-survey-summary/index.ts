@@ -1,5 +1,7 @@
 import { clickhouseClient } from './configClickhouse'
 import type { RowData } from './types'
+import { sendAnalysisToChatGPT } from './sendToChatGPT'
+import { scoreSchemaChatGPT } from './scoreSchemaChatGPT'
 
 type analyzeBody = {
   question_id: string
@@ -67,7 +69,20 @@ export const generateSurveyReport = async ({
 
   // Análise de convergências, divergências e outliers
   const analysis = analyzeData(surveys.lead, surveys.buyer)
-
+  sendAnalysisToChatGPT(analysis, prodPriceRange)
+    .then(chatGPTResponse => {
+      //console.log('Resposta do ChatGPT:', chatGPTResponse)
+      // scoreSchemaChatGPT(chatGPTResponse, projectId, userId)
+      //   .then(chatGPTSchema => {
+      //     console.log('Schema do ChatGPT:', chatGPTSchema)
+      //   })
+      //   .catch(error => {
+      //     console.error('Erro ao processar a análise com ChatGPT:', error)
+      //   })
+    })
+    .catch(error => {
+      console.error('Erro ao processar a análise com ChatGPT:', error)
+    })
   const jsonResponse = {
     project_id: projectId,
     user_id: userId,
@@ -145,67 +160,59 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
   }
 
   const analysis: {
-    convergences: analyzeBody[]
-    divergences: analyzeBody[]
-  } = { convergences: [], divergences: [] }
+    questions: {
+      question_id: string
+      question_text: string
+      category: string
+      total_lead_responses: number
+      total_buyer_responses: number
+      answers: {
+        answer_text: string
+        lead_response_count: number
+        lead_response_percentage: number
+        buyer_response_count: number
+        buyer_response_percentage: number
+      }[]
+    }[]
+  } = { questions: [] }
 
   leadSurvey.questions.forEach((leadQuestion: any) => {
     const buyerQuestion = buyerSurvey.questions.find((q: any) => q.question_text === leadQuestion.question_text)
 
     if (buyerQuestion) {
+      const questionAnalysis = {
+        question_id: leadQuestion.question_id,
+        question_text: leadQuestion.question_text,
+        category: '', // Categoria vazia para ser preenchida pela IA
+        total_lead_responses: leadQuestion.total_responses,
+        total_buyer_responses: buyerQuestion.total_responses,
+        answers: [] as any[] // Armazenar as respostas individualmente
+      }
+
       leadQuestion.answers.forEach((leadAnswer: any) => {
         const buyerAnswer = buyerQuestion.answers.find((a: any) => a.answer_text === leadAnswer.answer_text)
 
         if (buyerAnswer) {
-          // Normalizar o percentual de buyers com base na proporção de leads para buyers
           const leadPercentage = leadAnswer.response_percentage
           const buyerPercentage = normalizePercentage(buyerAnswer.response_percentage)
 
-          // Calcula a diferença percentual ajustada
-          const percentageDifference = Math.abs(leadPercentage - buyerPercentage)
-
-          // Função para calcular o desvio absoluto médio (MAD)
-          const calculateMAD = (values: number[], median: number) => {
-            const deviations = values.map(value => Math.abs(value - median))
-            const mad = deviations.reduce((sum, deviation) => sum + deviation, 0) / values.length
-            return mad
-          }
-
-          // Calcule a mediana e o MAD para o lead e buyer percentages
-          const medianPercentage = (leadPercentage + buyerPercentage) / 2
-          const mad = calculateMAD([leadPercentage, buyerPercentage], medianPercentage)
-
-          // Detectando convergência (menor variação após normalização)
-          if (percentageDifference < mad * 1.5) {
-            // Usando MAD como referência para convergência
-            analysis.convergences.push({
-              question_id: leadQuestion.question_id,
-              question_text: leadQuestion.question_text,
-              answer_text: leadAnswer.answer_text,
-              lead_percentage: leadPercentage,
-              buyer_percentage: buyerPercentage / leadToBuyerRatio, // Ajustado para exibir o valor real
-              note: 'Resposta comum com pequena variação.'
-            })
-          }
-
-          // Detectando divergência
-          else if (percentageDifference >= mad * 1.5) {
-            // Maior variação em relação ao MAD
-            analysis.divergences.push({
-              question_id: leadQuestion.question_id,
-              question_text: leadQuestion.question_text,
-              answer_text: leadAnswer.answer_text,
-              lead_percentage: leadPercentage,
-              buyer_percentage: buyerPercentage / leadToBuyerRatio, // Ajustado para exibir o valor real
-              note: 'Grande divergência entre leads e buyers.'
-            })
-          }
+          // Adicionar as respostas, mantendo os percentuais de leads e buyers separados
+          questionAnalysis.answers.push({
+            answer_text: leadAnswer.answer_text,
+            lead_response_count: leadAnswer.response_count,
+            lead_response_percentage: leadPercentage,
+            buyer_response_count: buyerAnswer.response_count,
+            buyer_response_percentage: buyerPercentage / leadToBuyerRatio // Ajustado para mostrar o valor real
+          })
         }
       })
+
+      analysis.questions.push(questionAnalysis)
     }
   })
 
   console.log('Análise gerada:', analysis)
+
   return analysis
 }
 
