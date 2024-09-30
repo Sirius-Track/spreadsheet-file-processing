@@ -30,10 +30,6 @@ export const validateCsvHeaders = ({ platform, headers }: Props): ValidationResu
 
   const expectedHeaders = Object.keys(expectedHeadersMap)
 
-  // Log cabeçalhos recebidos e esperados
-  console.log('Cabeçalhos recebidos:', headers)
-  console.log('Cabeçalhos esperados:', expectedHeaders)
-
   // Check if all expected headers are present
   const isValid = expectedHeaders.every(header => headers.includes(header))
   let missingHeaders

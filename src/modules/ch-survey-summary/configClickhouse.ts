@@ -14,7 +14,7 @@ void (async () => {
       query: 'SELECT 1',
       format: 'JSONEachRow'
     })
-    console.log('Result: ', await rows.json())
+    // console.log('Result: ', await rows.json())
   } catch (error: any) {
     console.error('Erro ao conectar com o ClickHouse:', error.message)
   }

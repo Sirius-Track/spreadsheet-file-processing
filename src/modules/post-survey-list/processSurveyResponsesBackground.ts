@@ -5,6 +5,8 @@ import type { SurveyTypes } from './validation/surveySheetSchema'
 import type { RowData } from './types'
 import { randomUUID } from 'node:crypto'
 
+import { SUPABASE_URL } from '@/contants'
+
 type Props = SurveyTypes & {
   surveyId: string
   csvText: string
@@ -22,7 +24,6 @@ export const processSurveyResponsesBackground = async ({
   type
 }: Props) => {
   const BATCH_SIZE = 500
-  const SUPABASE_URL = 'https://ogpwqkqsulbouecrnqlh.supabase.co/functions/v1/postResponses'
 
   console.log('Parsing CSV data...')
   const records = papa.parse<{ [key: string]: string }>(csvText, {

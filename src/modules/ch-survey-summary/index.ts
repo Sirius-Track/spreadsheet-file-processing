@@ -8,7 +8,7 @@ type analyzeBody = {
   question_text: string
   answer_text: string
   lead_percentage?: string
-  buyer_percentage?: string
+  buyer_percentage?: number
   note: string
   lead_response_count?: string
   buyer_response_count?: string

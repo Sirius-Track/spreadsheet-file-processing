@@ -23,12 +23,6 @@ export const SheetSchema = z.object<SchemaRequiredZod<Pick<SpreadSheet, 'dataUrl
 })
 
 export const createspreadSheed: RequestHandler = async (req, res) => {
-  // Logando a requisição completa
-  console.log('Requisição recebida:')
-  console.log('Headers:', req.headers)
-  console.log('Body:', req.body)
-  console.log('Params:', req.params)
-  console.log('Query:', req.query)
   const { dataUrl, platform } = SheetSchema.parse(req.body)
 
   try {

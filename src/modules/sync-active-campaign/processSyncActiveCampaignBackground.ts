@@ -1,5 +1,6 @@
-import { fetchContacts } from './shared/fetchContacts'
+import { SUPABASE_URL } from '@/contants'
 import { postLeadList } from '@/shared/postLeadList'
+import { fetchContacts } from './shared/fetchContacts'
 
 import { ContactFieldValue, SpreadSheet } from './types'
 
@@ -13,7 +14,6 @@ export const processSyncActiveCampaignBackground = async ({
   ...rows
 }: SpreadSheet) => {
   const BATCH_SIZE = 100
-  const SUPABASE_URL = process.env.SUPABASE_URL as string
 
   try {
     const contactValues = await fetchContacts({

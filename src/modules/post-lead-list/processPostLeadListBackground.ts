@@ -1,6 +1,7 @@
 import axios from 'axios'
 import papa from 'papaparse'
 
+import { SUPABASE_URL } from '@/contants'
 import { getFormatedValue, postLeadList } from '@/shared'
 
 import type { LeadsTypes } from './validation/SpreadSheetSchema'
@@ -20,7 +21,6 @@ export const processPostLeadListBackground = async ({
   closeDate
 }: Props) => {
   const BATCH_SIZE = 500
-  const SUPABASE_URL = process.env.SUPABASE_URL as string
 
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
