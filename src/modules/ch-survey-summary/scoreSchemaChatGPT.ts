@@ -40,7 +40,7 @@ A cada pergunta e resposta, deve ser gerado um novo objeto no JSON."
       throw new Error(`Erro ao se comunicar com a API do OpenAI: ${response.statusText}`)
     }
 
-    const result = await response.json()
+    const result = (await response.json()) as any
     const chatGPTSchema = result?.choices[0].message.content as { choices: { message: { content: string } }[] }
 
     console.log('Resposta da API do ChatGPT:', chatGPTSchema)
