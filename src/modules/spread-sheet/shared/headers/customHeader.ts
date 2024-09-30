@@ -3,15 +3,6 @@ import { genHash } from '../functions/genHash'
 
 import { PlatformCustom } from '../../types'
 import { Missing } from '../types'
-import { HeadersValues } from './types'
-
-export const customHeader = (custom: Partial<PlatformCustom>) =>
-  Object.keys(custom).reduce<HeadersValues<PlatformCustom>>((acc, key) => {
-    const value = custom[key as keyof PlatformCustom]
-    acc[key as keyof PlatformCustom] = value !== undefined ? value : ('' as any)
-
-    return acc
-  }, {})
 
 export const customMissing = (row: Missing<PlatformCustom>) => {
   return {

@@ -23,8 +23,6 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
 
   const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
 
-  console.log('nao enviado')
-
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
 
@@ -35,8 +33,6 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
       }
     })
   }
-
-  console.log('enviado com sucesso')
 
   // TODO: mover url para env
   await axios.post(

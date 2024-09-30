@@ -14,7 +14,7 @@ import { hublaHeader, type HublaHeaderValues, hublaMissing } from './headers/hub
 import { guruHeader, type GuruHeaderValues, guruMissing } from './headers/guruHeader'
 import { tictoHeader, type TictoHeaderValues, tictoMissing } from './headers/tictoHeader'
 import { voompHeader, type VoompHeaderValues, voompMissing } from './headers/voompHeader'
-import { customHeader, customMissing } from './headers/customHeader'
+import { customMissing } from './headers/customHeader'
 
 type Props = Omit<SpreadSheet, 'dataUrl'> & {
   custom: Partial<PlatformCustom>
@@ -91,7 +91,9 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
         ...remainderHeaderValues
       })
     case 'custom':
-      const transformedCustomHeader = customHeader(remainderHeaderValues.custom)
+      const transformedCustomHeader = Object.fromEntries(
+        Object.entries(remainderHeaderValues.custom).map(([key, value]) => [value, key])
+      )
 
       return headerTreatment<typeof transformedCustomHeader, PlatformCustom>({
         headerMissing: customMissing,
