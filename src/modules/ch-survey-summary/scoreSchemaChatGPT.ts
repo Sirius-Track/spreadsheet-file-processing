@@ -6,13 +6,13 @@ export async function scoreSchemaChatGPT(scoreSchema: any, projectId: any, userI
 
   // Prepare o input personalizado e a análise que será enviada para a API do ChatGPT
   const prompt = `
-  A"Por favor, transforme o seguinte texto em um formato JSON que contenha objetos para cada pergunta, resposta e pontuação, além de projectId (${projectId}) e userId (${userId}). O texto é o seguinte:
+  Por favor, transforme o seguinte texto em um formato JSON que contenha objetos para cada pergunta, resposta e pontuação, além de projectId (${projectId}) e userId (${userId}). O texto é o seguinte:
 
 '${scoreSchema}'
 
 O formato do JSON deve ser assim: { "question": "texto da pergunta", "answer": "texto da resposta", "score": número, "projectId": "${projectId}", "userId": "${userId}" }
 
-A cada pergunta e resposta, deve ser gerado um novo objeto no JSON."
+A cada pergunta e resposta, deve ser gerado um novo objeto no JSON.
 `
 
   try {

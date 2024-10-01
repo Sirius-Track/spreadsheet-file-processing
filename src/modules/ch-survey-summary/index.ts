@@ -71,14 +71,14 @@ export const generateSurveyReport = async ({
   const analysis = analyzeData(surveys.lead, surveys.buyer)
   sendAnalysisToChatGPT(analysis, prodPriceRange)
     .then(chatGPTResponse => {
-      //console.log('Resposta do ChatGPT:', chatGPTResponse)
-      // scoreSchemaChatGPT(chatGPTResponse, projectId, userId)
-      //   .then(chatGPTSchema => {
-      //     console.log('Schema do ChatGPT:', chatGPTSchema)
-      //   })
-      //   .catch(error => {
-      //     console.error('Erro ao processar a análise com ChatGPT:', error)
-      //   })
+      console.log('Resposta do ChatGPT:', chatGPTResponse)
+      scoreSchemaChatGPT(chatGPTResponse, projectId, userId)
+        .then(chatGPTSchema => {
+          console.log('Schema do ChatGPT:', chatGPTSchema)
+        })
+        .catch(error => {
+          console.error('Erro ao processar a análise com ChatGPT:', error)
+        })
     })
     .catch(error => {
       console.error('Erro ao processar a análise com ChatGPT:', error)
