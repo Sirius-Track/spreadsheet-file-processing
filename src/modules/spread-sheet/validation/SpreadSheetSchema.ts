@@ -11,7 +11,7 @@ export const platforms = [
   'hubla',
   'guru',
   'voompheader',
-  'tictoo',
+  'ticto',
   'custom'
 ] as const
 

@@ -84,7 +84,7 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
         platformHeader: voompHeader,
         ...remainderHeaderValues
       })
-    case 'tictoo':
+    case 'ticto':
       return headerTreatment<typeof tictoHeader, TictoHeaderValues>({
         headerMissing: tictoMissing,
         platformHeader: tictoHeader,

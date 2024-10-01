@@ -57,7 +57,7 @@ const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) =
     guru: guruHeader,
     herospark: herosparkHeader,
     voompheader: voompHeader,
-    tictoo: tictoHeader,
+    ticto: tictoHeader,
     hotmart: hotmartHeader,
     custom: headers.reduce<HeadersValues<PlatformCustom>>((acc, key) => {
       acc[key as keyof PlatformCustom] = key as keyof PlatformCustom
