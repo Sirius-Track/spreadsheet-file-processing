@@ -1,10 +1,8 @@
-import axios from 'axios'
+import { sendToChatGPT } from '../chatGPTService'
 
 export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Promise<string> {
   console.log('Entrando em chatGPT')
-  const openAIEndpoint = 'https://api.openai.com/v1/chat/completions' // Endpoint da OpenAI
 
-  // Prepare o input personalizado e a análise que será enviada para a API do ChatGPT
   const prompt = `
   Abaixo está uma análise das respostas de leads e compradores para uma pesquisa de qualificação.
   Use estas informações para fornecer um Lead Scoring de 5 faixas: Desqualificado, Ruim, Médio, Bom, Excelente.
@@ -31,42 +29,7 @@ export async function sendAnalysisToChatGPT(analysis: any, prodPrice: any): Prom
   - Resposta: x pontos
   - Resposta: x pontos
 `
+  const systemContent = 'Você é um assistente especializado em análises de dados e qualificação de leads.'
 
-  try {
-    const response = await axios.post(
-      openAIEndpoint,
-      {
-        model: 'gpt-4', // Use o modelo que você deseja utilizar, pode ser GPT-3.5-turbo ou GPT-4
-        messages: [
-          {
-            role: 'system',
-            content: 'Você é um assistente especializado em análises de dados e qualificação de leads.'
-          },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.4 // Ajuste a temperatura conforme necessário
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer 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` // Coloque aqui sua chave da API da OpenAI
-        }
-      }
-    )
-
-    if (!response.data) {
-      throw new Error(`Erro ao se comunicar com a API do OpenAI: ${response.statusText}`)
-    }
-
-    const result = response.data as { choices: { message: { content: string } }[] }
-    const chatGPTResponse = result.choices[0].message.content
-
-    console.log('Resposta da API do ChatGPT:', chatGPTResponse)
-
-    // Retorne a resposta do ChatGPT
-    return chatGPTResponse
-  } catch (error) {
-    console.error('Erro ao enviar a análise para o ChatGPT:', error)
-    throw error
-  }
+  return await sendToChatGPT(prompt, systemContent, 'gpt-4', 0.4)
 }

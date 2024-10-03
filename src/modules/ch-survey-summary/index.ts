@@ -211,7 +211,7 @@ function analyzeData(leadSurvey: any, buyerSurvey: any) {
     }
   })
 
-  console.log('Análise gerada:', analysis)
+  console.log('Análise gerada:', JSON.stringify(analysis, null, 2))
 
   return analysis
 }

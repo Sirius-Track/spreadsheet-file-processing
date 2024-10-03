@@ -1,9 +1,11 @@
 import papa from 'papaparse'
+import { analyzeCSVHeadersAndFormats } from './validateValuesCsv'
 
 type HeadersCsv =
   | {
       headers: string[]
       sample: string[]
+      comment: string // Adicionado para o comentário do ChatGPT
     }
   | undefined
 
@@ -38,8 +40,19 @@ export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
   const firstRow = records.data[0]
   const sample: string[] = headers.map(header => (firstRow ? firstRow[header] || '' : ''))
 
-  return {
+  // Monta o objeto para análise pelo ChatGPT
+  const csvHeadersData = {
     headers,
     sample
+  }
+
+  // Envia a análise ao ChatGPT
+  const comment = await analyzeCSVHeadersAndFormats(csvHeadersData)
+
+  // Retorna o resultado final, incluindo o comentário do ChatGPT
+  return {
+    headers,
+    sample,
+    comment // Inclui o comentário gerado pelo ChatGPT
   }
 }
