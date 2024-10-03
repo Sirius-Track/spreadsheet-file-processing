@@ -47,7 +47,7 @@ export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
   }
 
   // Envia a análise ao ChatGPT
-  const comment = await analyzeCSVHeadersAndFormats(csvHeadersData)
+  //const comment = await analyzeCSVHeadersAndFormats(csvHeadersData)
 
   // Retorna o resultado final, incluindo o comentário do ChatGPT
   return {
