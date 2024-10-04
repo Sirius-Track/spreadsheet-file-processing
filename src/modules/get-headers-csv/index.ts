@@ -9,7 +9,7 @@ type HeadersCsv =
     }
   | undefined
 
-export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
+export const getHeadersCSV = async (dataUrl: string, gptModel: number | null | 'null'): Promise<HeadersCsv> => {
   // Fetch do CSV
   const fileCSV = await fetch(dataUrl)
 
@@ -46,9 +46,11 @@ export const getHeadersCSV = async (dataUrl: string): Promise<HeadersCsv> => {
     sample
   }
 
-  // Envia a análise ao ChatGPT
-  //const comment = await analyzeCSVHeadersAndFormats(csvHeadersData)
+  // Envia a análise ao ChatGPT, se gptModel for 3 ou 4
   let comment = ''
+  if (gptModel === 3 || gptModel === 4) {
+    comment = await analyzeCSVHeadersAndFormats(csvHeadersData, gptModel)
+  }
 
   // Retorna o resultado final, incluindo o comentário do ChatGPT
   return {

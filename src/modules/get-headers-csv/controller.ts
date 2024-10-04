@@ -4,7 +4,7 @@ import type { RequestHandler } from 'express'
 export const getHeadersCSVInit: RequestHandler = async (req, res) => {
   try {
     // Extrai os headers do CSV
-    const headers = await getHeadersCSV(req.body.dataUrl)
+    const headers = await getHeadersCSV(req.body.dataUrl, req.body.gptModel)
 
     // Responde ao frontend com os headers do CSV
     res.status(200).send({

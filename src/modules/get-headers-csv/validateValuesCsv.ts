@@ -1,6 +1,6 @@
 import { sendToChatGPT } from '../chatGPTService'
 
-export async function analyzeCSVHeadersAndFormats(headers: any): Promise<string> {
+export async function analyzeCSVHeadersAndFormats(headers: any, gptModel: any): Promise<string> {
   console.log('Analisando cabeçalhos e formatos de valores no CSV')
 
   const prompt = `
@@ -22,5 +22,6 @@ export async function analyzeCSVHeadersAndFormats(headers: any): Promise<string>
   const systemContent =
     'Você é um assistente especializado em análise de formatação de dados em arquivos CSV, com foco em validação rigorosa de formatos numéricos e de data conforme as regras descritas.'
 
-  return await sendToChatGPT(prompt, systemContent, 'gpt-4', 0.5)
+  let model = `gpt-${gptModel}`
+  return await sendToChatGPT(prompt, systemContent, model, 0.5)
 }
