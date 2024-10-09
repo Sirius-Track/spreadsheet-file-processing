@@ -25,7 +25,8 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
 
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
-
+    // Consolando o csvChunk antes de enviar
+    console.log('csvChunk:', JSON.stringify(csvChunk, null, 2))
     await axios.post(`${SUPABASE_URL}/functions/v1/postCSV`, csvChunk, {
       headers: {
         'Content-Type': 'application/json',
