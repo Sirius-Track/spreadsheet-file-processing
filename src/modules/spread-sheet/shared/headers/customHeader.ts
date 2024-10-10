@@ -9,7 +9,7 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     ...row,
     transaction_code: row.maskTransactionCode || '',
     transaction_status: row.maskTransactionStatus || '',
-    transaction_date: getFormatedValue({ isFormattedDate: true, value: row.maskTransactionDate }),
+    transaction_date: row.maskTransactionDate || '',
     producer: row.maskProducer || '',
     product_id: row.maskProductId || '',
     product_name: row.maskProductName || '',
