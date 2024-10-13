@@ -1,30 +1,32 @@
 import { getFormatedValue } from '@/shared'
 import { genHash } from '../functions/genHash'
+import { formatCurrency } from '../functions/formatCurrency'
+import { formatDate } from '../functions/formatDate'
 
 import { PlatformCustom } from '../../types'
 import { Missing } from '../types'
 
 export const customMissing = (row: Missing<PlatformCustom>) => {
   return {
-    ...row,
+    // ...row,
     transaction_code: row.maskTransactionCode || '',
     transaction_status: row.maskTransactionStatus || '',
-    transaction_date: row.maskTransactionDate || '',
+    transaction_date: formatDate(row.maskTransactionDate) || '',
     producer: row.maskProducer || '',
     product_id: row.maskProductId || '',
     product_name: row.maskProductName || '',
     offer_id: row.maskOfferId || genHash(row.maskProductName),
     offer_name: row.maskOfferName || '',
     currency: row.maskCurrency || 'BRL',
-    purchase_value_with_tax: row.maskPurchaseValueWithTax || '',
-    purchase_value_without_tax: row.maskPurchaseValueWithoutTax || '',
+    purchase_value_with_tax: formatCurrency(row.maskPurchaseValueWithTax) || '',
+    purchase_value_without_tax: formatCurrency(row.maskPurchaseValueWithoutTax) || '',
     commission_currency: row.maskCommissionCurrency || '',
-    my_commission_value: row.maskMyCommissionValue || '',
+    my_commission_value: formatCurrency(row.maskMyCommissionValue) || '',
     src_code: row.maskSrcCode || '',
     sck_code: row.maskSckCode || '',
     payment_method: row.maskPaymentMethod || '',
-    total_installments: row.maskTotalInstallments || '',
-    total_charges: row.maskTotalCharges || '',
+    total_installments: row.maskTotalInstallments || '0',
+    total_charges: row.maskTotalCharges || '0',
     coupon_code: row.maskCouponCode || '',
     buyer_name: row.maskBuyerName || '',
     buyer_email: row.maskBuyerEmail || '',
