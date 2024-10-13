@@ -45,4 +45,7 @@ export type PlatformCustom = {
   maskBuyerInstagram: string
   maskOrderBumpType: string
   maskOrderBumpTransaction: string
+  user_id: string
+  project_id: string
+  platform: string
 }

@@ -8,7 +8,10 @@ import { Missing } from '../types'
 
 export const customMissing = (row: Missing<PlatformCustom>) => {
   return {
-    // ...row,
+    //...row,
+    user_id: row.user_id || '',
+    project_id: row.project_id || '',
+    platform: row.platform || '',
     transaction_code: row.maskTransactionCode || '',
     transaction_status: row.maskTransactionStatus || '',
     transaction_date: formatDate(row.maskTransactionDate) || '',
