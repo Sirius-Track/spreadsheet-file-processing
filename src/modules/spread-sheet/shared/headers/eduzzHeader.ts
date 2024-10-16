@@ -1,4 +1,5 @@
 import { genHash } from '../'
+import { formatCurrency } from '../functions/formatCurrency'
 
 import type { Missing } from '../types'
 import type { HeadersValues } from './types'
@@ -50,6 +51,9 @@ export const eduzzHeader: HeadersValues<EduzzHeaderValues> = {
 export const eduzzMissing = (row: Missing<EduzzHeaderValues>) => {
   return {
     ...row,
+    purchase_value_with_tax: formatCurrency(row.purchase_value_with_tax),
+    purchase_value_without_tax: formatCurrency(row.purchase_value_without_tax),
+    my_commission_value: formatCurrency(row.my_commission_value),
     offer_id: genHash(`${row.product_name} - ${row.offer_name}`),
     producer: 'undefined', // "Não fornecido pela plataforma."
     sck_code: 'undefined', // "Não fornecido pela plataforma."
