@@ -5,7 +5,7 @@ export function formatCurrency(valueStr: string | null | undefined): string {
   }
 
   // Remove símbolos de moeda e espaços extras
-  const currencyRegex = /[$€£R\s]/g
+  const currencyRegex = /[^\d.,]/g
   let cleanedValue = valueStr.replace(currencyRegex, '')
 
   // Verifica se o separador de milhar é vírgula ou ponto e remove os separadores

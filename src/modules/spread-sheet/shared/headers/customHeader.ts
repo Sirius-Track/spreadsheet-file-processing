@@ -2,6 +2,7 @@ import { getFormatedValue } from '@/shared'
 import { genHash } from '../functions/genHash'
 import { formatCurrency } from '../functions/formatCurrency'
 import { formatDate } from '../functions/formatDate'
+import { formatPhone } from '../functions/formatPhone'
 
 import { PlatformCustom } from '../../types'
 import { Missing } from '../types'
@@ -34,7 +35,7 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     buyer_name: row.maskBuyerName || '',
     buyer_email: row.maskBuyerEmail || '',
     buyer_country: row.maskBuyerCountry || '',
-    buyer_phone: row.maskBuyerPhone || '',
+    buyer_phone: formatPhone(row.maskBuyerPhone) || '',
     buyer_document: row.maskBuyerDocument || '',
     buyer_state: row.maskBuyerState || '',
     buyer_instagram: row.maskBuyerInstagram || '',
