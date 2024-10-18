@@ -13,7 +13,6 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     user_id: row.user_id || '',
     project_id: row.project_id || '',
     platform: row.platform || '',
-    transaction_code: row.maskTransactionCode || '',
     transaction_status: row.maskTransactionStatus || '',
     transaction_date: formatDate(row.maskTransactionDate) || '',
     producer: row.maskProducer || '',
@@ -21,6 +20,14 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     product_name: row.maskProductName || '',
     offer_id: row.maskOfferId || genHash(row.maskProductName),
     offer_name: row.maskOfferName || '',
+    transaction_code:
+      row.maskTransactionCode ||
+      genHash(
+        `${row.maskBuyerEmail} - ${row.maskProductName} - ${row.maskOfferName} - ${formatDate(
+          row.maskTransactionDate
+        )} - ${row.maskPurchaseValueWithoutTax}`
+      ) ||
+      '',
     currency: row.maskCurrency || 'BRL',
     purchase_value_with_tax: formatCurrency(row.maskPurchaseValueWithTax) || '',
     purchase_value_without_tax: formatCurrency(row.maskPurchaseValueWithoutTax) || '',
