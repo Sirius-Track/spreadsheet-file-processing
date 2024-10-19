@@ -43,7 +43,8 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
         'Todos os dados de vendas foram processados, atualize a página para visualizar suas informações, qualquer divergência ou dúvida acione nosso Suporte clicando no menu superior, teremos o prazer em ajudá-lo.',
       projectId: projectId, // Passa o projectId dinamicamente
       readStatus: false,
-      type: 'success'
+      type: 'success',
+      reloadPageBT: true
     },
     {
       headers: { 'Content-Type': 'application/json' }
