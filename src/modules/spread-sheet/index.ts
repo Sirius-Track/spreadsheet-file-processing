@@ -33,14 +33,25 @@ export const spreadSheed = async (data: SpreadSheet) => {
   const numRecords = records.data.length // Contagem de registros sem o cabeçalho
 
   // Enviando notificação que X vendas estão sendo processadas
-  await axios.post('https://siriusltv.com/api/1.1/wf/notifications', {
-    title: 'Processamento Iniciado',
-    actionUrl: '',
-    message: `${numRecords} vendas estão sendo processadas neste momento em segundo plano, você receberá notificação de conclusão na página do projeto.`,
-    projectId: projectId,
-    readStatus: false,
-    type: 'info'
-  })
+  try {
+    const response = await axios.post(
+      'https://siriusltv.com/api/1.1/wf/notification',
+      {
+        title: 'Processamento Iniciado',
+        actionUrl: '',
+        message: `${numRecords} vendas estão sendo processadas neste momento em segundo plano, você receberá notificação de conclusão na página do projeto.`,
+        projectId: projectId,
+        readStatus: false,
+        type: 'info'
+      },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+    console.log('Notificação enviada com sucesso:', response.data)
+  } catch (error) {
+    console.error('Erro ao enviar notificação:', error.response?.data || error.message)
+  }
 
   processPostCSVBackground({ dataUrl, userId, platform, projectId, csvText, ...rest })
 }

@@ -34,15 +34,21 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
       }
     })
   }
-  await axios.post('https://siriusltv.com/api/1.1/wf/notifications', {
-    title: 'Envios concluídos com sucesso!',
-    actionUrl: '',
-    message:
-      'Todos os dados de vendas foram processados, atualize a página para visualizar suas informações, qualquer divergência ou dúvida acione nosso Suporte clicando no menu superior, teremos o prazer em ajudá-lo.',
-    projectId: projectId, // Passa o projectId dinamicamente
-    readStatus: false,
-    type: 'success'
-  })
+  await axios.post(
+    'https://siriusltv.com/api/1.1/wf/notification',
+    {
+      title: 'Envios concluídos com sucesso!',
+      actionUrl: '',
+      message:
+        'Todos os dados de vendas foram processados, atualize a página para visualizar suas informações, qualquer divergência ou dúvida acione nosso Suporte clicando no menu superior, teremos o prazer em ajudá-lo.',
+      projectId: projectId, // Passa o projectId dinamicamente
+      readStatus: false,
+      type: 'success'
+    },
+    {
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
 
   // TODO: mover url para env
   await axios.post(
@@ -53,13 +59,19 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     }
   )
 
-  await axios.post('https://siriusltv.com/api/1.1/wf/notifications', {
-    title: 'Arquivo Removido',
-    actionUrl: '',
-    message:
-      'O arquivo CSV enviado foi removido do nosso servidor para garantir que suas informações fiquem somente na nossa base de dados 100% segura.',
-    projectId: projectId, // Passa o projectId dinamicamente
-    readStatus: false,
-    type: 'info'
-  })
+  await axios.post(
+    'https://siriusltv.com/api/1.1/wf/notification',
+    {
+      title: 'Arquivo Removido',
+      actionUrl: '',
+      message:
+        'O arquivo CSV enviado foi removido do nosso servidor para garantir que suas informações fiquem somente na nossa base de dados 100% segura.',
+      projectId: projectId, // Passa o projectId dinamicamente
+      readStatus: false,
+      type: 'info'
+    },
+    {
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
 }
