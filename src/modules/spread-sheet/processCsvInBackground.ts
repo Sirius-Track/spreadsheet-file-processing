@@ -35,7 +35,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     })
   }
   await axios.post(
-    'https://siriusltv.com/api/1.1/wf/notification',
+    'https://app.siriusltv.com/api/1.1/wf/notification',
     {
       title: 'Envios concluídos com sucesso!',
       actionUrl: '',
@@ -53,7 +53,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
 
   // TODO: mover url para env
   await axios.post(
-    'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
+    'https://app.siriusltv.com/api/1.1/wf/removefileafterupload/',
     { fileUrl: dataUrl },
     {
       headers: { 'Content-Type': 'application/json' }
@@ -61,7 +61,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
   )
 
   await axios.post(
-    'https://siriusltv.com/api/1.1/wf/notification',
+    'https://app.siriusltv.com/api/1.1/wf/notification',
     {
       title: 'Arquivo Removido',
       actionUrl: '',

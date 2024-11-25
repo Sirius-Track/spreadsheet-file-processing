@@ -32,7 +32,7 @@ export const processSyncActiveCampaignBackground = async ({
 
     // TODO: Mover a URL para o ambiente
     /* await axios.post(
-      'https://siriusltv.com/api/1.1/wf/removefileafterupload/',
+      'https://app.siriusltv.com/api/1.1/wf/removefileafterupload/',
       { fileUrl: urlActive },
       {
         headers: { 'Content-Type': 'application/json' }

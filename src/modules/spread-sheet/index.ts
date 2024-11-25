@@ -35,7 +35,7 @@ export const spreadSheed = async (data: SpreadSheet) => {
   // Enviando notificação que X vendas estão sendo processadas
   try {
     const response = await axios.post(
-      'https://siriusltv.com/api/1.1/wf/notification',
+      'https://app.siriusltv.com/api/1.1/wf/notification',
       {
         title: 'Processamento Iniciado',
         actionUrl: '',
