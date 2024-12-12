@@ -7,6 +7,10 @@ import { formatPhone } from '../functions/formatPhone'
 import { PlatformCustom } from '../../types'
 import { Missing } from '../types'
 
+function safeString(value: any): string {
+  return value === undefined || value === null ? '' : String(value)
+}
+
 export const customMissing = (row: Missing<PlatformCustom>) => {
   return {
     //...row,
@@ -23,41 +27,42 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     buyer_email:
       row.maskBuyerEmail ||
       genHash(
-        `${formatDate(row.maskTransactionDate)} 
-      ${row.platform}
-      ${row.maskCurrency}
-      ${row.maskBuyerName}
-      ${row.maskBuyerEmail}
-      ${row.maskBuyerDocument}
-      ${row.maskProductId}
-      ${row.maskProductName}
-      ${row.maskOfferId}
-      ${row.maskOfferName}
-      ${row.maskPurchaseValueWithoutTax}`
+        `${safeString(formatDate(row.maskTransactionDate))}
+      ${safeString(row.platform)}
+      ${safeString(row.maskCurrency)}
+      ${safeString(row.maskBuyerName)}
+      ${safeString(row.maskBuyerEmail)}
+      ${safeString(row.maskBuyerDocument)}
+      ${safeString(row.maskProductId)}
+      ${safeString(row.maskProductName)}
+      ${safeString(row.maskOfferId)}
+      ${safeString(row.maskOfferName)}
+      ${safeString(row.maskPurchaseValueWithoutTax)}`
       ) + '@emailgerado.com', //mand
     buyer_document: row.maskBuyerDocument || '', //mand
     transaction_code:
       row.maskTransactionCode ||
       genHash(
-        `${formatDate(row.maskTransactionDate)} 
-        ${row.platform}
-        ${row.maskCurrency}
-        ${row.maskBuyerName}
-        ${row.maskBuyerEmail}
-        ${row.maskBuyerDocument}
-        ${row.maskProductId}
-        ${row.maskProductName}
-        ${row.maskOfferId}
-        ${row.maskOfferName}
-        ${row.maskPurchaseValueWithoutTax}`
+        `${safeString(formatDate(row.maskTransactionDate))}
+        ${safeString(row.platform)}
+        ${safeString(row.maskCurrency)}
+        ${safeString(row.maskBuyerName)}
+        ${safeString(row.maskBuyerEmail)}
+        ${safeString(row.maskBuyerDocument)}
+        ${safeString(row.maskProductId)}
+        ${safeString(row.maskProductName)}
+        ${safeString(row.maskOfferId)}
+        ${safeString(row.maskOfferName)}
+        ${safeString(row.maskPurchaseValueWithoutTax)}
+        `
       ), //mand
     product_id: row.maskProductId || genHash(` ${row.maskProductName}`) || '', //mand
     offer_id:
       row.maskOfferId ||
       genHash(`
-      ${row.maskProductName}
-      ${row.maskProductId}
-      ${row.maskPurchaseValueWithoutTax}
+      ${safeString(row.maskProductName)}
+      ${safeString(row.maskProductId)}
+      ${safeString(row.maskPurchaseValueWithoutTax)}
       `), //mand
     offer_name:
       row.maskOfferName ||
