@@ -1,7 +1,6 @@
 import { getFormatedValue } from '@/shared'
 import { genHash } from '../functions/genHash'
 import { formatCurrency } from '../functions/formatCurrency'
-import { formatDate } from '../functions/formatDate'
 import { formatPhone } from '../functions/formatPhone'
 
 import { PlatformCustom } from '../../types'
@@ -38,7 +37,7 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     project_id: row.project_id || '', //mand
     platform: row.platform || '', //mand
     transaction_status: row.maskTransactionStatus || '', //mand
-    transaction_date: formatDate(row.maskTransactionDate) || '', //mand
+    transaction_date: row.maskTransactionDate || '', //mand
     product_name: row.maskProductName || '', //mand
     currency: row.maskCurrency || 'BRL', //mand
     purchase_value_without_tax: formatCurrency(row.maskPurchaseValueWithoutTax) || '', //mand
@@ -49,7 +48,7 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     transaction_code:
       row.maskTransactionCode ||
       genHash(
-        `${safeString(formatDate(row.maskTransactionDate))}
+        `${safeString(row.maskTransactionDate)}
         ${safeString(row.platform)}
         ${safeString(row.maskCurrency)}
         ${safeString(row.maskBuyerName)}
