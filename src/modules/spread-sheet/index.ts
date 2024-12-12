@@ -1,7 +1,5 @@
 import { SpreadSheetSchema } from './validation/SpreadSheetSchema'
-
 import { processPostCSVBackground } from './processCsvInBackground'
-
 import type { SpreadSheet } from './types'
 
 import axios from 'axios'

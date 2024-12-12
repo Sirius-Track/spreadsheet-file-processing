@@ -1,4 +1,11 @@
 export function formatDate(dateStr: string): string {
+  // Log inicial para verificar o valor de entrada
+  console.log('Data recebida:', dateStr)
+
+  // Remover espaços em branco no início e no final
+  dateStr = dateStr.trim()
+  console.log('Data após trim:', dateStr)
+
   const dateRegex = [
     // Formatos com hífen
     { regex: /^\d{2}-\d{2}-\d{4}$/, format: 'DD-MM-YYYY' },
@@ -20,6 +27,8 @@ export function formatDate(dateStr: string): string {
 
   for (const { regex, format } of dateRegex) {
     if (regex.test(dateStr)) {
+      console.log(`Formato reconhecido: ${format} para a data: ${dateStr}`)
+
       // Se o formato for 'YYYY-MM-DD', não precisa alterar
       if (format === 'YYYY-MM-DD') return dateStr.split(' ')[0] // Remove parte de tempo, se houver
 
@@ -47,5 +56,6 @@ export function formatDate(dateStr: string): string {
     }
   }
 
+  console.error('Formato de data inválido:', dateStr) // Log de erro
   throw new Error('Invalid date format')
 }
