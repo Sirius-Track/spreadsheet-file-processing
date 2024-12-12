@@ -24,60 +24,53 @@ type ValidationError = {
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
   const BATCH_SIZE = 500
 
-  // Enhance logging
-  console.log('Starting CSV processing', {
-    platform,
-    projectId,
-    userId,
-    csvTextLength: csvText.length
-  })
-
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
-    skipEmptyLines: true
-  })
-
-  // Log raw records for debugging
-  console.log('Parsed Records:', {
-    totalRecords: records.data.length,
-    headers: records.meta.fields
+    skipEmptyLines: true,
+    delimiter: ',', // Explicitamente definir delimitador
+    newline: '\n' // Forçar quebra de linha
   })
 
   const validationErrors: ValidationError[] = []
 
-  // More verbose validation with extensive logging
   records.data.forEach((row, index) => {
-    const lineNumber = index + 2 // Accounting for header
+    const lineNumber = index + 2
 
-    // Log each row for debugging
-    console.log(`Validating row ${lineNumber}:`, row)
-
-    // Enhanced date validation
-    if (row.date) {
-      const isValid = isValidDate(row.date)
-      console.log(`Date validation for ${row.date}:`, isValid)
-      if (!isValid) {
-        validationErrors.push({
-          line: lineNumber,
-          field: 'date',
-          value: row.date,
-          expectedType: 'Formato de data correto é YYYY-MM-DD ex: 2024-12-05 (atenção, o dia e mes devem ter 2 digitos)'
-        })
-      }
+    // Validação de moeda (Moeda)
+    const currency = row['Moeda']?.trim()
+    if (currency && !isValidCurrency(currency)) {
+      validationErrors.push({
+        line: lineNumber,
+        field: 'Moeda',
+        value: currency,
+        expectedType: 'Código de moeda ISO 4217 válido'
+      })
     }
 
-    // Enhanced currency validation
-    if (row.currency) {
-      const isValid = isValidCurrency(row.currency)
-      console.log(`Currency validation for ${row.currency}:`, isValid)
-      if (!isValid) {
-        validationErrors.push({
-          line: lineNumber,
-          field: 'currency',
-          value: row.currency,
-          expectedType: 'Formato valido de moeda é ISO 4217 ex: BRL, USD, EUR...'
-        })
-      }
+    // Validação de valor (ValorDoProduto)
+    const value = row['ValorDoProduto']
+      ?.trim()
+      .replace('$', '') // Remove cifrão
+      .replace(',', '.') // Troca vírgula por ponto
+
+    if (value && !isValidValue(value)) {
+      validationErrors.push({
+        line: lineNumber,
+        field: 'ValorDoProduto',
+        value: value,
+        expectedType: 'Número decimal válido (use . para separar)'
+      })
+    }
+
+    // Validação de data (DataDaTransacao)
+    const date = row['DataDaTransacao']?.trim()
+    if (date && !isValidDate(date)) {
+      validationErrors.push({
+        line: lineNumber,
+        field: 'DataDaTransacao',
+        value: date,
+        expectedType: 'Data no formato YYYY-MM-DD'
+      })
     }
 
     // Enhanced value validation
