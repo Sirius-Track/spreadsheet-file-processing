@@ -11,19 +11,24 @@ function safeString(value: any): string {
   return value === undefined || value === null ? '' : String(value)
 }
 
+// Função para limpar e validar números
+function cleanAndValidateNumber(value: string): string {
+  const cleanedValue = value.replace(/[^\d]/g, '') // Remove tudo que não é dígito
+  return cleanedValue.length >= 7 ? cleanedValue : '' // Retorna apenas se tiver pelo menos 7 dígitos
+}
+
 export const customMissing = (row: Missing<PlatformCustom>) => {
-  // Função auxiliar para verificar se um valor é válido
   function isValid(value: any) {
-    return value !== undefined && value !== null && value.trim() !== ''
+    return value !== undefined && value !== null && value.trim() !== '' && value.trim().toLowerCase() !== '(none)'
   }
 
   // Função para gerar um e-mail único
   function generateUniqueEmail(row: any) {
-    const uniqueIdentifier =
-      (isValid(row.maskBuyerDocument) && row.maskBuyerDocument) ||
-      (isValid(row.maskBuyerPhone) && row.maskBuyerPhone) ||
-      (isValid(row.maskBuyerName) && row.maskBuyerName) ||
-      'dados-com-erro-sem-email-phone-doc-nome' // Um identificador padrão caso todos sejam inválidos
+    const document = cleanAndValidateNumber(row.maskBuyerDocument || '')
+    const phone = cleanAndValidateNumber(row.maskBuyerPhone || '')
+    const name = isValid(row.maskBuyerName) ? row.maskBuyerName : ''
+
+    const uniqueIdentifier = document || phone || name || 'dados-com-erro-sem-email-phone-doc-nome' // Um identificador padrão caso todos sejam inválidos
 
     return genHash(uniqueIdentifier) + '@emailgerado.com'
   }
