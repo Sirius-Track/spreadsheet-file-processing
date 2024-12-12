@@ -24,70 +24,109 @@ type ValidationError = {
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
   const BATCH_SIZE = 500
 
+  // Enhance logging
+  console.log('Starting CSV processing', {
+    platform,
+    projectId,
+    userId,
+    csvTextLength: csvText.length
+  })
+
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
     skipEmptyLines: true
   })
 
+  // Log raw records for debugging
+  console.log('Parsed Records:', {
+    totalRecords: records.data.length,
+    headers: records.meta.fields
+  })
+
   const validationErrors: ValidationError[] = []
 
-  // Validate each row
+  // More verbose validation with extensive logging
   records.data.forEach((row, index) => {
-    // The index is zero-based, so add 2 to get the actual line number (accounting for header)
-    const lineNumber = index + 2
+    const lineNumber = index + 2 // Accounting for header
 
-    // Validate date (assuming a 'date' column exists)
-    if (row.date && !isValidDate(row.date)) {
-      validationErrors.push({
-        line: lineNumber,
-        field: 'date',
-        value: row.date,
-        expectedType: 'Formato de data correto é YYYY-MM-DD ex: 2024-12-05 (atenção, o dia e mes devem ter 2 digitos)'
-      })
+    // Log each row for debugging
+    console.log(`Validating row ${lineNumber}:`, row)
+
+    // Enhanced date validation
+    if (row.date) {
+      const isValid = isValidDate(row.date)
+      console.log(`Date validation for ${row.date}:`, isValid)
+      if (!isValid) {
+        validationErrors.push({
+          line: lineNumber,
+          field: 'date',
+          value: row.date,
+          expectedType: 'Formato de data correto é YYYY-MM-DD ex: 2024-12-05 (atenção, o dia e mes devem ter 2 digitos)'
+        })
+      }
     }
 
-    // Validate currency (assuming a 'currency' column exists)
-    if (row.currency && !isValidCurrency(row.currency)) {
-      validationErrors.push({
-        line: lineNumber,
-        field: 'currency',
-        value: row.currency,
-        expectedType: 'Formato valido de moeda é ISO 4217 ex: BRL, USD, EUR...'
-      })
+    // Enhanced currency validation
+    if (row.currency) {
+      const isValid = isValidCurrency(row.currency)
+      console.log(`Currency validation for ${row.currency}:`, isValid)
+      if (!isValid) {
+        validationErrors.push({
+          line: lineNumber,
+          field: 'currency',
+          value: row.currency,
+          expectedType: 'Formato valido de moeda é ISO 4217 ex: BRL, USD, EUR...'
+        })
+      }
     }
 
-    // Validate value (assuming a 'value' column exists)
-    if (row.value && !isValidValue(row.value)) {
-      validationErrors.push({
-        line: lineNumber,
-        field: 'value',
-        value: row.value,
-        expectedType: 'Esperamos apenas números com divisor decimal sendo "." ex: 27232.90'
-      })
+    // Enhanced value validation
+    if (row.value) {
+      const isValid = isValidValue(row.value)
+      console.log(`Value validation for ${row.value}:`, isValid)
+      if (!isValid) {
+        validationErrors.push({
+          line: lineNumber,
+          field: 'value',
+          value: row.value,
+          expectedType: 'Esperamos apenas números com divisor decimal sendo "." ex: 27232.90'
+        })
+      }
     }
-
-    // Add more specific validations based on your platform/custom requirements
-    // For example:
-    // if (platform === 'shopify' && !isValidShopifyColumn(row.someColumn)) { ... }
   })
+
+  // Log validation errors
+  console.log('Validation Errors:', validationErrors)
 
   // Send validation error notifications
   if (validationErrors.length > 0) {
-    // Group errors by type for more concise notifications
-    const errorGroups = validationErrors.reduce((acc, error) => {
-      const key = `${error.field}_${error.expectedType}`
-      if (!acc[key]) {
-        acc[key] = {
-          field: error.field,
-          expectedType: error.expectedType,
-          lines: []
+    const errorGroups = validationErrors.reduce(
+      (acc, error) => {
+        const key = `${error.field}_${error.expectedType}`
+        if (!acc[key]) {
+          acc[key] = {
+            field: error.field,
+            expectedType: error.expectedType,
+            lines: [],
+            values: []
+          }
         }
-      }
-      acc[key].lines.push(error.line)
-      return acc
-    }, {} as Record<string, { field: string; expectedType: string; lines: number[] }>)
+        acc[key].lines.push(error.line)
+        acc[key].values.push(error.value)
+        return acc
+      },
+      {} as Record<
+        string,
+        {
+          field: string
+          expectedType: string
+          lines: number[]
+          values: string[]
+        }
+      >
+    )
 
-    // Send notifications for each error group
+    // Send detailed notifications
     for (const [, errorGroup] of Object.entries(errorGroups)) {
       try {
         await axios.post(
@@ -95,9 +134,10 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
           {
             title: 'Error Detected: Dados mal formatados.',
             actionUrl: '',
-            message: `Valor inválido encontrado: ${errorGroup.field}. Formato esperado: ${
-              errorGroup.expectedType
-            }. Linhas afetadas: ${errorGroup.lines.join(', ')}`,
+            message: `Valor inválido encontrado: ${errorGroup.field}. 
+Formato esperado: ${errorGroup.expectedType}. 
+Linhas afetadas: ${errorGroup.lines.join(', ')}. 
+Valores inválidos: ${errorGroup.values.join(', ')}`,
             projectId: projectId,
             readStatus: false,
             type: 'warn'
@@ -111,8 +151,9 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
       }
     }
 
-    // Optionally, you might want to stop processing or handle errors differently
-    throw new Error(`Validation failed. ${validationErrors.length} errors found.`)
+    // Throw error with more details
+    throw new Error(`Validation failed. ${validationErrors.length} errors found. 
+Errors: ${JSON.stringify(validationErrors, null, 2)}`)
   }
 
   // If no errors, proceed with existing processing logic
