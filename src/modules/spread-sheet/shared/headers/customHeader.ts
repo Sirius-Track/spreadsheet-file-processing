@@ -12,6 +12,21 @@ function safeString(value: any): string {
 }
 
 export const customMissing = (row: Missing<PlatformCustom>) => {
+  // Função auxiliar para verificar se um valor é válido
+  function isValid(value: any) {
+    return value !== undefined && value !== null && value.trim() !== ''
+  }
+
+  // Função para gerar um e-mail único
+  function generateUniqueEmail(row: any) {
+    const uniqueIdentifier =
+      (isValid(row.maskBuyerDocument) && row.maskBuyerDocument) ||
+      (isValid(row.maskBuyerPhone) && row.maskBuyerPhone) ||
+      (isValid(row.maskBuyerName) && row.maskBuyerName) ||
+      'dados-com-erro-sem-email-phone-doc-nome' // Um identificador padrão caso todos sejam inválidos
+
+    return genHash(uniqueIdentifier) + '@emailgerado.com'
+  }
   return {
     //...row,
     user_id: row.user_id || '', //mand
@@ -24,21 +39,7 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     purchase_value_without_tax: formatCurrency(row.maskPurchaseValueWithoutTax) || '', //mand
     buyer_name: row.maskBuyerName || '', //mand
     buyer_phone: formatPhone(row.maskBuyerPhone) || '', //mand
-    buyer_email:
-      row.maskBuyerEmail ||
-      genHash(
-        `${safeString(formatDate(row.maskTransactionDate))}
-      ${safeString(row.platform)}
-      ${safeString(row.maskCurrency)}
-      ${safeString(row.maskBuyerName)}
-      ${safeString(row.maskBuyerEmail)}
-      ${safeString(row.maskBuyerDocument)}
-      ${safeString(row.maskProductId)}
-      ${safeString(row.maskProductName)}
-      ${safeString(row.maskOfferId)}
-      ${safeString(row.maskOfferName)}
-      ${safeString(row.maskPurchaseValueWithoutTax)}`
-      ) + '@emailgerado.com', //mand
+    buyer_email: row.maskBuyerEmail || generateUniqueEmail(row), //mand
     buyer_document: row.maskBuyerDocument || '', //mand
     transaction_code:
       row.maskTransactionCode ||
