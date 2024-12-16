@@ -30,7 +30,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
   //   delimiter: ',', // Explicitamente definir delimitador
   //   newline: '\n' // Forçar quebra de linha
   // })
-
+  console.log(`CSV Text: ${csvText}`)
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
     skipEmptyLines: true
