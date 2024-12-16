@@ -24,11 +24,16 @@ type ValidationError = {
 export const processPostCSVBackground = async ({ dataUrl, userId, platform, projectId, csvText, ...custom }: Props) => {
   const BATCH_SIZE = 500
 
+  // const records = papa.parse<{ [key: string]: string }>(csvText, {
+  //   header: true,
+  //   skipEmptyLines: true,
+  //   delimiter: ',', // Explicitamente definir delimitador
+  //   newline: '\n' // Forçar quebra de linha
+  // })
+
   const records = papa.parse<{ [key: string]: string }>(csvText, {
     header: true,
-    skipEmptyLines: true,
-    delimiter: ',', // Explicitamente definir delimitador
-    newline: '\n' // Forçar quebra de linha
+    skipEmptyLines: true
   })
 
   const validationErrors: ValidationError[] = []
