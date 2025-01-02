@@ -50,15 +50,11 @@ export const headerTreatment = <Headers, Values>({
     return formattedRow
   })
 
-  const missingHeaders = () => {
-    if (platform === 'hotmart') {
-      return headersAlreadyChanged
-    }
-
-    const headersAlreadyChangedMissingTreaties = headersAlreadyChanged?.map(row => headerMissing?.(row as any))
-
-    return headersAlreadyChangedMissingTreaties
+  if (['hotmart', 'hotmartspanish'].includes(platform)) {
+    return headersAlreadyChanged
   }
 
-  return missingHeaders()
+  const headersAlreadyChangedMissingTreaties = headersAlreadyChanged?.map(row => headerMissing?.(row as any))
+
+  return headersAlreadyChangedMissingTreaties
 }

@@ -31,11 +31,11 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
         platformHeader: hotmartHeader,
         ...remainderHeaderValues
       })
-      case 'hotmartspanish':
-        return headerTreatment<typeof hotmartSpanishHeader, HotmartSpanishHeaderValues>({
-          platformHeader: hotmartSpanishHeader,
-          ...remainderHeaderValues
-        })
+    case 'hotmartspanish':
+      return headerTreatment<typeof hotmartSpanishHeader, HotmartSpanishHeaderValues>({
+        platformHeader: hotmartSpanishHeader,
+        ...remainderHeaderValues
+      })
     case 'perfectpay':
       return headerTreatment<typeof perfectpayHeader, PerfectpayHeaderValues>({
         headerMissing: perfectPayMissing,

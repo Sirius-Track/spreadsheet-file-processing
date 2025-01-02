@@ -157,14 +157,11 @@ Errors: ${JSON.stringify(validationErrors, null, 2)}`)
   // If no errors, proceed with existing processing logic
   const remainderHeaderValues = { records, platform, userId, projectId }
 
-console.log({remainderHeaderValues:platform})
-console.log({remainderHeaderValues})
-  
   console.log('Chegou no platformsRows')
 
   const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
 
-  console.log({platformsRows, remainderHeaderValues:records.data})
+  console.log({ platformsRows, remainderHeaderValues: records.data })
 
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
