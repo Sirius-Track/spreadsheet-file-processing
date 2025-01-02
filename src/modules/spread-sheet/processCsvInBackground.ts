@@ -161,7 +161,7 @@ Errors: ${JSON.stringify(validationErrors, null, 2)}`)
 
   const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
 
-  console.log({platformsRows, remainderHeaderValues})
+  console.log({platformsRows, remainderHeaderValues:records.data})
 
   for (let count = 0; count < platformsRows.length; count += BATCH_SIZE) {
     const csvChunk = platformsRows.slice(count, count + BATCH_SIZE)
