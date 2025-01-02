@@ -3,6 +3,7 @@ import { headerTreatment } from './headerTreatment'
 import type { ParseResult } from 'papaparse'
 import type { PlatformCustom, SpreadSheet } from '../types'
 
+import { hotmartSpanishHeader, type HotmartSpanishHeaderValues } from './headers/hotmartSpanishHeader'
 import { hotmartHeader, type HotmartHeaderValues } from './headers/hotmartHeader'
 import { herosparkHeader, type HerosparkHeaderValues, herosparkMissing } from './headers/herosparkHeader'
 import { perfectpayHeader, type PerfectpayHeaderValues, perfectPayMissing } from './headers/perfectpayHeader'
@@ -30,6 +31,11 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
         platformHeader: hotmartHeader,
         ...remainderHeaderValues
       })
+      case 'hotmartspanish':
+        return headerTreatment<typeof hotmartSpanishHeader, HotmartSpanishHeaderValues>({
+          platformHeader: hotmartSpanishHeader,
+          ...remainderHeaderValues
+        })
     case 'perfectpay':
       return headerTreatment<typeof perfectpayHeader, PerfectpayHeaderValues>({
         headerMissing: perfectPayMissing,

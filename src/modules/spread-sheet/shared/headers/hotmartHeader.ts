@@ -61,3 +61,4 @@ export const hotmartHeader: HeadersValues<HotmartHeaderValues> = {
   'Tipo do order bump': 'order_bump_type',
   'Transação do order bump': 'order_bump_transaction'
 }
+
