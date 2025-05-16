@@ -16,23 +16,22 @@ function cleanAndValidateNumber(value: string): string {
   return cleanedValue.length >= 7 ? cleanedValue : '' // Retorna apenas se tiver pelo menos 7 dígitos
 }
 
-export const customMissing = (row: Missing<PlatformCustom>) => {
-  function isValid(value: any) {
-    return value !== undefined && value !== null && value.trim() !== '' && value.trim().toLowerCase() !== '(none)'
-  }
+function isValid(value: any) {
+  return value !== undefined && value !== null && value.trim() !== '' && value.trim().toLowerCase() !== '(none)'
+}
 
-  // Função para gerar um e-mail único
-  function generateUniqueEmail(row: any) {
-    const document = cleanAndValidateNumber(row.maskBuyerDocument || '')
-    const phone = cleanAndValidateNumber(row.maskBuyerPhone || '')
-    const name = isValid(row.maskBuyerName) ? row.maskBuyerName : ''
+function generateUniqueEmail(row: any) {
+  const document = cleanAndValidateNumber(row.maskBuyerDocument || '')
+  const phone = cleanAndValidateNumber(row.maskBuyerPhone || '')
+  const name = isValid(row.maskBuyerName) ? row.maskBuyerName : ''
 
-    const uniqueIdentifier = document || phone || name || 'dados-com-erro-sem-email-phone-doc-nome' // Um identificador padrão caso todos sejam inválidos
+  const uniqueIdentifier = document || phone || name || 'dados-com-erro-sem-email-phone-doc-nome' // Um identificador padrão caso todos sejam inválidos
 
-    return genHash(uniqueIdentifier) + '@emailgerado.com'
-  }
+  return genHash(uniqueIdentifier) + '@emailgerado.com'
+}
+
+export const customMissing = (row: Missing<PlatformCustom>): any => {
   return {
-    //...row,
     user_id: row.user_id || '', //mand
     project_id: row.project_id || '', //mand
     platform: row.platform || '', //mand
@@ -72,12 +71,12 @@ export const customMissing = (row: Missing<PlatformCustom>) => {
     offer_name:
       row.maskOfferName ||
       ' ' +
-        genHash(`
+      genHash(`
       ${row.maskProductName}
       ${row.maskProductId}
       ${row.maskPurchaseValueWithoutTax}
       `) +
-        row.maskPurchaseValueWithoutTax, //mand
+      row.maskPurchaseValueWithoutTax, //mand
     buyer_country: row.maskBuyerCountry || '', //mand
     order_bump_type: row.maskOrderBumpType || '', //optional
     order_bump_transaction: row.maskOrderBumpTransaction || '', //optional
