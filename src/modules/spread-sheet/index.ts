@@ -2,7 +2,7 @@ import { SpreadSheetSchema } from './validation/SpreadSheetSchema'
 import { processPostCSVBackground } from './processCsvInBackground'
 import type { SpreadSheet } from './types'
 
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import papa from 'papaparse'
 
 export const spreadSheed = async (data: SpreadSheet) => {
@@ -48,8 +48,11 @@ export const spreadSheed = async (data: SpreadSheet) => {
     )
     console.log('Notificação enviada com sucesso:', response.data)
   } catch (error) {
-    console.error('Erro ao enviar notificação:', error.response?.data || error.message)
+    console.error('Erro ao enviar notificação:', (error as AxiosError).response?.data || (error as Error).message)
   }
 
-  processPostCSVBackground({ dataUrl, userId, platform, projectId, csvText, ...rest })
+  const sanitizedRest = Object.fromEntries(
+    Object.entries(rest).map(([k, v]) => [k, v === null ? undefined : v])
+  )
+  processPostCSVBackground({ dataUrl, userId, platform, projectId, csvText, ...sanitizedRest })
 }
