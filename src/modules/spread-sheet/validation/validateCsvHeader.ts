@@ -4,6 +4,7 @@ import { eduzzHeader } from '../shared/headers/eduzzHeader'
 import { greennHeader } from '../shared/headers/greennHeader'
 import { tmbHeader } from '../shared/headers/tmbHeader'
 import { hublaHeader } from '../shared/headers/hublaHeader'
+import { xgrowHeader } from '../shared/headers/xgrowHeader'
 import { guruHeader } from '../shared/headers/guruHeader'
 import { herosparkHeader } from '../shared/headers/herosparkHeader'
 import { voompHeader } from '../shared/headers/voompHeader'
@@ -55,6 +56,7 @@ const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) =
     greenn: greennHeader,
     tmb: tmbHeader,
     hubla: hublaHeader,
+    xgrow: xgrowHeader,
     guru: guruHeader,
     herospark: herosparkHeader,
     voompheader: voompHeader,

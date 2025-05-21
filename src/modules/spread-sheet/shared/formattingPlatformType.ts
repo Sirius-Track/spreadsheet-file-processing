@@ -12,6 +12,7 @@ import { eduzzHeader, type EduzzHeaderValues, eduzzMissing } from './headers/edu
 import { greennHeader, type GreennHeaderValues, greennMissing } from './headers/greennHeader'
 import { tmbHeader, type TmbHeaderValues, tmbMissing } from './headers/tmbHeader'
 import { hublaHeader, type HublaHeaderValues, hublaMissing } from './headers/hublaHeader'
+import { xgrowHeader, type XgrowHeaderValues, xgrowMissing } from './headers/xgrowHeader'
 import { guruHeader, type GuruHeaderValues, guruMissing } from './headers/guruHeader'
 import { tictoHeader, type TictoHeaderValues, tictoMissing } from './headers/tictoHeader'
 import { voompHeader, type VoompHeaderValues, voompMissing } from './headers/voompHeader'
@@ -70,6 +71,12 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
       return headerTreatment<typeof hublaHeader, HublaHeaderValues>({
         headerMissing: hublaMissing,
         platformHeader: hublaHeader,
+        ...remainderHeaderValues
+      })
+    case 'xgrow':
+      return headerTreatment<typeof xgrowHeader, XgrowHeaderValues>({
+        headerMissing: xgrowMissing,
+        platformHeader: xgrowHeader,
         ...remainderHeaderValues
       })
     case 'guru':

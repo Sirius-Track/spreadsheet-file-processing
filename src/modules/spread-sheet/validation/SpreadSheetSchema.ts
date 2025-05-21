@@ -13,6 +13,7 @@ export const platforms = [
   'guru',
   'voompheader',
   'ticto',
+  'xgrow',
   'custom'
 ] as const
 
