@@ -7,7 +7,10 @@ export type VoompHeaderValues = {
   transaction_code: string
   transaction_status: string
   transaction_date: string
+  product_id: string
   product_name: string
+  offer_id: string
+  offer_name: string
   purchase_value_with_tax: string
   purchase_value_without_tax: string
   payment_method: string
@@ -16,24 +19,30 @@ export type VoompHeaderValues = {
   buyer_email: string
   buyer_phone: string
   buyer_document: string
+  buyer_state: string
+  buyer_address: string
   user_id: string
   project_id: string
   platform: string
 }
 
 export const voompHeader: HeadersValues<VoompHeaderValues> = {
-  'Código da venda': 'transaction_code',
+  'ID Venda': 'transaction_code',
   'Status da venda': 'transaction_status',
-  Data: 'transaction_date', // Data vem assim: 10/05/2024 20:37:46
+  'Data da venda': 'transaction_date',
+  'ID Produto': 'product_id',
   'Nome do produto': 'product_name',
-  'Valor Líquido': 'purchase_value_with_tax', // Valor vem assim: 759,07
-  'Valor Bruto': 'purchase_value_without_tax', // Valor vem assim: 759,07
+  'ID Oferta': 'offer_id',
+  'Nome da oferta': 'offer_name',
+  'Valor Pago': 'purchase_value_with_tax',
+  'Valor Bruto': 'purchase_value_without_tax',
   'Método de pagamento': 'payment_method',
-  'Nome do cliente': 'buyer_name',
-  'Email do cliente': 'buyer_email',
-  Telefone: 'buyer_phone',
-  Documento: 'buyer_document',
-  'Código País': 'buyer_country',
+  'Nome do comprador': 'buyer_name',
+  'Email do comprador': 'buyer_email',
+  'Número de telefone': 'buyer_phone',
+  'CPF/CNPJ': 'buyer_document',
+  'UF Origem': 'buyer_state',
+  'Endereço físico': 'buyer_address',
   user_id: 'user_id',
   project_id: 'project_id',
   plataform: 'platform'
