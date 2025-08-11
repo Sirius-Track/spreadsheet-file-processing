@@ -51,8 +51,6 @@ export const voompHeader: HeadersValues<VoompHeaderValues> = {
 export const voompMissing = (row: Missing<VoompHeaderValues>) => {
   return {
     ...row,
-    offer_id: genHash(row.product_name), // genHash(product_name)
-    offer_name: genHash(row.product_name), // genHash(product_name)
     producer: 'undefined', // "Não fornecido pela plataforma."
     currency: 'BRL',
     purchase_value_with_tax: row.purchase_value_with_tax.replace(',', '.'),
@@ -62,7 +60,6 @@ export const voompMissing = (row: Missing<VoompHeaderValues>) => {
     sck_code: 'undefined', // "Não fornecido pela plataforma."
     total_installments: 'undefined', // "Não fornecido pela plataforma."
     total_charges: 0, // "Não fornecido pela plataforma."
-    buyer_state: 'undefined', // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: '(none)', // "Não fornecido pela plataforma."
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
