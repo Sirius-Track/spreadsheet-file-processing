@@ -59,7 +59,7 @@ const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) =
     xgrow: xgrowHeader,
     guru: guruHeader,
     herospark: herosparkHeader,
-    voompheader: voompHeader,
+    voomp: voompHeader,
     ticto: tictoHeader,
     hotmart: hotmartHeader,
     hotmartspanish: hotmartSpanishHeader,

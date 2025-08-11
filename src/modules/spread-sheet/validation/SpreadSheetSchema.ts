@@ -11,7 +11,7 @@ export const platforms = [
   'tmb',
   'hubla',
   'guru',
-  'voompheader',
+  'voomp',
   'ticto',
   'xgrow',
   'custom'
