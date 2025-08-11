@@ -91,7 +91,7 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
         platformHeader: herosparkHeader,
         ...remainderHeaderValues
       })
-    case 'voompheader':
+    case 'voomp':
       return headerTreatment<typeof voompHeader, VoompHeaderValues>({
         headerMissing: voompMissing,
         platformHeader: voompHeader,
