@@ -21,9 +21,6 @@ export type VoompHeaderValues = {
   buyer_document: string
   buyer_state: string
   buyer_address: string
-  user_id: string
-  project_id: string
-  platform: string
 }
 
 export const voompHeader: HeadersValues<VoompHeaderValues> = {
@@ -42,10 +39,7 @@ export const voompHeader: HeadersValues<VoompHeaderValues> = {
   'Número de telefone': 'buyer_phone',
   'CPF/CNPJ': 'buyer_document',
   'UF Origem': 'buyer_state',
-  'Endereço físico': 'buyer_address',
-  user_id: 'user_id',
-  project_id: 'project_id',
-  plataform: 'platform'
+  'Endereço físico': 'buyer_address'
 }
 
 export const voompMissing = (row: Missing<VoompHeaderValues>) => {
