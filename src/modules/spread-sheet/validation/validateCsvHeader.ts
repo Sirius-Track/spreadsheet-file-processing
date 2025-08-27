@@ -1,6 +1,7 @@
 import { perfectpayHeader } from '../shared/headers/perfectpayHeader'
 import { kiwifyHeader } from '../shared/headers/kiwifyHeader'
 import { pagtrustHeader } from '../shared/headers/pagtrustHeader'
+import { cactusHeader } from '../shared/headers/cactusHeader'
 import { eduzzHeader } from '../shared/headers/eduzzHeader'
 import { greennHeader } from '../shared/headers/greennHeader'
 import { tmbHeader } from '../shared/headers/tmbHeader'
@@ -54,6 +55,7 @@ const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) =
     perfectpay: perfectpayHeader,
     kiwify: kiwifyHeader,
     pagtrust: pagtrustHeader,
+    cactus: cactusHeader,
     eduzz: eduzzHeader,
     greenn: greennHeader,
     tmb: tmbHeader,
