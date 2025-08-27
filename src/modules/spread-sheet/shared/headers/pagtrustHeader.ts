@@ -11,7 +11,6 @@ export type PagtrustHeaderValues = {
   product_name: string
   product_id: string
   offer_name: string
-  currency: string
   purchase_value_with_tax: string
   purchase_value_without_tax: string
   src_code: string
@@ -32,18 +31,17 @@ export const pagtrustHeader: HeadersValues<PagtrustHeaderValues> = {
   CodProduto: 'product_id',
   Produto: 'product_name',
   Oferta: 'offer_name',
-  Moeda: 'currency',
   Valor_Liquido: 'purchase_value_with_tax',
   Preco_Base_do_Produto: 'purchase_value_without_tax',
   UtmCampaign: 'src_code',
   UtmMedium: 'sck_code',
-  Pagamento: 'payment_method',
-  Parcelas: 'total_installments',
+  Metodo_de_Pagamento: 'payment_method',
+  Numero_de_Parcelas: 'total_installments',
   Comprador: 'buyer_name',
   Email: 'buyer_email',
   Celular: 'buyer_phone',
   CPF: 'buyer_document',
-  Estado: 'buyer_state'
+  GEOIP_Estado: 'buyer_state'
 }
 
 /**
@@ -70,6 +68,8 @@ export const pagtrustMissing = (row: Missing<PagtrustHeaderValues>) => {
     total_charges: 0, // "Não fornecido pela plataforma."
     buyer_country: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: '(none)', // "Não fornecido pela plataforma."
-    order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
+    order_bump_transaction: 'undefined', // "Não fornecido pela plataforma."
+    currency: 'BRL',
+
   }
 }
