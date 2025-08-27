@@ -8,6 +8,7 @@ import { hotmartHeader, type HotmartHeaderValues } from './headers/hotmartHeader
 import { herosparkHeader, type HerosparkHeaderValues, herosparkMissing } from './headers/herosparkHeader'
 import { perfectpayHeader, type PerfectpayHeaderValues, perfectPayMissing } from './headers/perfectpayHeader'
 import { kiwifyHeader, type KiwifyHeaderValues, kiwifyMissing } from './headers/kiwifyHeader'
+import { pagtrustHeader, type PagtrustHeaderValues, pagtrustMissing } from './headers/pagtrustHeader'
 import { eduzzHeader, type EduzzHeaderValues, eduzzMissing } from './headers/eduzzHeader'
 import { greennHeader, type GreennHeaderValues, greennMissing } from './headers/greennHeader'
 import { tmbHeader, type TmbHeaderValues, tmbMissing } from './headers/tmbHeader'
@@ -47,6 +48,12 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
       return headerTreatment<typeof kiwifyHeader, KiwifyHeaderValues>({
         headerMissing: kiwifyMissing,
         platformHeader: kiwifyHeader,
+        ...remainderHeaderValues
+      })
+    case 'pagtrust':
+      return headerTreatment<typeof pagtrustHeader, PagtrustHeaderValues>({
+        headerMissing: pagtrustMissing,
+        platformHeader: pagtrustHeader,
         ...remainderHeaderValues
       })
     case 'eduzz':

@@ -1,5 +1,6 @@
 import { perfectpayHeader } from '../shared/headers/perfectpayHeader'
 import { kiwifyHeader } from '../shared/headers/kiwifyHeader'
+import { pagtrustHeader } from '../shared/headers/pagtrustHeader'
 import { eduzzHeader } from '../shared/headers/eduzzHeader'
 import { greennHeader } from '../shared/headers/greennHeader'
 import { tmbHeader } from '../shared/headers/tmbHeader'
@@ -52,6 +53,7 @@ const platformHeaders = (platform: SpreadSheet['platform'], headers: string[]) =
   const headersMap: Record<SpreadSheet['platform'], Record<string, string>> = {
     perfectpay: perfectpayHeader,
     kiwify: kiwifyHeader,
+    pagtrust: pagtrustHeader,
     eduzz: eduzzHeader,
     greenn: greennHeader,
     tmb: tmbHeader,

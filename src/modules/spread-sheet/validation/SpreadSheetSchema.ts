@@ -4,6 +4,7 @@ export const platforms = [
   'hotmart',
   'hotmartspanish',
   'kiwify',
+  'pagtrust',
   'eduzz',
   'herospark',
   'perfectpay',
