@@ -1,4 +1,4 @@
-import { genHash } from '../'
+import { genHash, formatCurrency } from '../'
 
 import type { Missing } from '../types'
 import type { HeadersValues } from './types'
@@ -37,7 +37,7 @@ export const guruHeader: HeadersValues<GuruHeaderValues> = {
   'nome oferta': 'offer_name',
   moeda: 'currency',
   'valor líquido': 'purchase_value_with_tax',
-  'valor venda': 'purchase_value_without_tax',
+  'valor produtos': 'purchase_value_without_tax',
   'origem rppc venda': 'src_code',
   'rppc checkout': 'sck_code',
   pagamento: 'payment_method',
@@ -56,6 +56,7 @@ export const guruMissing = (row: Missing<GuruHeaderValues>) => {
   return {
     ...row,
     offer_id: genHash(`${row.product_name} - ${row.offer_name}`), // genHash(product_name + offer)
+    purchase_value_without_tax: formatCurrency(row.purchase_value_without_tax), // transforma "1.997,00" | "5,00" em "1997.00" | "5.00"
     producer: 'undefined', // "Não fornecido pela plataforma."
     commission_currency: 'BRL', // "Não fornecido pela plataforma."
     my_commission_value: 'undefined', // "Não fornecido pela plataforma."
