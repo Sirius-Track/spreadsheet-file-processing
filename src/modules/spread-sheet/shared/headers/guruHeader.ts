@@ -56,14 +56,15 @@ export const guruMissing = (row: Missing<GuruHeaderValues>) => {
   return {
     ...row,
     offer_id: genHash(`${row.product_name} - ${row.offer_name}`), // genHash(product_name + offer)
-    purchase_value_without_tax: formatCurrency(row.purchase_value_without_tax), // transforma "1.997,00" | "5,00" em "1997.00" | "5.00"
+    purchase_value_without_tax: formatCurrency(row.purchase_value_without_tax),
+    purchase_value_with_tax: formatCurrency(row.purchase_value_with_tax), // transforma "1.997,00" | "5,00" em "1997.00" | "5.00"
     producer: 'undefined', // "Não fornecido pela plataforma."
     commission_currency: 'BRL', // "Não fornecido pela plataforma."
     my_commission_value: 'undefined', // "Não fornecido pela plataforma."
     total_charges: 0, // "Não fornecido pela plataforma."
     buyer_instagram: 'undefined', // "Não fornecido pela plataforma."
     order_bump_type: '(none)', // "Não fornecido pela plataforma."
-    buyer_phone: `${row.buyer_dddi} + ${row.buyer_phone_number}`,
+    buyer_phone: `${row.buyer_dddi}${row.buyer_phone_number}`,
     order_bump_transaction: 'undefined' // "Não fornecido pela plataforma."
   }
 }

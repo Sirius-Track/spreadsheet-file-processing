@@ -36,67 +36,78 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
     skipEmptyLines: true
   })
 
+  // If no errors, proceed with existing processing logic
+  const remainderHeaderValues = { records, platform, userId, projectId }
+
+  console.log('Chegou no platformsRows')
+
+  const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
+
+  // Platform-aware validation on normalized fields (post-mapping)
   const validationErrors: ValidationError[] = []
+  const valueFieldsToCheck = [
+    'value',
+    'purchase_value',
+    'purchase_value_with_tax',
+    'purchase_value_without_tax',
+    'my_commission_value'
+  ]
 
-  records.data.forEach((row, index) => {
-    const lineNumber = index + 2
+  platformsRows.forEach((row: any, index: number) => {
+    const lineNumber = index + 2 // account for header line
 
-    // Validação de moeda (Moeda)
-    const currency = row['Moeda']?.trim()
-    if (currency && !isValidCurrency(currency)) {
+    // Currency (normalized key)
+    const currencyRaw = row?.currency?.toString()?.trim()
+    // Try to extract a 3-letter ISO code when label contains extra text e.g., "BRL - Real"
+    const currency = currencyRaw?.includes(' ')
+      ? currencyRaw.split(' ')[0].toUpperCase()
+      : currencyRaw?.toUpperCase()
+    if (currency && /^[A-Z]{3}$/.test(currency) && !isValidCurrency(currency)) {
       validationErrors.push({
         line: lineNumber,
-        field: 'Moeda',
-        value: currency,
+        field: 'currency',
+        value: currencyRaw || '',
         expectedType: 'Código de moeda ISO 4217 válido'
       })
     }
 
-    // Validação de valor (ValorDoProduto)
-    const value = row['ValorDoProduto']
-      ?.trim()
-      .replace('$', '') // Remove cifrão
-      .replace(',', '.') // Troca vírgula por ponto
-
-    if (value && !isValidValue(value)) {
+    // Dates (normalized key)
+    const transactionDate = row?.transaction_date?.toString()?.trim()
+    if (transactionDate && !isValidDate(transactionDate)) {
       validationErrors.push({
         line: lineNumber,
-        field: 'ValorDoProduto',
-        value: value,
-        expectedType: 'Número decimal válido (use . para separar)'
-      })
-    }
-
-    // Validação de data (DataDaTransacao)
-    const date = row['DataDaTransacao']?.trim()
-    if (date && !isValidDate(date)) {
-      validationErrors.push({
-        line: lineNumber,
-        field: 'DataDaTransacao',
-        value: date,
+        field: 'transaction_date',
+        value: transactionDate,
         expectedType: 'Data no formato YYYY-MM-DD'
       })
     }
 
-    // Enhanced value validation
-    if (row.value) {
-      const isValid = isValidValue(row.value)
-      console.log(`Value validation for ${row.value}:`, isValid)
-      if (!isValid) {
+    // Numeric values (normalized keys)
+    for (const key of valueFieldsToCheck) {
+      if (row?.[key] === undefined) continue
+      const raw = row[key]
+      const rawStr = raw?.toString()?.trim()
+      // Skip placeholders or empty strings
+      if (!rawStr || /^(undefined|null|none|\(none\))$/i.test(rawStr)) continue
+      const normalized = raw
+        ?.toString()
+        .trim()
+        .replace(/\s/g, '')
+        .replace('$', '')
+        .replace(/\./g, '') // remove thousands separators
+        .replace(',', '.') // ensure decimal dot
+
+      if (normalized && !isValidValue(normalized)) {
         validationErrors.push({
           line: lineNumber,
-          field: 'value',
-          value: row.value,
-          expectedType: 'Esperamos apenas números com divisor decimal sendo "." ex: 27232.90'
+          field: key,
+          value: rawStr,
+          expectedType: 'Número decimal válido (use . para separar)'
         })
       }
     }
   })
 
-  // Log validation errors
-  console.log('Validation Errors:', validationErrors)
-
-  // Send validation error notifications
   if (validationErrors.length > 0) {
     const errorGroups = validationErrors.reduce(
       (acc, error) => {
@@ -105,8 +116,8 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
           acc[key] = {
             field: error.field,
             expectedType: error.expectedType,
-            lines: [],
-            values: []
+            lines: [] as number[],
+            values: [] as string[]
           }
         }
         acc[key].lines.push(error.line)
@@ -124,7 +135,6 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
       >
     )
 
-    // Send detailed notifications
     for (const [, errorGroup] of Object.entries(errorGroups)) {
       try {
         await axios.post(
@@ -132,10 +142,7 @@ export const processPostCSVBackground = async ({ dataUrl, userId, platform, proj
           {
             title: 'Error Detected: Dados mal formatados.',
             actionUrl: '',
-            message: `Valor inválido encontrado: ${errorGroup.field}. 
-Formato esperado: ${errorGroup.expectedType}. 
-Linhas afetadas: ${errorGroup.lines.join(', ')}. 
-Valores inválidos: ${errorGroup.values.join(', ')}`,
+            message: `Campo inválido: ${errorGroup.field}.\nFormato esperado: ${errorGroup.expectedType}.\nLinhas afetadas: ${errorGroup.lines.join(', ')}.\nValores inválidos: ${errorGroup.values.join(', ')}`,
             projectId: projectId,
             readStatus: false,
             type: 'warn'
@@ -145,21 +152,13 @@ Valores inválidos: ${errorGroup.values.join(', ')}`,
           }
         )
       } catch (error) {
-        console.error('Error sending validation notification:', error)
+        console.error('Error sending validation notification:', (error as any)?.response?.data || (error as any)?.message)
       }
     }
 
-    // Throw error with more details
-    throw new Error(`Validation failed. ${validationErrors.length} errors found. 
-Errors: ${JSON.stringify(validationErrors, null, 2)}`)
+    // Stop processing after notifying
+    throw new Error(`Validation failed. ${validationErrors.length} errors found.`)
   }
-
-  // If no errors, proceed with existing processing logic
-  const remainderHeaderValues = { records, platform, userId, projectId }
-
-  console.log('Chegou no platformsRows')
-
-  const platformsRows = formattingPlatformType({ ...remainderHeaderValues, custom })
 
   console.log({ platformsRows, remainderHeaderValues: records.data })
 
