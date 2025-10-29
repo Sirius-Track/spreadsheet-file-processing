@@ -23,11 +23,26 @@ export const SheetSchema = z.object<SchemaRequiredZod<Pick<SpreadSheet, 'dataUrl
 })
 
 export const createspreadSheed: RequestHandler = async (req, res) => {
-  console.log(req.body)
-
   const { dataUrl, platform } = SheetSchema.parse(req.body)
 
   try {
+    // Validate file size before downloading
+    const headResponse = await fetch(dataUrl, { method: 'HEAD' })
+    if (!headResponse.ok) {
+      return res.status(400).send({
+        message: 'Arquivo CSV não encontrado'
+      })
+    }
+
+    const contentLength = headResponse.headers.get('content-length')
+    const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+    
+    if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
+      return res.status(400).send({
+        message: 'Arquivo CSV muito grande. Tamanho máximo permitido: 100MB'
+      })
+    }
+
     const fileCSV = await fetch(dataUrl)
     if (!fileCSV.ok) {
       return res.status(400).send({

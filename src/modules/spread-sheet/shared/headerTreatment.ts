@@ -41,7 +41,7 @@ export const headerTreatment = <Headers, Values>({
       if (mappedHeader) {
         formattedRow[mappedHeader] = getFormatedValue({ isFormattedDate, value })
       } else {
-        new HTTPError(
+        throw new HTTPError(
           `Header ${header} not found in platform ${platform} headers requireds list \n ${Object.keys(platformHeader)}`
         )
       }
