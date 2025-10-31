@@ -26,7 +26,7 @@ export const headerTreatment = <Headers, Values>({
   projectId,
   headerMissing
 }: Props<Headers, Values>) => {
-  const headersAlreadyChanged = records.data.map(row => {
+  const headersAlreadyChanged = records.data.map((row: any) => {
     const formattedRow: RowData = {
       platform,
       user_id: userId,
@@ -34,12 +34,20 @@ export const headerTreatment = <Headers, Values>({
     }
 
     for (const [header, value] of Object.entries({ ...row, ...formattedRow })) {
+      // Ignorar headers inválidos ou campos do sistema já definidos
+      const systemFields = ['platform', 'user_id', 'project_id']
+      const isInvalidHeader = !header || header === 'null' || header === 'undefined' || header.trim() === ''
+      
+      if (systemFields.includes(header) || isInvalidHeader) {
+        continue
+      }
+
       const mappedHeader = platformHeader[header] as string
 
       const isFormattedDate = Boolean(mappedHeader && ['transaction_date'].includes(mappedHeader.toLowerCase()))
 
       if (mappedHeader) {
-        formattedRow[mappedHeader] = getFormatedValue({ isFormattedDate, value })
+        formattedRow[mappedHeader] = getFormatedValue({ isFormattedDate, value }) as string
       } else {
         throw new HTTPError(
           `Header ${header} not found in platform ${platform} headers requireds list \n ${Object.keys(platformHeader)}`
@@ -54,7 +62,7 @@ export const headerTreatment = <Headers, Values>({
     return headersAlreadyChanged
   }
 
-  const headersAlreadyChangedMissingTreaties = headersAlreadyChanged?.map(row => headerMissing?.(row as any))
+  const headersAlreadyChangedMissingTreaties = headersAlreadyChanged?.map((row: any) => headerMissing?.(row as any))
 
   return headersAlreadyChangedMissingTreaties
 }

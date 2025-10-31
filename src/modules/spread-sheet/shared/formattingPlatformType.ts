@@ -119,7 +119,9 @@ export const formattingPlatformType = (remainderHeaderValues: Props) => {
       })
     case 'custom':
       const transformedCustomHeader = Object.fromEntries(
-        Object.entries(remainderHeaderValues.custom).map(([key, value]) => [value, key])
+        Object.entries(remainderHeaderValues.custom)
+          .filter(([key, value]) => value != null && value !== '' && value !== 'null' && value !== 'undefined')
+          .map(([key, value]) => [value, key])
       )
 
       return headerTreatment<typeof transformedCustomHeader, PlatformCustom>({
